@@ -1,0 +1,23 @@
+{
+  "name": "tampa-bay-guide",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-21",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tampa-bay-guide",
+      "database_id": "3ba0c200-0a00-4b00-86de-30b95df582b7"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "tampa-bay-guide-images"
+    }
+  ]
+}

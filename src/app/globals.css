@@ -1,0 +1,151 @@
+@import "tailwindcss" source("..");
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Brand colors */
+  --color-gulf-900: #08343C;
+  --color-gulf-700: #0B5E6B;
+  --color-gulf-500: #1B8B99;
+  --color-gulf-50:  #E8F2F3;
+  --color-marigold-500: #D8A02E;
+  --color-marigold-dark: #B07F1C;
+  --color-sunset-500: #E4572E;
+  --color-seaglass-50: #F2F5F4;
+  --color-ink-600: #4A626A;
+  --color-line: #DCE4E3;
+
+  /* Fonts */
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-public-sans);
+  --font-sans: var(--font-public-sans);
+
+  /* Radii */
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-pill: 9999px;
+  --radius-img: 10px;
+
+  /* shadcn overrides */
+  --background: #ffffff;
+  --foreground: #08343C;
+  --card: #ffffff;
+  --card-foreground: #08343C;
+  --popover: #ffffff;
+  --popover-foreground: #08343C;
+  --primary: #0B5E6B;
+  --primary-foreground: #ffffff;
+  --secondary: #E8F2F3;
+  --secondary-foreground: #08343C;
+  --muted: #F2F5F4;
+  --muted-foreground: #4A626A;
+  --accent: #E8F2F3;
+  --accent-foreground: #08343C;
+  --destructive: #E4572E;
+  --border: #DCE4E3;
+  --input: #DCE4E3;
+  --ring: #1B8B99;
+  --radius: 0.5rem;
+
+  /* shadcn color aliases */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-xl: calc(var(--radius) * 2);
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-body), system-ui, sans-serif;
+    background-color: var(--color-seaglass-50);
+    color: var(--color-gulf-900);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-seaglass-50);
+    color: var(--color-gulf-900);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  p {
+    max-width: 68ch;
+  }
+
+  a {
+    color: var(--color-gulf-700);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-gulf-500);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-gulf-500);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), sans-serif;
+  }
+  .font-body {
+    font-family: var(--font-body), sans-serif;
+  }
+  .marigold-rule {
+    border-top: 3px solid var(--color-marigold-500);
+  }
+  .nav-active-rule {
+    border-bottom: 3px solid var(--color-marigold-500);
+  }
+  .transition-hover {
+    transition: all 150ms ease-out;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
