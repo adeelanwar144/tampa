@@ -3,7 +3,8 @@ import { Bricolage_Grotesque, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+import { WeatherWidget } from "@/components/WeatherWidget";
+import { resolveWeatherTips } from "@/lib/resolve-weather-tips";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description:
-    "An independent guide to eating, drinking, and getting outside in Tampa. Every restaurant, bar, beach, and shop — filtered how you like.",
+    "An independent guide to eating, drinking, and getting outside in Tampa. Restaurants, bars, beaches and shops we've visited, filtered how you like.",
   metadataBase: new URL("https://tampabayguide.com"),
   openGraph: {
     siteName: "Tampa Bay Guide",
@@ -49,8 +50,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bricolage.variable} ${publicSans.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-seaglass-50">
-        <AnnouncementBar />
         <Header />
+        <WeatherWidget
+          city="Tampa"
+          region="FL"
+          latitude={27.9506}
+          longitude={-82.4572}
+          timeZone="America/New_York"
+          tips={resolveWeatherTips()}
+        />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

@@ -11,17 +11,23 @@ CREATE TABLE IF NOT EXISTS neighborhoods (
 
 INSERT OR IGNORE INTO neighborhoods (slug, name) VALUES
   ('ybor-city', 'Ybor City'),
-  ('downtown', 'Downtown'),
+  ('downtown-tampa', 'Downtown Tampa'),
   ('channel-district', 'Channel District'),
-  ('hyde-park', 'Hyde Park'),
-  ('soho', 'SoHo'),
-  ('davis-islands', 'Davis Islands'),
-  ('seminole-heights', 'Seminole Heights'),
   ('tampa-heights', 'Tampa Heights'),
-  ('palma-ceia', 'Palma Ceia'),
+  ('davis-islands', 'Davis Islands'),
+  ('hyde-park', 'Hyde Park'),
+  ('bayshore-ballast-point', 'Bayshore / Ballast Point'),
+  ('beach-park-macdill', 'Beach Park / MacDill'),
   ('westshore', 'Westshore'),
-  ('riverwalk', 'Riverwalk'),
+  ('west-tampa', 'West Tampa'),
+  ('seminole-heights', 'Seminole Heights'),
   ('sulphur-springs', 'Sulphur Springs'),
+  ('new-tampa', 'New Tampa'),
+  ('east-tampa', 'East Tampa'),
+  ('downtown', 'Downtown'),
+  ('soho', 'SoHo'),
+  ('palma-ceia', 'Palma Ceia'),
+  ('riverwalk', 'Riverwalk'),
   ('temple-terrace', 'Temple Terrace'),
   ('ballast-point', 'Ballast Point');
 
@@ -30,7 +36,7 @@ CREATE TABLE IF NOT EXISTS places (
   place_id TEXT UNIQUE,
   slug TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
-  neighborhood_slug TEXT NOT NULL REFERENCES neighborhoods(slug),
+  neighborhood_slug TEXT REFERENCES neighborhoods(slug),
   micro_area TEXT,
   formatted_address TEXT,
   lat REAL, lng REAL,
@@ -43,6 +49,11 @@ CREATE TABLE IF NOT EXISTS places (
   primary_type TEXT,
   business_status TEXT,
   hours_json TEXT,
+  utc_offset_minutes INTEGER,
+  delivery INTEGER,
+  takeout INTEGER,
+  dine_in INTEGER,
+  wheelchair_accessible INTEGER,
   tagline TEXT,
   description TEXT,
   status TEXT DEFAULT 'draft',
@@ -70,7 +81,16 @@ CREATE TABLE IF NOT EXISTS place_reviews (
   author_photo_uri TEXT
 );
 
+CREATE TABLE IF NOT EXISTS place_address_components (
+  place_id TEXT NOT NULL REFERENCES places(id) ON DELETE CASCADE,
+  type TEXT NOT NULL,
+  long_name TEXT,
+  short_name TEXT,
+  PRIMARY KEY (place_id, type)
+);
+
 CREATE INDEX IF NOT EXISTS idx_places_neighborhood ON places(neighborhood_slug);
 CREATE INDEX IF NOT EXISTS idx_places_status ON places(status);
 CREATE INDEX IF NOT EXISTS idx_place_images_place ON place_images(place_id);
 CREATE INDEX IF NOT EXISTS idx_place_reviews_place ON place_reviews(place_id);
+CREATE INDEX IF NOT EXISTS idx_place_address_components_place ON place_address_components(place_id);

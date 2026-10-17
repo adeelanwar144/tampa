@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms — Tampa Bay Guide",
-  description: "Content for this section is in progress.",
+  description: "Terms for Tampa Bay Guide are not published yet.",
 };
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
       <h1 className="font-display font-800 text-[38px] md:text-[52px] text-gulf-900 mb-6">
         Terms
       </h1>
-      <p className="text-ink-600 leading-relaxed">Content for this section is in progress.</p>
+      <p className="text-ink-600 leading-relaxed">Terms are not published yet.</p>
     </div>
   );
 }

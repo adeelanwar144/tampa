@@ -7,7 +7,7 @@ import { SearchForm } from "./SearchForm";
 
 export const metadata: Metadata = {
   title: "Search — Tampa Bay Guide",
-  description: "Search Tampa restaurants, bars, beaches, shops, and guides.",
+  description: "Search the guide.",
   robots: { index: false },
 };
 
@@ -28,7 +28,7 @@ export default async function SearchPage({
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.tagline.toLowerCase().includes(q) ||
-          p.neighborhood.toLowerCase().includes(q) ||
+          (p.neighborhood && p.neighborhood.toLowerCase().includes(q)) ||
           p.subcategory.toLowerCase().includes(q) ||
           p.tags.some((t) => t.toLowerCase().includes(q))
       )
@@ -66,7 +66,7 @@ export default async function SearchPage({
             Nothing matches those filters
           </h2>
           <p className="text-sm text-ink-600 mb-6">
-            No results for &quot;{sp.q}&quot;. Try a different keyword or browse the full directory.
+            No results for &quot;{sp.q}&quot;. Try different words, or browse all places.
           </p>
           <Link
             href="/places"

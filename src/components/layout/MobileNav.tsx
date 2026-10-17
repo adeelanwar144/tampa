@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { directoryCta, isNavActive, primaryNav } from "@/config/nav";
 import { focusRing, motion150 } from "@/components/layout/nav";
+import { setMobileMenuOpen } from "@/lib/mobile-menu";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -20,6 +21,11 @@ export function MobileNav() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    setMobileMenuOpen(open);
+    return () => setMobileMenuOpen(false);
+  }, [open]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

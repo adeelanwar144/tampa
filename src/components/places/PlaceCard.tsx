@@ -5,7 +5,8 @@ import { Place } from "@/types";
 import { CATEGORY_LABELS } from "@/lib/listings";
 import { StatusChip, TodayHours } from "@/components/places/PlaceLiveStatus";
 
-function PriceLevel({ level }: { level: 1 | 2 | 3 | 4 }) {
+function PriceLevel({ level }: { level: 1 | 2 | 3 | 4 | null }) {
+  if (!level) return null;
   return (
     <span className="text-ink-600" aria-label={`Price level ${level} of 4`}>
       {"$".repeat(level)}
@@ -27,6 +28,7 @@ export function PlaceCard({ place }: { place: Place }) {
             fill
             className="object-cover rounded-t-[var(--radius-card)]"
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            loading="eager"
           />
         ) : (
           <div className="absolute inset-0 bg-gulf-50 rounded-t-[var(--radius-card)]" />
@@ -60,11 +62,19 @@ export function PlaceCard({ place }: { place: Place }) {
           <Star size={13} fill="#D8A02E" stroke="none" aria-hidden="true" />
           <span className="font-medium text-gulf-900">{place.rating.toFixed(1)}</span>
           <span className="text-ink-600">({place.reviewCount.toLocaleString("en-US")})</span>
-          <span className="opacity-40" aria-hidden="true">·</span>
-          <PriceLevel level={place.priceLevel} />
-          <span className="opacity-40" aria-hidden="true">·</span>
-          <MapPin size={12} className="text-gulf-500" aria-hidden="true" />
-          <span>{place.neighborhood}</span>
+          {place.priceLevel ? (
+            <>
+              <span className="opacity-40" aria-hidden="true">·</span>
+              <PriceLevel level={place.priceLevel} />
+            </>
+          ) : null}
+          {place.neighborhood ? (
+            <>
+              <span className="opacity-40" aria-hidden="true">·</span>
+              <MapPin size={12} className="text-gulf-500" aria-hidden="true" />
+              <span>{place.neighborhood}</span>
+            </>
+          ) : null}
         </div>
 
         {place.tags.length > 0 && (

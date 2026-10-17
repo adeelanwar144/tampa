@@ -44,8 +44,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description:
-      "Browse Tampa's restaurants, bars, beaches, museums, and shops — filtered, sorted, and always up to date.",
+    description: "Restaurants, bars, beaches and shops we've visited, filtered how you like.",
     robots: noindex ? { index: false } : undefined,
     alternates: { canonical: "https://tampabayguide.com/places" },
   };

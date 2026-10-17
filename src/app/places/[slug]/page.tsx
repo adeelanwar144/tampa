@@ -2,36 +2,48 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, MapPin, Phone, Globe, ChevronRight } from "lucide-react";
+import { Star, MapPin, Phone, Globe, ChevronRight, Accessibility, Navigation } from "lucide-react";
 import {
   getPlaceBySlug,
-  getAllPlaces,
   getRelatedPlaces,
   formatTime,
+  getPlaceTimeParts,
   CATEGORY_LABELS,
 } from "@/lib/listings";
+import { getListingContent } from "@/lib/listing-content";
+import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
 import { PlaceCard } from "@/components/places/PlaceCard";
+import { ListingFaq, ListingSeoBody } from "@/components/places/ListingSeoContent";
 import { StatusBadge } from "@/components/places/PlaceLiveStatus";
+import { PlaceMapSection } from "@/components/places/PlaceMapSection";
+import { coordsInPmtilesBbox } from "@/data/map-tiles";
+import { neighborhoodFromSlug } from "@/data/neighborhoods";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
-  return (await getAllPlaces()).map((p) => ({ slug: p.slug }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const place = await getPlaceBySlug(slug);
+  const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
   if (!place) return {};
 
+  const title = listingContent?.metaTitle || `${place.name} — Tampa Bay Guide`;
+  const description = listingContent?.metaDescription || place.tagline;
+
   return {
-    title: `${place.name} — Tampa Bay Guide`,
-    description: place.tagline,
+    title,
+    description,
+    robots: place.status === "draft" ? { index: false, follow: false } : undefined,
     openGraph: {
-      title: place.name,
-      description: place.tagline,
+      title: listingContent?.metaTitle || place.name,
+      description,
       images: place.images[0] ? [{ url: place.images[0] }] : [],
       type: "article",
     },
@@ -51,59 +63,74 @@ const DAY_NAMES = [
 
 export default async function PlaceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const place = await getPlaceBySlug(slug);
+  const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
   if (!place) notFound();
 
   const related = await getRelatedPlaces(place, 3);
   const now = new Date();
-  const todayDow = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    weekday: "short",
-  })
-    .formatToParts(now)
-    .find((p) => p.type === "weekday")?.value;
-  const weekdayMap: Record<string, number> = {
-    Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6,
-  };
-  const todayIdx = weekdayMap[todayDow ?? "Sun"] ?? 0;
+  const { dayOfWeek: todayIdx } = getPlaceTimeParts(place, now);
 
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.address)}`;
+  const mapsUrl =
+    place.googleMapsUri ??
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.address)}`;
+  const directionsUrl =
+    place.googleMapsUri ??
+    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.address)}`;
+  const reviews = (place.reviews ?? []).slice(0, 5);
+  const priceLabel = place.priceLevel ? "$".repeat(place.priceLevel) : null;
+  const neighborhoodHref =
+    place.neighborhood &&
+    place.neighborhoodSlug &&
+    neighborhoodFromSlug(place.neighborhoodSlug)
+      ? `/neighborhoods/${place.neighborhoodSlug}`
+      : null;
+  const serviceBadges = [
+    place.delivery ? "Delivery" : null,
+    place.takeout ? "Takeout" : null,
+    place.dineIn ? "Dine-in" : null,
+  ].filter((label): label is string => Boolean(label));
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: place.name,
-    description: place.tagline,
-    address: { "@type": "PostalAddress", streetAddress: place.address },
-    geo: { "@type": "GeoCoordinates", latitude: place.lat, longitude: place.lng },
-    telephone: place.phone,
-    url: place.website,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: place.rating,
-      reviewCount: place.reviewCount,
+  const jsonLd = placeJsonLd(place);
+  const faqLd = listingContent ? faqJsonLd(listingContent.faq) : null;
+
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://tampabayguide.com" },
+    { "@type": "ListItem", position: 2, name: "Places", item: "https://tampabayguide.com/places" },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: CATEGORY_LABELS[place.category],
+      item: `https://tampabayguide.com/places?category=${place.category}`,
     },
-  };
+    ...(neighborhoodHref
+      ? [
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: place.neighborhood,
+            item: `https://tampabayguide.com${neighborhoodHref}`,
+          },
+        ]
+      : []),
+    {
+      "@type": "ListItem",
+      position: neighborhoodHref ? 5 : 4,
+      name: place.name,
+    },
+  ];
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://tampabayguide.com" },
-      { "@type": "ListItem", position: 2, name: "Places", item: "https://tampabayguide.com/places" },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: CATEGORY_LABELS[place.category],
-        item: `https://tampabayguide.com/places?category=${place.category}`,
-      },
-      { "@type": "ListItem", position: 4, name: place.name },
-    ],
+    itemListElement: breadcrumbItems,
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {faqLd ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      ) : null}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -115,6 +142,14 @@ export default async function PlaceDetailPage({ params }: Props) {
           <Link href={`/places?category=${place.category}`} className="hover:text-gulf-700 transition-hover">
             {CATEGORY_LABELS[place.category]}
           </Link>
+          {neighborhoodHref ? (
+            <>
+              <ChevronRight size={14} className="opacity-40" />
+              <Link href={neighborhoodHref} className="hover:text-gulf-700 transition-hover">
+                {place.neighborhood}
+              </Link>
+            </>
+          ) : null}
           <ChevronRight size={14} className="opacity-40" />
           <span className="text-gulf-900 font-medium">{place.name}</span>
         </nav>
@@ -155,7 +190,9 @@ export default async function PlaceDetailPage({ params }: Props) {
 
             <div className="mb-6">
               <p className="text-sm font-medium text-ink-600 mb-1.5">
-                {CATEGORY_LABELS[place.category]} · {place.subcategory} · {place.neighborhood}
+                {[CATEGORY_LABELS[place.category], place.subcategory, place.neighborhood]
+                  .filter(Boolean)
+                  .join(" · ")}
               </p>
               <h1 className="font-display font-800 text-[38px] leading-tight text-gulf-900 mb-3">
                 {place.name}
@@ -167,25 +204,70 @@ export default async function PlaceDetailPage({ params }: Props) {
                   <span className="font-semibold text-gulf-900">{place.rating.toFixed(1)}</span>
                   <span>({place.reviewCount.toLocaleString("en-US")} reviews)</span>
                 </span>
-                <span className="opacity-40">·</span>
-                <span>{"$".repeat(place.priceLevel)}</span>
-                <span className="opacity-40">·</span>
-                <span className="flex items-center gap-1">
-                  <MapPin size={13} className="text-gulf-500" />
-                  {place.neighborhood}
-                </span>
+                {priceLabel ? (
+                  <>
+                    <span className="opacity-40">·</span>
+                    <span aria-label={`Price ${priceLabel}`}>{priceLabel}</span>
+                  </>
+                ) : null}
+                {place.neighborhood ? (
+                  <>
+                    <span className="opacity-40">·</span>
+                    {neighborhoodHref ? (
+                      <Link
+                        href={neighborhoodHref}
+                        className="flex items-center gap-1 hover:text-gulf-700 transition-hover"
+                      >
+                        <MapPin size={13} className="text-gulf-500" />
+                        {place.neighborhood}
+                      </Link>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <MapPin size={13} className="text-gulf-500" />
+                        {place.neighborhood}
+                      </span>
+                    )}
+                  </>
+                ) : null}
+                {place.wheelchairAccessible ? (
+                  <>
+                    <span className="opacity-40">·</span>
+                    <span className="flex items-center gap-1 text-gulf-700">
+                      <Accessibility size={14} aria-hidden="true" />
+                      Wheelchair accessible
+                    </span>
+                  </>
+                ) : null}
               </div>
 
               <StatusBadge place={place} />
+
+              {(serviceBadges.length > 0 || place.wheelchairAccessible) && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {serviceBadges.map((label) => (
+                    <span
+                      key={label}
+                      className="inline-flex items-center px-2.5 py-1 rounded-[var(--radius-pill)] text-xs font-medium bg-gulf-50 text-gulf-700 border border-line"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="max-w-none mb-8 space-y-4">
-              {place.description.split("\n\n").map((para, i) => (
-                <p key={i} className="text-ink-600 leading-relaxed text-base">
-                  {para}
-                </p>
-              ))}
-            </div>
+            {(place.description.trim() || !listingContent) && (
+              <div className="max-w-none mb-8 space-y-4">
+                {place.description.split("\n\n").map((para, i) => (
+                  <p key={i} className="text-ink-600 leading-relaxed text-base">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {listingContent ? <ListingSeoBody html={listingContent.contentHtml} /> : null}
+            {listingContent ? <ListingFaq items={listingContent.faq} /> : null}
 
             {place.tags.length > 0 && (
               <div className="mb-8">
@@ -205,10 +287,49 @@ export default async function PlaceDetailPage({ params }: Props) {
                 </ul>
               </div>
             )}
+
+            {reviews.length > 0 && (
+              <section className="mb-8">
+                <h2 className="font-display font-700 text-base text-gulf-900 mb-3">Reviews</h2>
+                <ul className="space-y-4">
+                  {reviews.map((review, index) => {
+                    const author = review.authorName ?? "Google reviewer";
+                    return (
+                      <li key={`${author}-${index}`} className="border border-line rounded-[var(--radius-card)] p-4">
+                        <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-sm mb-2">
+                          <span className="flex items-center gap-1 text-gulf-900 font-medium">
+                            <Star size={13} fill="#D8A02E" stroke="none" />
+                            {review.rating != null ? review.rating.toFixed(1) : "—"}
+                          </span>
+                          {review.relativeTime ? (
+                            <span className="text-ink-600">{review.relativeTime}</span>
+                          ) : null}
+                          {review.authorUri ? (
+                            <a
+                              href={review.authorUri}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gulf-700 hover:text-gulf-500 transition-hover"
+                            >
+                              {author}
+                            </a>
+                          ) : (
+                            <span className="text-ink-600">{author}</span>
+                          )}
+                        </div>
+                        {review.text ? (
+                          <p className="text-sm text-ink-600 leading-relaxed">{review.text}</p>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            )}
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white border border-line rounded-[var(--radius-card)] p-5 sticky top-24">
+            <div className="sticky top-24 rounded-[var(--radius-card)] border border-line bg-white p-5">
               <h2 className="font-display font-700 text-base text-gulf-900 mb-4">Hours</h2>
               <table className="w-full text-sm mb-5" aria-label="Weekly hours">
                 <tbody>
@@ -226,7 +347,9 @@ export default async function PlaceDetailPage({ params }: Props) {
                         <td className="py-1">
                           {dayHours
                             ? `${formatTime(dayHours.open)} – ${formatTime(dayHours.close)}`
-                            : "Closed"}
+                            : dayHours === null
+                              ? "Closed"
+                              : "—"}
                         </td>
                       </tr>
                     );
@@ -235,6 +358,27 @@ export default async function PlaceDetailPage({ params }: Props) {
               </table>
 
               <div className="border-t border-line pt-4 space-y-3">
+                <div>
+                  <p className="text-xs font-medium text-ink-600 mb-2">Map</p>
+                  {coordsInPmtilesBbox(place.lat, place.lng) ? (
+                    <PlaceMapSection
+                      lat={place.lat}
+                      lng={place.lng}
+                      title={place.name}
+                      mapsUrl={mapsUrl}
+                    />
+                  ) : (
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-sm font-medium text-gulf-700 hover:text-gulf-500 transition-hover"
+                    >
+                      Open in Google Maps
+                    </a>
+                  )}
+                </div>
+
                 <div>
                   <p className="text-xs font-medium text-ink-600 mb-1">Address</p>
                   <a
@@ -251,7 +395,7 @@ export default async function PlaceDetailPage({ params }: Props) {
                   <div>
                     <p className="text-xs font-medium text-ink-600 mb-1">Phone</p>
                     <a
-                      href={`tel:${place.phone}`}
+                      href={`tel:${place.phone.replace(/[^\d+]/g, "")}`}
                       className="flex items-center gap-1.5 text-sm text-gulf-700 hover:text-gulf-500 transition-hover"
                     >
                       <Phone size={13} />
@@ -276,13 +420,13 @@ export default async function PlaceDetailPage({ params }: Props) {
                 )}
 
                 <a
-                  href={mapsUrl}
+                  href={directionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[var(--radius-btn)] bg-gulf-700 text-white text-sm font-medium hover:bg-gulf-500 transition-hover"
                 >
-                  <MapPin size={14} />
-                  Open in Google Maps
+                  <Navigation size={14} />
+                  Get directions
                 </a>
               </div>
             </div>

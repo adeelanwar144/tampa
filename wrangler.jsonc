@@ -18,6 +18,10 @@
     {
       "binding": "PHOTOS",
       "bucket_name": "tampa-bay-guide-images"
+    },
+    {
+      "binding": "LISTING_CONTENT",
+      "bucket_name": "listing-content"
     }
   ]
 }

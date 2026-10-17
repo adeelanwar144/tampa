@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllPlaces, NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
+import { neighborhoodSlug } from "@/data/neighborhoods";
+import { articleHref, getPublishedArticles } from "@/lib/pillars";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://tampabayguide.com";
@@ -42,15 +44,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const neighborhoods = NEIGHBORHOODS.map((n) => ({
-    url: `${base}/neighborhoods/${n.toLowerCase().replace(/\s+/g, "-")}`,
+    url: `${base}/neighborhoods/${neighborhoodSlug(n)}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.5,
   }));
 
-  // Dynamic [slug] article routes are skipped while articles is empty.
-  // Once content exists, iterate articles.filter((a) => a.status === "published")
-  // and add `${base}/${a.pillar}/${a.slug}` for each published piece.
+  const articles = getPublishedArticles().map((article) => ({
+    url: `${base}${articleHref(article)}`,
+    lastModified: new Date(article.publishedAt),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
 
-  return [...staticRoutes, ...directoryCategories, ...places, ...neighborhoods];
+  return [...staticRoutes, ...directoryCategories, ...places, ...neighborhoods, ...articles];
 }

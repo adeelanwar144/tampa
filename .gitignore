@@ -34,12 +34,20 @@ yarn-error.log*
 .env*
 !.env.example
 
+# generated articles (may contain unpublished drafts)
+/output/
+
+# listing SEO content CLI
+.listing-content-cache/
+scripts/listing-content/.batch-state.json
+
 # one-time Places import artifacts (do not commit API payloads)
 src/data/staging/*.json
 src/data/staging/*.staging.json
 *.staging.json
 .import-cache/
 db/import-generated.sql
+db/places-export.sql
 
 # vercel
 .vercel

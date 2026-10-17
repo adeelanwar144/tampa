@@ -1,8 +1,14 @@
 import { places as seedPlaces } from "@/data/places";
 import { guides as allGuides } from "@/data/guides";
+import {
+  ANCHOR_NEIGHBORHOODS,
+  NEIGHBORHOODS as NEIGHBORHOOD_NAMES,
+  neighborhoodSlug as slugifyNeighborhood,
+} from "@/data/neighborhoods";
 import { getDb } from "@/lib/d1";
 import {
   Place,
+  PlaceReview,
   Guide,
   CategorySlug,
   FilterParams,
@@ -21,47 +27,40 @@ export const CATEGORY_LABELS: Record<CategorySlug, string> = {
   attractions: "Attractions",
   shopping: "Shopping",
   services: "Services",
+  "hotels-lodging": "Hotels & lodging",
 };
 
-export const NEIGHBORHOODS = [
-  "Ybor City",
-  "Downtown",
-  "Channel District",
-  "Hyde Park",
-  "SoHo",
-  "Davis Islands",
-  "Seminole Heights",
-  "Tampa Heights",
-  "Palma Ceia",
-  "Westshore",
-  "Riverwalk",
-  "Sulphur Springs",
-  "Temple Terrace",
-  "Ballast Point",
-] as const;
+export const NEIGHBORHOODS = NEIGHBORHOOD_NAMES;
 
 const NEIGHBORHOOD_BY_SLUG = Object.fromEntries(
-  NEIGHBORHOODS.map((name) => [name.toLowerCase().replace(/\s+/g, "-"), name]),
-) as Record<string, (typeof NEIGHBORHOODS)[number]>;
+  ANCHOR_NEIGHBORHOODS.map((n) => [n.slug, n.name]),
+) as Record<string, string>;
 
 type PlaceRow = {
   id: string;
   slug: string;
   name: string;
-  neighborhood_slug: string;
+  neighborhood_slug: string | null;
   formatted_address: string | null;
   lat: number | null;
   lng: number | null;
   phone: string | null;
   website: string | null;
+  google_maps_uri: string | null;
   rating: number | null;
   review_count: number | null;
   price_level: number | null;
   primary_type: string | null;
   business_status: string | null;
   hours_json: string | null;
+  utc_offset_minutes: number | null;
+  delivery: number | null;
+  takeout: number | null;
+  dine_in: number | null;
+  wheelchair_accessible: number | null;
   tagline: string | null;
   description: string | null;
+  status: string | null;
   imported_at: string | null;
 };
 
@@ -69,6 +68,15 @@ type ImageRow = {
   place_id: string;
   r2_key: string;
   sort_order: number | null;
+};
+
+type ReviewRow = {
+  place_id: string;
+  rating: number | null;
+  review_text: string | null;
+  relative_time: string | null;
+  author_name: string | null;
+  author_uri: string | null;
 };
 
 const FOOD_TYPES = new Set([
@@ -133,10 +141,13 @@ const SHOP_TYPES = new Set([
 
 function categoryFromType(primaryType: string | null): CategorySlug {
   if (!primaryType) return "services";
+  if (primaryType === "hotel" || primaryType === "hotels-lodging" || primaryType.endsWith("_hotel")) {
+    return "hotels-lodging";
+  }
   if (FOOD_TYPES.has(primaryType) || primaryType.endsWith("_restaurant")) return "food-drink";
   if (BAR_TYPES.has(primaryType)) return "bars-nightlife";
   if (OUTDOOR_TYPES.has(primaryType)) return "beaches-outdoors";
-  if (ATTRACTION_TYPES.has(primaryType)) return "attractions";
+  if (ATTRACTION_TYPES.has(primaryType) || primaryType === "public_library") return "attractions";
   if (SHOP_TYPES.has(primaryType) || primaryType.endsWith("_store")) return "shopping";
   return "services";
 }
@@ -167,6 +178,7 @@ function hoursFromJson(raw: string | null): Hours {
         open?: { day?: number; hour?: number; minute?: number };
         close?: { day?: number; hour?: number; minute?: number };
       }>;
+      closedDays?: number[];
     };
     const periods = parsed.regularOpeningHours?.periods ?? parsed.periods ?? [];
     const hours: Hours = {};
@@ -182,18 +194,39 @@ function hoursFromJson(raw: string | null): Hours {
         close: `${padTime(period.close.hour)}:${padTime(period.close.minute)}`,
       };
     }
+    for (const day of parsed.closedDays ?? []) {
+      if (hours[day] === undefined) hours[day] = null;
+    }
     return hours;
   } catch {
     return {};
   }
 }
 
-function clampPrice(value: number | null): 1 | 2 | 3 | 4 {
+function clampPrice(value: number | null): 1 | 2 | 3 | 4 | null {
   if (value === 1 || value === 2 || value === 3 || value === 4) return value;
-  return 2;
+  return null;
 }
 
-function placeFromRow(row: PlaceRow, images: ImageRow[]): Place {
+function flagFromInt(value: number | null | undefined): boolean | undefined {
+  if (value == null) return undefined;
+  return value === 1;
+}
+
+function reviewsFromRows(placeId: string, rows: ReviewRow[]): PlaceReview[] {
+  return rows
+    .filter((row) => row.place_id === placeId)
+    .slice(0, 5)
+    .map((row) => ({
+      rating: row.rating,
+      text: row.review_text,
+      relativeTime: row.relative_time,
+      authorName: row.author_name,
+      authorUri: row.author_uri,
+    }));
+}
+
+function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): Place {
   const photoKeys = images
     .filter((img) => img.place_id === row.id)
     .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
@@ -207,18 +240,29 @@ function placeFromRow(row: PlaceRow, images: ImageRow[]): Place {
     description: row.description ?? "",
     category: categoryFromType(row.primary_type),
     subcategory: humanizeType(row.primary_type),
-    neighborhood: NEIGHBORHOOD_BY_SLUG[row.neighborhood_slug] ?? row.neighborhood_slug,
+    neighborhood: row.neighborhood_slug
+      ? (NEIGHBORHOOD_BY_SLUG[row.neighborhood_slug] ?? row.neighborhood_slug)
+      : "",
+    neighborhoodSlug: row.neighborhood_slug ?? null,
+    status: row.status === "draft" ? "draft" : "published",
     address: row.formatted_address ?? "",
     lat: row.lat ?? 0,
     lng: row.lng ?? 0,
     phone: row.phone ?? undefined,
     website: row.website ?? undefined,
+    googleMapsUri: row.google_maps_uri ?? undefined,
     priceLevel: clampPrice(row.price_level),
     rating: row.rating ?? 0,
     reviewCount: row.review_count ?? 0,
     photoCount: photoKeys.length,
     images: photoKeys,
     hours: hoursFromJson(row.hours_json),
+    utcOffsetMinutes: row.utc_offset_minutes,
+    delivery: flagFromInt(row.delivery),
+    takeout: flagFromInt(row.takeout),
+    dineIn: flagFromInt(row.dine_in),
+    wheelchairAccessible: flagFromInt(row.wheelchair_accessible),
+    reviews: reviewsFromRows(row.id, reviews),
     tags: [],
     featured: false,
     createdAt: imported,
@@ -228,25 +272,31 @@ function placeFromRow(row: PlaceRow, images: ImageRow[]): Place {
 
 /**
  * App listings read D1 only — never the Places API.
- * Seed data is used only when the D1 binding is missing (local next without wrangler)
- * or when no published rows exist yet (imports stay draft until a human writes copy).
+ * Seed data is never merged into production listings or the sitemap.
+ * Local preview may use seed only when D1 is missing or empty.
  */
 async function loadPlaces(): Promise<Place[]> {
   const db = await getDb();
-  if (!db) return seedPlaces;
+  if (!db) return allowDraftPreview() ? seedPlaces : [];
 
-  const [placeResult, imageResult] = await Promise.all([
+  const listingSql = allowDraftPreview()
+    ? "SELECT * FROM places WHERE business_status IS NULL OR business_status = 'OPERATIONAL'"
+    : "SELECT * FROM places WHERE status = 'published' AND (business_status IS NULL OR business_status = 'OPERATIONAL')";
+  const [placeResult, imageResult, reviewResult] = await Promise.all([
+    db.prepare(listingSql).all<PlaceRow>(),
+    db.prepare("SELECT place_id, r2_key, sort_order FROM place_images").all<ImageRow>(),
     db
       .prepare(
-        "SELECT * FROM places WHERE status = 'published' AND (business_status IS NULL OR business_status != 'CLOSED_PERMANENTLY')",
+        "SELECT place_id, rating, review_text, relative_time, author_name, author_uri FROM place_reviews",
       )
-      .all<PlaceRow>(),
-    db.prepare("SELECT place_id, r2_key, sort_order FROM place_images").all<ImageRow>(),
+      .all<ReviewRow>(),
   ]);
 
-  const rows = placeResult.results ?? [];
-  if (rows.length === 0) return seedPlaces;
-  return rows.map((row) => placeFromRow(row, imageResult.results ?? []));
+  const rows = (placeResult.results ?? []) as PlaceRow[];
+  if (rows.length === 0) return allowDraftPreview() ? seedPlaces : [];
+  const images = (imageResult.results ?? []) as ImageRow[];
+  const reviews = (reviewResult.results ?? []) as ReviewRow[];
+  return rows.map((row) => placeFromRow(row, images, reviews));
 }
 
 // ── Hours / status helpers ──────────────────────────────────────────
@@ -295,15 +345,36 @@ export type PlaceStatus =
   | { type: "closed"; label: string }
   | { type: "no-hours"; label: string };
 
+export function getPlaceTimeParts(
+  place: Pick<Place, "utcOffsetMinutes">,
+  date: Date = new Date(),
+): {
+  dayOfWeek: number;
+  hours: number;
+  minutes: number;
+} {
+  if (place.utcOffsetMinutes == null) return getTampaTimeParts(date);
+  const shifted = new Date(date.getTime() + place.utcOffsetMinutes * 60_000);
+  return {
+    dayOfWeek: shifted.getUTCDay(),
+    hours: shifted.getUTCHours(),
+    minutes: shifted.getUTCMinutes(),
+  };
+}
+
 export function getPlaceStatus(place: Place, now: Date = new Date()): PlaceStatus {
   const { hours } = place;
   if (!hours || Object.keys(hours).length === 0) {
     return { type: "no-hours", label: "Hours not available" };
   }
 
-  const { dayOfWeek, hours: curHours, minutes: curMinutes } = getTampaTimeParts(now);
+  const { dayOfWeek, hours: curHours, minutes: curMinutes } = getPlaceTimeParts(place, now);
   const todayHours = hours[dayOfWeek];
   const currentMinutes = toMinutes(curHours, curMinutes);
+
+  if (todayHours === undefined) {
+    return { type: "no-hours", label: "Hours not available" };
+  }
 
   if (todayHours) {
     const open = parseTime(todayHours.open);
@@ -368,8 +439,9 @@ export function formatTime(time24: string): string {
 
 export function getTodayHoursLabel(place: Place): string {
   const now = new Date();
-  const { dayOfWeek } = getTampaTimeParts(now);
+  const { dayOfWeek } = getPlaceTimeParts(place, now);
   const todayHours = place.hours[dayOfWeek];
+  if (todayHours === undefined) return "Hours not available";
   if (!todayHours) return "Closed today";
   return `${formatTime(todayHours.open)} – ${formatTime(todayHours.close)}`;
 }
@@ -432,7 +504,9 @@ export async function getFilteredPlaces(params: FilterParams): Promise<ListingsR
 
   if (params.neighborhood) {
     filtered = filtered.filter(
-      (p) => p.neighborhood.toLowerCase() === params.neighborhood?.toLowerCase()
+      (p) =>
+        Boolean(p.neighborhood) &&
+        p.neighborhood.toLowerCase() === params.neighborhood?.toLowerCase(),
     );
   }
 
@@ -442,7 +516,7 @@ export async function getFilteredPlaces(params: FilterParams): Promise<ListingsR
       (p) =>
         p.name.toLowerCase().includes(q) ||
         p.tagline.toLowerCase().includes(q) ||
-        p.neighborhood.toLowerCase().includes(q) ||
+        (p.neighborhood && p.neighborhood.toLowerCase().includes(q)) ||
         p.subcategory.toLowerCase().includes(q) ||
         p.tags.some((t) => t.toLowerCase().includes(q))
     );
@@ -472,16 +546,55 @@ export async function getFilteredPlaces(params: FilterParams): Promise<ListingsR
   };
 }
 
+function allowDraftPreview() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export async function getPlaceBySlug(slug: string): Promise<Place | undefined> {
-  return (await loadPlaces()).find((p) => p.slug === slug);
+  const db = await getDb();
+  if (db) {
+    const row = (await db.prepare("SELECT * FROM places WHERE slug = ?").bind(slug).first<PlaceRow>()) as
+      | PlaceRow
+      | null;
+    if (row) {
+      if (row.status === "draft" && !allowDraftPreview()) return undefined;
+      const [imageResult, reviewResult] = await Promise.all([
+        db
+          .prepare("SELECT place_id, r2_key, sort_order FROM place_images WHERE place_id = ?")
+          .bind(row.id)
+          .all<ImageRow>(),
+        db
+          .prepare(
+            "SELECT place_id, rating, review_text, relative_time, author_name, author_uri FROM place_reviews WHERE place_id = ?",
+          )
+          .bind(row.id)
+          .all<ReviewRow>(),
+      ]);
+      return placeFromRow(
+        row,
+        (imageResult.results ?? []) as ImageRow[],
+        (reviewResult.results ?? []) as ReviewRow[],
+      );
+    }
+  }
+  if (!allowDraftPreview()) return undefined;
+  const seed = seedPlaces.find((p) => p.slug === slug);
+  if (!seed) return undefined;
+  return {
+    ...seed,
+    status: seed.status ?? "published",
+    neighborhoodSlug:
+      seed.neighborhoodSlug ?? (seed.neighborhood ? slugifyNeighborhood(seed.neighborhood) : null),
+  };
 }
 
 export async function getRelatedPlaces(place: Place, count = 3): Promise<Place[]> {
+  if (!place.neighborhood) return [];
   const all = await loadPlaces();
   const mean =
     all.length === 0 ? 0 : all.reduce((sum, p) => sum + p.rating, 0) / all.length;
   return all
-    .filter((p) => p.id !== place.id && p.neighborhood === place.neighborhood)
+    .filter((p) => p.id !== place.id && Boolean(p.neighborhood) && p.neighborhood === place.neighborhood)
     .sort((a, b) => bayesianScore(b, mean) - bayesianScore(a, mean))
     .slice(0, count);
 }
@@ -504,6 +617,7 @@ export async function getPlacesInNeighborhood(neighborhood: string): Promise<Pla
 export async function getNeighborhoodCounts(): Promise<Record<string, number>> {
   const counts: Record<string, number> = {};
   for (const p of await loadPlaces()) {
+    if (!p.neighborhood) continue;
     counts[p.neighborhood] = (counts[p.neighborhood] ?? 0) + 1;
   }
   return counts;

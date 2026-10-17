@@ -7,8 +7,7 @@ export function NewsletterBand() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // TODO: wire to email provider
-    console.log("newsletter subscribe", email);
+    // Subscribe is not wired to an email provider yet.
   }
 
   return (

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ArticleLayout } from "@/components/pillars/ArticleLayout";
+import { ArticleMarkdown } from "@/components/pillars/ArticleMarkdown";
 import { getArticleBySlug } from "@/lib/pillars";
 import type { PillarSlug } from "@/types";
 
@@ -9,7 +10,7 @@ export function PillarArticlePage({ pillar, slug }: { pillar: PillarSlug; slug: 
 
   return (
     <ArticleLayout article={article}>
-      <p>Content for this section is in progress.</p>
+      {article.body ? <ArticleMarkdown markdown={article.body} /> : <p>More soon.</p>}
     </ArticleLayout>
   );
 }

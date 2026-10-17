@@ -3,7 +3,7 @@ import { DirectoryBrowse, type DirectorySearchParams } from "@/components/direct
 
 export const metadata: Metadata = {
   title: "Directory — Tampa Bay Guide",
-  description: "Content for this section is in progress.",
+  description: "Places listed in the Tampa Bay Guide.",
 };
 
 export default async function DirectoryPage({

@@ -57,9 +57,6 @@ export async function DirectoryBrowse({
           <h1 className="font-display text-[34px] font-bold leading-[1.12] tracking-[-0.02em] text-white md:text-[44px]">
             {heading}
           </h1>
-          <p className="mx-auto mt-3 max-w-[640px] text-[16px] text-[#CFE4E6] md:text-[18px]">
-            Content for this section is in progress.
-          </p>
         </div>
       </section>
 

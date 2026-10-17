@@ -26,6 +26,7 @@ function NeighborhoodCard({
 }) {
   const photo = NEIGHBORHOOD_PHOTOS[name];
   const featured = name === "Ybor City";
+  if (!photo) return null;
 
   return (
     <Link
@@ -186,7 +187,8 @@ export function NeighborhoodStrip() {
     }
 
     function onFocusOut(event: FocusEvent) {
-      if (scroller.contains(event.relatedTarget as Node | null)) return;
+      const el = scrollerRef.current;
+      if (el?.contains(event.relatedTarget as Node | null)) return;
       focusingRef.current = false;
       scheduleResume();
     }

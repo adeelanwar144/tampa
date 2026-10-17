@@ -21,7 +21,7 @@ export function PlacesHero({ category }: { category?: CategorySlug }) {
           {headline}
         </h1>
         <p className="mx-auto mt-4 max-w-[640px] text-[16px] text-[#CFE4E6] md:text-[20px]">
-          Every restaurant, bar, beach, and shop we&apos;ve walked into — filtered how you like.
+          Restaurants, bars, beaches and shops we&apos;ve visited, filtered how you like.
         </p>
         <Suspense
           fallback={

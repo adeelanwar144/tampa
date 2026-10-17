@@ -46,8 +46,9 @@ export function HomeHero() {
           <p className="text-[16px] md:text-[19px] text-[#E3EFF0] mt-3 max-w-[480px]">
             Stories, spots, and honest opinions from people who actually live here.
           </p>
+          <p className="mt-2 text-[14px] text-[#E3EFF0]">By Ben</p>
           <a
-            href="#featured-stories"
+            href="/places"
             className="mt-6 inline-block text-[14px] text-[#E3EFF0] hover:text-white"
           >
             Start exploring ↓

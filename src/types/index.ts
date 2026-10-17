@@ -6,16 +6,36 @@ export type PillarSlug =
   | "shopping"
   | "guides";
 
+export type ArticleType =
+  | "things-to-do"
+  | "weekend-events"
+  | "attraction"
+  | "restaurant"
+  | "hotel"
+  | "event"
+  | "practical-guide"
+  | "road-trip";
+
 export interface PillarArticle {
   slug: string;
   pillar: PillarSlug;
+  articleType?: ArticleType;
   title: string;
   dek: string; // one-line summary
   neighborhoodSlug?: string; // optional cross-link to a neighborhood anchor
   publishedAt: string;
   status: "draft" | "published";
   coverImage?: string;
+  coverAlt?: string;
+  coverCredit?: string;
   readTime?: string;
+  /** Planner "Pillar" column, shown as the article category. */
+  plannerCategory: string;
+  metaTitle: string;
+  metaDescription: string;
+  primaryKeyword?: string;
+  keywords?: string[];
+  body: string;
 }
 
 export type CategorySlug =
@@ -24,7 +44,8 @@ export type CategorySlug =
   | "beaches-outdoors"
   | "attractions"
   | "shopping"
-  | "services";
+  | "services"
+  | "hotels-lodging";
 
 export interface DayHours {
   open: string;
@@ -36,6 +57,14 @@ export interface Hours {
   [day: number]: DayHours | null;
 }
 
+export interface PlaceReview {
+  rating: number | null;
+  text: string | null;
+  relativeTime: string | null;
+  authorName: string | null;
+  authorUri: string | null;
+}
+
 export interface Place {
   id: string;
   slug: string;
@@ -45,17 +74,26 @@ export interface Place {
   category: CategorySlug;
   subcategory: string;
   neighborhood: string;
+  neighborhoodSlug?: string | null;
+  status?: "draft" | "published";
   address: string;
   lat: number;
   lng: number;
   phone?: string;
   website?: string;
-  priceLevel: 1 | 2 | 3 | 4;
+  googleMapsUri?: string;
+  priceLevel: 1 | 2 | 3 | 4 | null;
   rating: number;
   reviewCount: number;
   photoCount: number;
   images: string[];
   hours: Hours;
+  utcOffsetMinutes?: number | null;
+  delivery?: boolean;
+  takeout?: boolean;
+  dineIn?: boolean;
+  wheelchairAccessible?: boolean;
+  reviews?: PlaceReview[];
   tags: string[];
   featured: boolean;
   createdAt: string;

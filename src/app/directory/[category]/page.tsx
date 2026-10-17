@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!label) return {};
   return {
     title: `${label} — Tampa Bay Guide`,
-    description: "Content for this section is in progress.",
+    description: `${label} listed in the Tampa Bay Guide.`,
   };
 }
 

@@ -4,17 +4,17 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { PlaceCard } from "@/components/places/PlaceCard";
 import { getPlacesInNeighborhood, NEIGHBORHOODS } from "@/lib/listings";
+import { neighborhoodFromSlug, neighborhoodSlug } from "@/data/neighborhoods";
+
+export const dynamic = "force-dynamic";
 
 function unslugify(slug: string) {
-  const found = NEIGHBORHOODS.find(
-    (n) => n.toLowerCase().replace(/\s+/g, "-") === slug
-  );
-  return found;
+  return neighborhoodFromSlug(slug) ?? NEIGHBORHOODS.find((n) => neighborhoodSlug(n) === slug);
 }
 
 export async function generateStaticParams() {
   return NEIGHBORHOODS.map((n) => ({
-    slug: n.toLowerCase().replace(/\s+/g, "-"),
+    slug: neighborhoodSlug(n),
   }));
 }
 
@@ -26,9 +26,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const name = unslugify(slug);
   if (!name) return {};
+  const places = await getPlacesInNeighborhood(name);
+  const count = places.length;
   return {
     title: `${name} — Tampa Bay Guide`,
-    description: `Places to eat, drink, and explore in ${name}, Tampa.`,
+    description: `${count} ${count === 1 ? "place" : "places"} in ${name}.`,
   };
 }
 

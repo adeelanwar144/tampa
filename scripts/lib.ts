@@ -1,6 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  ANCHOR_NEIGHBORHOODS as DATA_ANCHORS,
+  type AnchorNeighborhood as DataAnchor,
+} from "../src/data/neighborhoods";
 
 export const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 export const STAGING_DIR = resolve(ROOT, "src/data/staging");
@@ -8,31 +12,8 @@ export const PHOTO_CACHE_DIR = resolve(ROOT, ".import-cache");
 export const D1_DATABASE_NAME = "tampa-bay-guide";
 export const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || "tampa-bay-guide-images";
 
-export type AnchorNeighborhood = {
-  slug: string;
-  name: string;
-  lat: number;
-  lng: number;
-  radiusM: number;
-};
-
-/** 14 anchor neighborhoods — coords are approximate centers, radius in meters. */
-export const ANCHOR_NEIGHBORHOODS: AnchorNeighborhood[] = [
-  { slug: "ybor-city", name: "Ybor City", lat: 27.9606, lng: -82.4378, radiusM: 1400 },
-  { slug: "downtown", name: "Downtown", lat: 27.9478, lng: -82.4572, radiusM: 1600 },
-  { slug: "channel-district", name: "Channel District", lat: 27.9428, lng: -82.4455, radiusM: 1100 },
-  { slug: "hyde-park", name: "Hyde Park", lat: 27.9355, lng: -82.476, radiusM: 1300 },
-  { slug: "soho", name: "SoHo", lat: 27.9305, lng: -82.4829, radiusM: 900 },
-  { slug: "davis-islands", name: "Davis Islands", lat: 27.9208, lng: -82.4578, radiusM: 1600 },
-  { slug: "seminole-heights", name: "Seminole Heights", lat: 27.9935, lng: -82.461, radiusM: 2000 },
-  { slug: "tampa-heights", name: "Tampa Heights", lat: 27.9668, lng: -82.4595, radiusM: 1300 },
-  { slug: "palma-ceia", name: "Palma Ceia", lat: 27.9215, lng: -82.4935, radiusM: 1600 },
-  { slug: "westshore", name: "Westshore", lat: 27.958, lng: -82.5255, radiusM: 2200 },
-  { slug: "riverwalk", name: "Riverwalk", lat: 27.9455, lng: -82.4598, radiusM: 1200 },
-  { slug: "sulphur-springs", name: "Sulphur Springs", lat: 28.0212, lng: -82.4515, radiusM: 1600 },
-  { slug: "temple-terrace", name: "Temple Terrace", lat: 28.0353, lng: -82.3893, radiusM: 2800 },
-  { slug: "ballast-point", name: "Ballast Point", lat: 27.889, lng: -82.481, radiusM: 1600 },
-];
+export type AnchorNeighborhood = DataAnchor;
+export const ANCHOR_NEIGHBORHOODS: AnchorNeighborhood[] = DATA_ANCHORS;
 
 /** Table A types for Places API (New) Text Search `includedType` (one per request). */
 export const PLACE_TYPES = [
@@ -80,6 +61,12 @@ export type StagedReview = {
   authorPhotoUri: string | null;
 };
 
+export type StagedAddressComponent = {
+  type: string;
+  longName: string | null;
+  shortName: string | null;
+};
+
 export type StagedPlace = {
   placeId: string;
   name: string;
@@ -96,6 +83,13 @@ export type StagedPlace = {
   primaryType: string | null;
   types: string[];
   businessStatus: string | null;
+  utcOffsetMinutes: number | null;
+  delivery: boolean | null;
+  takeout: boolean | null;
+  dineIn: boolean | null;
+  wheelchairAccessible: boolean | null;
+  paymentOptions: Record<string, boolean | null> | null;
+  addressComponents: StagedAddressComponent[];
   hours: {
     regularOpeningHours: unknown;
     currentOpeningHours: unknown;
@@ -108,6 +102,9 @@ export type StagingFile = {
   neighborhoodSlug: string;
   neighborhoodName: string;
   importedAt: string;
+  bounds: { lat: number; lng: number; radiusMeters: number };
+  skippedClosed: number;
+  skippedOutsideRadius: number;
   places: StagedPlace[];
 };
 
@@ -162,6 +159,11 @@ export function sqlString(value: string | null | undefined): string {
 export function sqlNum(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value)) return "NULL";
   return String(value);
+}
+
+export function sqlBool(value: boolean | null | undefined): string {
+  if (value == null) return "NULL";
+  return value ? "1" : "0";
 }
 
 export function parseCli(argv: string[]) {

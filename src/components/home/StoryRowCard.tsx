@@ -19,7 +19,9 @@ const PILLAR_FALLBACK: Record<string, string> = {
 };
 
 export function articleImage(article: PillarArticle) {
-  return article.coverImage ?? PILLAR_FALLBACK[article.pillar];
+  if (article.coverImage) return article.coverImage;
+  console.warn(`No featured image for ${article.slug}; using ${article.pillar} default.`);
+  return PILLAR_FALLBACK[article.pillar];
 }
 
 export function StoryRowCard({

@@ -17,3 +17,12 @@ export async function getPhotosBucket() {
     return null;
   }
 }
+
+export async function getListingContentBucket() {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env.LISTING_CONTENT ?? null;
+  } catch {
+    return null;
+  }
+}

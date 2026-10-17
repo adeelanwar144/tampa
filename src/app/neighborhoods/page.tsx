@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getNeighborhoodCounts, NEIGHBORHOODS } from "@/lib/listings";
+import { neighborhoodSlug } from "@/data/neighborhoods";
 
 export const metadata: Metadata = {
   title: "Neighborhoods — Tampa Bay Guide",
-  description: "Browse Tampa places by neighborhood — Ybor City, Hyde Park, Seminole Heights, and more.",
+  description: "Tampa neighborhoods.",
 };
 
 function slugify(name: string) {
-  return name.toLowerCase().replace(/\s+/g, "-");
+  return neighborhoodSlug(name);
 }
 
 export default async function NeighborhoodsPage() {
@@ -20,7 +21,7 @@ export default async function NeighborhoodsPage() {
         Neighborhoods
       </h1>
       <p className="text-ink-600 mb-10 max-w-xl">
-        Tampa is a city of distinct pockets. Each neighborhood has its own food, its own rhythm, and its own regulars.
+        Places Ben has visited, grouped by neighborhood.
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {NEIGHBORHOODS.map((n) => (

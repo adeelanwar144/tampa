@@ -15,6 +15,7 @@ const FOOTER_NAV = [
       { label: "Attractions", href: "/directory/attractions" },
       { label: "Shopping", href: "/directory/shopping" },
       { label: "Services", href: "/directory/services" },
+      { label: "Hotels & lodging", href: "/directory/hotels-lodging" },
     ],
   },
   {
@@ -49,6 +50,7 @@ export function Footer() {
             <p className="text-sm leading-relaxed text-white/60 max-w-[220px]">
               An independent guide to eating, drinking, and getting outside in Tampa, Florida.
             </p>
+            <p className="mt-2 text-sm text-white/50">By Ben</p>
           </div>
 
           {FOOTER_NAV.map((col) => (
@@ -77,7 +79,10 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-white/10 space-y-3">
           <p className="text-xs text-white/50 max-w-2xl leading-relaxed">
             We&apos;re an independent local guide with no affiliation to the businesses listed.
-            Listings are curated by hand and we collect no personal information.
+            Listings are curated by hand.{" "}
+            <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-white/70 transition-hover">
+              Privacy policy
+            </Link>
           </p>
           <div className="flex flex-wrap items-center gap-4 text-xs text-white/40">
             <span>© 2026 Tampa Bay Guide</span>

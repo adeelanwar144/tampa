@@ -13,22 +13,25 @@ npx wrangler d1 execute tampa-bay-guide --local --file=db/schema.sql
 npx wrangler d1 execute tampa-bay-guide --remote --file=db/schema.sql
 ```
 
-4. Run **one neighborhood first** and inspect the staging JSON before paying for all 14:
+4. Run **one neighborhood first**. The script prints a cost estimate and **does not call Google** until you pass `--go`:
 
 ```bash
 npx tsx scripts/import-tampa-places.ts --only=ybor-city
+npx tsx scripts/import-tampa-places.ts --only=ybor-city --go
 ```
+
+Searches are geo-fenced with `locationRestriction` from `src/data/neighborhoods.ts`. D1 load skips any place whose `businessStatus` is not `OPERATIONAL`.
 
 5. If `src/data/staging/ybor-city.json` looks right (names, hours, ≤5 photos with attribution, ≤5 reviews with `authorPhotoUri` as a link only), run the rest:
 
 ```bash
-npx tsx scripts/import-tampa-places.ts --all
+npx tsx scripts/import-tampa-places.ts --all --go
 ```
 
 Already-written staging files are skipped. Redo one neighborhood with `--force`:
 
 ```bash
-npx tsx scripts/import-tampa-places.ts --only=ybor-city --force
+npx tsx scripts/import-tampa-places.ts --only=ybor-city --force --go
 ```
 
 6. Load D1 from staging (does not call Google):

@@ -89,7 +89,7 @@ export function FilterBar({
   if (currentOpen) activeFilters.push({ label: "Open now", removeKey: "open" });
 
   return (
-    <div className="bg-white border-b border-line sticky top-[72px] z-40">
+    <div className="sticky top-[72px] z-30 border-b border-line bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 space-y-3">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
           <button

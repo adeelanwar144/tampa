@@ -1,26 +1,261 @@
+import { existsSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { NextRequest } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getPhotosBucket } from "@/lib/d1";
+import { PMTILES_ALIASES } from "@/data/map-tiles";
 
-export async function GET(
-  _request: NextRequest,
+const ALLOWED_PREFIXES = ["places/", "maps/"];
+const VERSIONED_PMTILES = new Set(Object.keys(PMTILES_ALIASES));
+
+type CachedMapBody = {
+  status: number;
+  headers: [string, string][];
+  body: ArrayBuffer;
+};
+
+const memoryCache = new Map<string, CachedMapBody>();
+
+function allowedKey(objectKey: string) {
+  return ALLOWED_PREFIXES.some((prefix) => objectKey.startsWith(prefix)) && !objectKey.includes("..");
+}
+
+function resolveObjectKey(requestKey: string) {
+  return PMTILES_ALIASES[requestKey] ?? requestKey;
+}
+
+function isPmtiles(requestKey: string) {
+  return requestKey.startsWith("maps/") && requestKey.endsWith(".pmtiles");
+}
+
+function localImportPhoto(objectKey: string) {
+  if (!objectKey.startsWith("places/") || objectKey.includes("..")) return null;
+  const path = join(process.cwd(), ".import-cache", objectKey);
+  if (!existsSync(path)) return null;
+  return { path, size: statSync(path).size };
+}
+
+function contentTypeFor(objectKey: string, stored?: string) {
+  if (objectKey.endsWith(".pmtiles")) return "application/vnd.pmtiles";
+  if (objectKey.endsWith(".png")) return "image/png";
+  if (objectKey.endsWith(".webp")) return "image/webp";
+  return stored ?? "image/jpeg";
+}
+
+function parseByteRange(header: string | null, size: number) {
+  if (!header) return null;
+  const match = header.trim().match(/^bytes=(\d*)-(\d*)$/i);
+  if (!match) return "unsatisfiable" as const;
+  const hasStart = match[1] !== "";
+  const hasEnd = match[2] !== "";
+  if (!hasStart && !hasEnd) return "unsatisfiable" as const;
+
+  if (!hasStart) {
+    const suffix = Number(match[2]);
+    if (!Number.isFinite(suffix) || suffix <= 0) return "unsatisfiable" as const;
+    const length = Math.min(suffix, size);
+    return { offset: size - length, length };
+  }
+
+  const start = Number(match[1]);
+  if (!Number.isFinite(start) || start < 0 || start >= size) return "unsatisfiable" as const;
+  const end = hasEnd ? Number(match[2]) : size - 1;
+  if (!Number.isFinite(end) || end < start) return "unsatisfiable" as const;
+  const clampedEnd = Math.min(end, size - 1);
+  return { offset: start, length: clampedEnd - start + 1 };
+}
+
+function cacheControlFor(requestKey: string) {
+  if (VERSIONED_PMTILES.has(requestKey)) return "public, max-age=31536000, immutable";
+  if (requestKey.startsWith("maps/")) return "public, max-age=86400";
+  return "public, max-age=31536000, immutable";
+}
+
+function objectHeaders(
+  requestKey: string,
+  objectKey: string,
+  object: { size: number; httpMetadata?: { contentType?: string } },
+  range?: { offset: number; length: number } | null,
+) {
+  const headers = new Headers({
+    "content-type": contentTypeFor(objectKey, object.httpMetadata?.contentType),
+    "accept-ranges": "bytes",
+    "cache-control": cacheControlFor(requestKey),
+    "access-control-expose-headers": "Accept-Ranges, Content-Range, Content-Length, X-Map-Cache",
+  });
+  if (range) {
+    headers.set("content-length", String(range.length));
+    headers.set("content-range", `bytes ${range.offset}-${range.offset + range.length - 1}/${object.size}`);
+  } else {
+    headers.set("content-length", String(object.size));
+  }
+  return headers;
+}
+
+function mapCacheKey(request: NextRequest) {
+  const url = new URL(request.url);
+  const range = request.headers.get("range") ?? "";
+  return `${url.origin}${url.pathname}|${range}`;
+}
+
+function cacheApiRequest(request: NextRequest) {
+  const url = new URL(request.url);
+  const range = request.headers.get("range") ?? "";
+  return new Request(`${url.origin}${url.pathname}?__range=${encodeURIComponent(range)}`, {
+    method: "GET",
+  });
+}
+
+function workerCache() {
+  if (typeof caches === "undefined") return undefined;
+  return (caches as CacheStorage & { default?: Cache }).default;
+}
+
+async function readMapCache(request: NextRequest) {
+  const key = mapCacheKey(request);
+  const mem = memoryCache.get(key);
+  if (mem) {
+    return new Response(mem.body, {
+      status: mem.status,
+      headers: new Headers([...mem.headers, ["x-map-cache", "HIT"]]),
+    });
+  }
+
+  try {
+    const cache = workerCache();
+    if (!cache) return null;
+    const cached = await cache.match(cacheApiRequest(request));
+    if (!cached) return null;
+    const headers = new Headers(cached.headers);
+    headers.set("x-map-cache", "HIT");
+    return new Response(cached.body, { status: cached.status, headers });
+  } catch {
+    return null;
+  }
+}
+
+async function writeMapCache(request: NextRequest, response: Response) {
+  const body = await response.arrayBuffer();
+  const headers = [...response.headers.entries()].filter(([name]) => name !== "x-map-cache");
+  const tooLarge = body.byteLength > 2_000_000;
+  if (!tooLarge) {
+    memoryCache.set(mapCacheKey(request), {
+      status: response.status,
+      headers,
+      body,
+    });
+  }
+
+  try {
+    const { ctx } = await getCloudflareContext({ async: true });
+    const cache = workerCache();
+    if (cache) {
+      ctx.waitUntil(
+        cache.put(
+          cacheApiRequest(request),
+          new Response(body, { status: response.status, headers: new Headers(headers) }),
+        ),
+      );
+    }
+  } catch {
+    // next dev has no Worker Cache API
+  }
+
+  return new Response(body, {
+    status: response.status,
+    headers: new Headers([...headers, ["x-map-cache", "MISS"]]),
+  });
+}
+
+export async function HEAD(
+  request: NextRequest,
   { params }: { params: Promise<{ key: string[] }> },
 ) {
   const { key } = await params;
-  const objectKey = key.join("/");
-  if (!objectKey.startsWith("places/") || objectKey.includes("..")) {
-    return new Response("Not found", { status: 404 });
+  const requestKey = key.join("/");
+  if (!allowedKey(requestKey)) return new Response("Not found", { status: 404 });
+  const objectKey = resolveObjectKey(requestKey);
+
+  const local = localImportPhoto(objectKey);
+  const bucket = local ? null : await getPhotosBucket();
+  const object = bucket ? await bucket.head(objectKey) : null;
+  if (!object && !local) return new Response("Not found", { status: 404 });
+  const size = local?.size ?? object!.size;
+
+  const range = parseByteRange(request.headers.get("range"), size);
+  if (range === "unsatisfiable") {
+    return new Response(null, {
+      status: 416,
+      headers: { "content-range": `bytes */${size}`, "accept-ranges": "bytes" },
+    });
   }
 
-  const bucket = await getPhotosBucket();
-  if (!bucket) return new Response("Not found", { status: 404 });
+  return new Response(null, {
+    status: range ? 206 : 200,
+    headers: objectHeaders(
+      requestKey,
+      objectKey,
+      object ?? { size, httpMetadata: { contentType: contentTypeFor(objectKey) } },
+      range,
+    ),
+  });
+}
 
-  const object = await bucket.get(objectKey);
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ key: string[] }> },
+) {
+  const { key } = await params;
+  const requestKey = key.join("/");
+  if (!allowedKey(requestKey)) return new Response("Not found", { status: 404 });
+  const objectKey = resolveObjectKey(requestKey);
+
+  if (isPmtiles(requestKey)) {
+    const cached = await readMapCache(request);
+    if (cached) return cached;
+  }
+
+  const local = localImportPhoto(objectKey);
+  const bucket = local ? null : await getPhotosBucket();
+  const meta = bucket ? await bucket.head(objectKey) : null;
+  if (!meta && !local) return new Response("Not found", { status: 404 });
+  const size = local?.size ?? meta!.size;
+
+  const range = parseByteRange(request.headers.get("range"), size);
+  if (range === "unsatisfiable") {
+    return new Response(null, {
+      status: 416,
+      headers: { "content-range": `bytes */${size}`, "accept-ranges": "bytes" },
+    });
+  }
+
+  if (local) {
+    const bytes = readFileSync(local.path);
+    const slice = range ? bytes.subarray(range.offset, range.offset + range.length) : bytes;
+    return new Response(slice, {
+      status: range ? 206 : 200,
+      headers: objectHeaders(
+        requestKey,
+        objectKey,
+        { size, httpMetadata: { contentType: contentTypeFor(objectKey) } },
+        range,
+      ),
+    });
+  }
+
+  const object = range
+    ? await bucket!.get(objectKey, { range: { offset: range.offset, length: range.length } })
+    : await bucket!.get(objectKey);
   if (!object) return new Response("Not found", { status: 404 });
 
-  return new Response(object.body, {
-    headers: {
-      "content-type": object.httpMetadata?.contentType ?? "image/jpeg",
-      "cache-control": "public, max-age=31536000, immutable",
-    },
+  const response = new Response(object.body, {
+    status: range ? 206 : 200,
+    headers: objectHeaders(requestKey, objectKey, meta!, range),
   });
+
+  if (isPmtiles(requestKey)) {
+    return writeMapCache(request, response);
+  }
+
+  return response;
 }
