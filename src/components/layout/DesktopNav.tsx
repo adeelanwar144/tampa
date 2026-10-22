@@ -9,12 +9,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MORE_NAV_LABELS, isNavActive, primaryNav } from "@/config/nav";
+import { MORE_NAV_LABELS, isNavActive, type NavItem } from "@/config/nav";
 import { focusRing, motion150 } from "@/components/layout/nav";
 
 function itemClass(active: boolean) {
   return [
-    "relative flex h-[72px] -mb-px items-center gap-1 text-[16px] font-medium",
+    "relative flex h-20 -mb-px items-center gap-1 whitespace-nowrap text-[15px] font-medium lg:h-24 xl:text-[16px]",
     motion150,
     focusRing,
     "rounded-sm",
@@ -24,18 +24,28 @@ function itemClass(active: boolean) {
   ].join(" ");
 }
 
-export function DesktopNav() {
+export function DesktopNav({ items, compact = false }: { items: NavItem[]; compact?: boolean }) {
   const pathname = usePathname();
-  const moreItems = primaryNav.filter((item) =>
-    (MORE_NAV_LABELS as readonly string[]).includes(item.label)
-  );
-  const topItems = primaryNav.filter(
-    (item) => !(MORE_NAV_LABELS as readonly string[]).includes(item.label)
-  );
+  const moreLabels = new Set<string>([
+    ...MORE_NAV_LABELS,
+    ...(compact ? ["Events", "Neighborhoods"] : []),
+  ]);
+  const moreItems = [
+    ...items.filter((item) => moreLabels.has(item.label)),
+    { label: "About", href: "/about" },
+  ];
+  const topItems = items.filter((item) => !moreLabels.has(item.label));
   const moreActive = moreItems.some((item) => isNavActive(pathname, item.href));
 
   return (
-    <nav className="hidden shrink-0 items-center gap-7 lg:flex" aria-label="Main navigation">
+    <nav
+      className={
+        compact
+          ? "hidden shrink-0 items-center gap-4 whitespace-nowrap lg:flex xl:hidden"
+          : "hidden shrink-0 items-center gap-5 whitespace-nowrap xl:flex xl:gap-7"
+      }
+      aria-label={compact ? "Compact navigation" : "Main navigation"}
+    >
       {topItems.map((item) => (
         <Link
           key={item.href}

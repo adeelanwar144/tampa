@@ -21,7 +21,8 @@
     },
     {
       "binding": "LISTING_CONTENT",
-      "bucket_name": "listing-content"
+      "bucket_name": "listing-content",
+      "remote": true
     }
   ]
 }

@@ -32,6 +32,26 @@ function lengthHint(type: PlannerRow["articleType"]): string {
   }
 }
 
+function evergreenOverride(slug: string): string {
+  if (slug !== "things-to-do-in-tampa-this-weekend" && slug !== "things-to-do-on-saturday-in-tampa") {
+    return "";
+  }
+  const title =
+    slug === "things-to-do-on-saturday-in-tampa"
+      ? "My Favorite Things to Do in Tampa on a Saturday"
+      : "My Favorite Things to Do in Tampa This Weekend";
+  return `
+EVERGREEN OVERRIDE for this slug. It replaces the weekend date rules, the date-in-title example, and the "This Weekend at a Glance" table:
+- H1, meta title, and meta description must not contain a date or a date range.
+- H1 must be: ${title}
+- Keep places, recurring activities, weekly hours, and planning tips that are in the notes.
+- Remove every specific calendar date, one-time event, game, festival date, and price.
+- A seasonal event may be mentioned only as "often runs in the fall; check for this year's dates."
+- Do not name a month next to a day, and do not write a dollar amount.
+- Do not write "I tested this on", "as of today", "I came across", "I do not know", or "the page says".
+`;
+}
+
 export function userPrompt(row: PlannerRow, notes: string, today: Date): string {
   const links = row.internalLinks.length > 0 ? row.internalLinks.join(", ") : "none";
   const date = today.toLocaleDateString("en-US", {
@@ -52,6 +72,7 @@ Keep the SEO JSON compact: one short section name per LSI keyword. Do not write 
 
 ${titleFormatBlock(row.articleType, row.slug)}
 Use that title format for the H1. Do not use research-process titles.
+${evergreenOverride(row.slug)}
 
 PERSONAL NOTES (private source material; never mention or quote them as notes in the article):
 <<<NOTES

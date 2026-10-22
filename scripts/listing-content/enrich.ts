@@ -7,7 +7,7 @@ const CACHE_DIR = join(ROOT, ".listing-content-cache", "enrichment");
 const TIMEOUT_MS = 10_000;
 const HOST_GAP_MS = 1_000;
 const MAX_WORDS = 1_500;
-const USER_AGENT = "TampaBayGuideBot/1.0 (+https://tampabayguide.com)";
+const USER_AGENT = "VisitInTampaBot/1.0 (+https://visitintampa.com)";
 
 const PAGE_HINTS = [
   "about",

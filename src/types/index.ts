@@ -24,6 +24,13 @@ export interface PillarArticle {
   dek: string; // one-line summary
   neighborhoodSlug?: string; // optional cross-link to a neighborhood anchor
   publishedAt: string;
+  /** Shown as "Last updated" when the guide was refreshed after it was published. */
+  updatedAt?: string;
+  /**
+   * Last day the event or dated roundup is current, as YYYY-MM-DD in Tampa.
+   * After this date the page stays up, drops out of navigation and the sitemap, and is noindex.
+   */
+  eventEndDate?: string;
   status: "draft" | "published";
   coverImage?: string;
   coverAlt?: string;

@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { articleHref, getArticleBySlug, getArticlesByPillar } from "@/lib/pillars";
+import { SITE_URL } from "@/config/site";
+import { eventHasEnded } from "@/lib/event-dates";
+import { articleHref, getAllPublishedArticles, getArticleBySlug } from "@/lib/pillars";
 import type { PillarSlug } from "@/types";
 
 export function articleStaticParams(pillar: PillarSlug) {
-  return getArticlesByPillar(pillar).map((article) => ({ slug: article.slug }));
+  return getAllPublishedArticles()
+    .filter((article) => article.pillar === pillar)
+    .map((article) => ({ slug: article.slug }));
 }
 
 export async function articleMetadata(
@@ -22,7 +26,8 @@ export async function articleMetadata(
     title,
     description,
     keywords: article.keywords,
-    authors: [{ name: "Ben", url: "https://tampabayguide.com/about" }],
+    robots: eventHasEnded(article) ? { index: false, follow: true } : undefined,
+    authors: [{ name: "Ben", url: `${SITE_URL}/about` }],
     alternates: { canonical: url },
     openGraph: {
       type: "article",
@@ -30,6 +35,7 @@ export async function articleMetadata(
       description,
       url,
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt || article.publishedAt,
       authors: ["Ben"],
       images: article.coverImage
         ? [{ url: article.coverImage, alt: article.coverAlt || article.title }]

@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getAllPlaces, NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
 import { neighborhoodSlug } from "@/data/neighborhoods";
+import { sectionIsListed } from "@/lib/menu";
 import { articleHref, getPublishedArticles } from "@/lib/pillars";
+import type { PillarSlug } from "@/types";
+import { SITE_URL } from "@/config/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://tampabayguide.com";
+  const base = SITE_URL;
 
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
@@ -18,11 +21,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/directory",
     "/search",
     "/about",
+    "/contact",
     "/getting-around",
     "/privacy-policy",
     "/terms",
     "/places",
-  ].map((path) => ({
+  ]
+    .filter((path) => {
+      const pillar = path.replace(/^\//, "") as PillarSlug;
+      return pillar === "outdoors-beaches" || pillar === "shopping" ? sectionIsListed(pillar) : true;
+    })
+    .map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "/directory" || path === "/places" ? "daily" : "weekly",
@@ -52,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articles = getPublishedArticles().map((article) => ({
     url: `${base}${articleHref(article)}`,
-    lastModified: new Date(article.publishedAt),
+    lastModified: new Date(article.updatedAt || article.publishedAt),
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));

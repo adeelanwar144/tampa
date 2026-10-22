@@ -24,11 +24,27 @@ function renderInline(text: string): ReactNode[] {
     } else {
       const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
       if (link) {
+        const href = link[2];
+        const external = /^https?:\/\//i.test(href);
+        let booking = false;
+        if (external) {
+          try {
+            booking = /(^|\.)booking\.com$/i.test(new URL(href).hostname);
+          } catch {
+            booking = /booking\.com/i.test(href);
+          }
+        }
         nodes.push(
           <a
             key={key}
-            href={link[2]}
+            href={href}
             className="text-gulf-700 underline underline-offset-2 hover:text-gulf-500"
+            {...(external
+              ? {
+                  target: "_blank",
+                  rel: booking ? "sponsored nofollow noopener" : "noopener",
+                }
+              : {})}
           >
             {link[1]}
           </a>,

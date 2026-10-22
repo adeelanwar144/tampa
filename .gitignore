@@ -46,6 +46,9 @@ src/data/staging/*.json
 src/data/staging/*.staging.json
 *.staging.json
 .import-cache/
+.watermark-cache/
+.watermark-preview/
+db/backups/
 db/import-generated.sql
 db/places-export.sql
 

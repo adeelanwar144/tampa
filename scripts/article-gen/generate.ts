@@ -363,8 +363,10 @@ async function main(): Promise<void> {
   } as ClaudeUsage, cost: 0 };
   const generated = new Set<string>();
 
+  console.log(`Generating ${selected.length} article(s) with ${options.model}.`);
   await pool(selected, options.concurrency, async (row) => {
     const notes = requireUtf8(row.notesFile!, "notes");
+    console.log(`Starting ${row.slug} (${notes.length.toLocaleString("en-US")} note characters)`);
     try {
       const { log, ok } = await generateOne(row, notes, instructions, options, client);
       totals.usage = addUsage(totals.usage, log.usage);

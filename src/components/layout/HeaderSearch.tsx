@@ -6,7 +6,7 @@ export function HeaderSearch() {
     <form
       action="/search"
       method="get"
-      className="w-full max-w-[560px]"
+      className="w-full min-w-[128px] max-w-[520px]"
       role="search"
     >
       <div

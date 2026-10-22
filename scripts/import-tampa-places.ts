@@ -739,7 +739,7 @@ async function main() {
   const force = flags.has("force");
   const targets = resolveTargets(opts, flags);
 
-  console.log("Tampa Bay Guide — one-time Places import (local only, never deployed).");
+  console.log("Visit In Tampa — one-time Places import (local only, never deployed).");
   apiKey();
   printEstimate(targets);
 

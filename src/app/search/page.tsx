@@ -4,9 +4,10 @@ import { getAllPlaces, getAllGuides } from "@/lib/listings";
 import Link from "next/link";
 import Image from "next/image";
 import { SearchForm } from "./SearchForm";
+import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Search — Tampa Bay Guide",
+  title: withSiteName("Search"),
   description: "Search the guide.",
   robots: { index: false },
 };

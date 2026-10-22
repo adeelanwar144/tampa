@@ -76,7 +76,7 @@ export class ClaudeClient {
   constructor() {
     this.client = new Anthropic({
       apiKey: claudeApiKey(),
-      timeout: 10 * 60 * 1000,
+      timeout: 6 * 60 * 1000,
       maxRetries: 0,
     });
   }
@@ -89,9 +89,10 @@ export class ClaudeClient {
     let lastError: unknown;
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       try {
-        const stream = this.client.messages.stream({
+        const message = await this.client.messages.create({
           model: args.model,
-          max_tokens: 64_000,
+          max_tokens: 16_000,
+          thinking: { type: "between_tools" },
           system: [
             {
               type: "text",
@@ -100,8 +101,7 @@ export class ClaudeClient {
             },
           ],
           messages: args.messages,
-        });
-        const message = await stream.finalMessage();
+        } as Anthropic.MessageCreateParams);
         return { text: textFrom(message), usage: usageFromMessage(message) };
       } catch (error) {
         lastError = error;

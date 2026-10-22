@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { resolveWeatherTips } from "@/lib/resolve-weather-tips";
+import { SITE_NAME, SITE_URL } from "@/config/site";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -22,19 +23,27 @@ const publicSans = Public_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Tampa Bay Guide — An independent guide to Tampa, FL",
+    default: `${SITE_NAME} — An independent guide to Tampa, FL`,
     template: "%s",
   },
   description:
     "An independent guide to eating, drinking, and getting outside in Tampa. Restaurants, bars, beaches and shops we've visited, filtered how you like.",
-  metadataBase: new URL("https://tampabayguide.com"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    siteName: "Tampa Bay Guide",
+    siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "16x16 32x32" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

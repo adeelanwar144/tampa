@@ -19,7 +19,11 @@ function parseRecord(raw: string): ListingSeoContent | null {
     const faq = Array.isArray(data.faq)
       ? data.faq.filter(
           (item): item is ListingFaqItem =>
-            Boolean(item) && typeof item.q === "string" && typeof item.a === "string" && item.q.trim() && item.a.trim(),
+            Boolean(item) &&
+            typeof item.q === "string" &&
+            typeof item.a === "string" &&
+            item.q.trim().length > 0 &&
+            item.a.trim().length > 0,
         )
       : [];
     return {

@@ -10,11 +10,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { directoryCta, isNavActive, primaryNav } from "@/config/nav";
+import { directoryCta, isNavActive, type NavItem } from "@/config/nav";
 import { focusRing, motion150 } from "@/components/layout/nav";
 import { setMobileMenuOpen } from "@/lib/mobile-menu";
 
-export function MobileNav() {
+export function MobileNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -63,7 +63,7 @@ export function MobileNav() {
 
         <nav className="flex-1 overflow-y-auto px-3 py-2" aria-label="Mobile navigation">
           <div className="flex flex-col">
-            {primaryNav.map((item) => {
+            {[...items, { label: "About", href: "/about" }].map((item) => {
               const active = isNavActive(pathname, item.href);
 
               return (

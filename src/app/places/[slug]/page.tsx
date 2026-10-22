@@ -18,6 +18,7 @@ import { StatusBadge } from "@/components/places/PlaceLiveStatus";
 import { PlaceMapSection } from "@/components/places/PlaceMapSection";
 import { coordsInPmtilesBbox } from "@/data/map-tiles";
 import { neighborhoodFromSlug } from "@/data/neighborhoods";
+import { SITE_URL, withSiteName } from "@/config/site";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
   if (!place) return {};
 
-  const title = listingContent?.metaTitle || `${place.name} — Tampa Bay Guide`;
+  const title = listingContent?.metaTitle || withSiteName(place.name);
   const description = listingContent?.metaDescription || place.tagline;
 
   return {
@@ -94,13 +95,13 @@ export default async function PlaceDetailPage({ params }: Props) {
   const faqLd = listingContent ? faqJsonLd(listingContent.faq) : null;
 
   const breadcrumbItems = [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://tampabayguide.com" },
-    { "@type": "ListItem", position: 2, name: "Places", item: "https://tampabayguide.com/places" },
+    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Places", item: `${SITE_URL}/places` },
     {
       "@type": "ListItem",
       position: 3,
       name: CATEGORY_LABELS[place.category],
-      item: `https://tampabayguide.com/places?category=${place.category}`,
+      item: `${SITE_URL}/places?category=${place.category}`,
     },
     ...(neighborhoodHref
       ? [
@@ -108,7 +109,7 @@ export default async function PlaceDetailPage({ params }: Props) {
             "@type": "ListItem",
             position: 4,
             name: place.neighborhood,
-            item: `https://tampabayguide.com${neighborhoodHref}`,
+            item: `${SITE_URL}${neighborhoodHref}`,
           },
         ]
       : []),

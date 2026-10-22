@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArticleCard } from "@/components/pillars/ArticleCard";
 import { getNeighborhoodCounts, NEIGHBORHOODS } from "@/lib/listings";
+import { getArticlesByCategory } from "@/lib/pillars";
 import { neighborhoodSlug } from "@/data/neighborhoods";
+import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Neighborhoods — Tampa Bay Guide",
+  title: withSiteName("Neighborhoods"),
   description: "Tampa neighborhoods.",
 };
 
@@ -14,6 +17,7 @@ function slugify(name: string) {
 
 export default async function NeighborhoodsPage() {
   const counts = await getNeighborhoodCounts();
+  const guides = getArticlesByCategory("Neighborhoods & Areas");
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
@@ -23,6 +27,16 @@ export default async function NeighborhoodsPage() {
       <p className="text-ink-600 mb-10 max-w-xl">
         Places Ben has visited, grouped by neighborhood.
       </p>
+      {guides.length > 0 ? (
+        <section className="mb-12">
+          <h2 className="font-display font-700 text-[22px] text-gulf-900 mb-5">Guides</h2>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {guides.map((article) => (
+              <ArticleCard key={article.slug} article={article} />
+            ))}
+          </div>
+        </section>
+      ) : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {NEIGHBORHOODS.map((n) => (
           <Link

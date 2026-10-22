@@ -1,6 +1,6 @@
 # Article generator
 
-This CLI writes first-person Tampa Bay Guide articles with Claude, then fills `[IMAGE: …]` placeholders from Pexels.
+This CLI writes first-person Visit In Tampa articles with Claude, then fills `[IMAGE: …]` placeholders from Pexels.
 
 It lives next to the website but does not run in the deployed app. Keys stay in `.env` and are never printed.
 

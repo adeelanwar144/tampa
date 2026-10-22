@@ -5,7 +5,9 @@ import { PlaceCard } from "@/components/places/PlaceCard";
 import { PlacesPagination } from "@/components/places/PlacesPagination";
 import { SortSelect } from "@/components/places/SortSelect";
 import { PlacesGridSkeleton } from "@/components/places/PlacesGridSkeleton";
+import { ArticleCard } from "@/components/pillars/ArticleCard";
 import { CATEGORY_LABELS, getFilteredPlaces } from "@/lib/listings";
+import { getArticlesByCategory } from "@/lib/pillars";
 import type { CategorySlug, SortOption } from "@/types";
 
 export type DirectorySearchParams = {
@@ -33,6 +35,7 @@ export async function DirectoryBrowse({
 
   const result = await getFilteredPlaces({ category, neighborhood, q, open, sort, page });
   const heading = category ? CATEGORY_LABELS[category] : "Directory";
+  const guides = category === "hotels-lodging" ? getArticlesByCategory("Hotels & Lodging") : [];
 
   function buildHref(p: number) {
     const params = new URLSearchParams();
@@ -59,6 +62,17 @@ export async function DirectoryBrowse({
           </h1>
         </div>
       </section>
+
+      {guides.length > 0 ? (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-10">
+          <h2 className="font-display font-700 text-[22px] text-gulf-900 mb-5">Guides</h2>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {guides.map((article) => (
+              <ArticleCard key={article.slug} article={article} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <Suspense fallback={<div className="h-[88px] border-b border-line bg-white" />}>
         <FilterBar

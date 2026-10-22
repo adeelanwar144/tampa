@@ -1,24 +1,25 @@
+import Image from "next/image";
 import Link from "next/link";
 import { focusRing, motion150 } from "@/components/layout/nav";
+
+const LOGO_WIDTH = 798;
+const LOGO_HEIGHT = 358;
 
 export function Logo() {
   return (
     <Link
       href="/"
-      className={`flex shrink-0 items-center gap-2.5 rounded-[10px] ${focusRing} ${motion150}`}
+      className={`flex h-14 shrink-0 items-center rounded-sm md:h-16 lg:h-[72px] xl:h-20 ${focusRing} ${motion150}`}
     >
-      <span
-        aria-hidden="true"
-        className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-[#0B5E6B] font-display text-[20px] font-semibold text-white"
-      >
-        T
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-[22px] font-bold tracking-tight text-[#08343C]">
-          Tampa Bay Guide
-        </span>
-        <span className="mt-0.5 text-[11px] text-[#4A626A]">Ben Guide</span>
-      </span>
+      <Image
+        src="/brand/logo.png"
+        alt="Visit In Tampa"
+        width={LOGO_WIDTH}
+        height={LOGO_HEIGHT}
+        priority
+        style={{ width: "auto", height: "100%" }}
+        className="h-full w-auto max-w-[46vw] object-contain"
+      />
     </Link>
   );
 }

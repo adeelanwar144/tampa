@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Getting around — Tampa Bay Guide",
+  title: withSiteName("Getting around"),
   description: "Notes on getting around Tampa. More soon.",
 };
 

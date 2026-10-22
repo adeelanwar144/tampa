@@ -5,7 +5,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getPhotosBucket } from "@/lib/d1";
 import { PMTILES_ALIASES } from "@/data/map-tiles";
 
-const ALLOWED_PREFIXES = ["places/", "maps/"];
+const ALLOWED_PREFIXES = ["places/", "maps/", "wm/"];
 const VERSIONED_PMTILES = new Set(Object.keys(PMTILES_ALIASES));
 
 type CachedMapBody = {
@@ -29,9 +29,13 @@ function isPmtiles(requestKey: string) {
 }
 
 function localImportPhoto(objectKey: string) {
-  if (!objectKey.startsWith("places/") || objectKey.includes("..")) return null;
-  const path = join(process.cwd(), ".import-cache", objectKey);
-  if (!existsSync(path)) return null;
+  if (objectKey.includes("..")) return null;
+  const path = objectKey.startsWith("places/")
+    ? join(process.cwd(), ".import-cache", objectKey)
+    : objectKey.startsWith("wm/")
+      ? join(process.cwd(), ".watermark-cache", "out", objectKey)
+      : "";
+  if (!path || !existsSync(path)) return null;
   return { path, size: statSync(path).size };
 }
 

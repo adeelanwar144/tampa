@@ -14,41 +14,9 @@ export const SKIP_GENERATE_SLUGS = new Set<string>([
   "zach-bryan-tampa",
 ]);
 
-/** 301s from the dropped planner URL to the kept article. */
-export const ARTICLE_REDIRECTS: { source: string; destination: string; statusCode: 301 }[] = [
-  {
-    source: "/food-and-drink/ulele-restaurant-tampa",
-    destination: "/food-and-drink/ulele-tampa",
-    statusCode: 301,
-  },
-  {
-    source: "/things-to-do/tampa-theater",
-    destination: "/things-to-do/tampa-theatre",
-    statusCode: 301,
-  },
-  {
-    source: "/outdoors-beaches/top-golf-tampa",
-    destination: "/events/topgolf-tampa",
-    statusCode: 301,
-  },
-  {
-    source: "/events/top-golf-tampa",
-    destination: "/events/topgolf-tampa",
-    statusCode: 301,
-  },
-  {
-    source: "/events/trampoline-tampa-hillsborough-ave",
-    destination: "/events/trampoline-park-tampa-hillsborough",
-    statusCode: 301,
-  },
-  {
-    source: "/guides/what-is-time-in-tampa-florida",
-    destination: "/guides/what-time-zone-is-tampa-florida",
-    statusCode: 301,
-  },
-  {
-    source: "/things-to-do/things-going-on-this-weekend-in-tampa",
-    destination: "/things-to-do/things-to-do-in-tampa-this-weekend",
-    statusCode: 301,
-  },
-];
+/**
+ * Empty before launch. Dropped slugs stay out of generation and the sitemap
+ * via DROPPED_SLUGS and SKIP_GENERATE_SLUGS. The removed 301s are listed in
+ * scripts/date-audit-log.json if they need to come back after launch.
+ */
+export const ARTICLE_REDIRECTS: { source: string; destination: string; statusCode: 301 }[] = [];

@@ -1,35 +1,13 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { SKIP_GENERATE_SLUGS } from "../../src/config/article-redirects";
+import { sectionForCategory } from "../../src/config/category-sections";
 import { inferArticleType } from "./article-type";
 import { loadPlanner } from "./planner";
 import type { PexelsImage, SeoBlock } from "./types";
 import type { ArticleType, PillarSlug } from "../../src/types";
 
 const SKIP = new Set(["hyde-park-saturday-walk", ...SKIP_GENERATE_SLUGS]);
-
-const PLANNER_TO_PILLAR: Record<string, PillarSlug> = {
-  "things to do & attractions (general)": "things-to-do",
-  "family & kids": "things-to-do",
-  "arts, culture & museums": "things-to-do",
-  "tours & cruises": "things-to-do",
-  "sports & entertainment": "events",
-  "events & festivals": "events",
-  "food & drink": "food-and-drink",
-  "nightlife & bars": "food-and-drink",
-  beaches: "outdoors-beaches",
-  "outdoors, parks & nature": "outdoors-beaches",
-  "golf, recreation & wellness": "outdoors-beaches",
-  shopping: "shopping",
-  "hotels & lodging": "guides",
-  "neighborhoods & areas": "guides",
-  "practical planning & facts": "guides",
-  "day trips & nearby cities": "guides",
-  "airport & flights": "guides",
-  "transportation & getting around": "guides",
-  "weather & climate": "guides",
-  "tampa general / hub": "guides",
-};
 
 type PublishedArticle = {
   slug: string;
@@ -60,7 +38,7 @@ function wordCount(text: string): number {
 }
 
 function sitePillar(plannerCategory: string): PillarSlug {
-  return PLANNER_TO_PILLAR[plannerCategory.trim().toLowerCase()] ?? "guides";
+  return sectionForCategory(plannerCategory);
 }
 
 function readJson<T>(path: string): T | null {
@@ -96,7 +74,7 @@ function main(): void {
     const log = readJson<{ finishedAt?: string }>(join(dir, "run-log.json"));
     const cover = images.find((image) => image.url && !image.skipped);
     const planner = bySlug.get(slug);
-    const plannerCategory = planner?.pillar?.trim() || "Guides";
+    const plannerCategory = (planner?.pillar?.trim() || "Guides").replace(/\s*\(\s*general\s*\)/gi, "").trim();
     const title = firstHeading(body) || seo?.meta_title || slug;
     const metaTitle = seo?.meta_title?.trim() || title;
     const metaDescription = seo?.meta_description?.trim() || "";

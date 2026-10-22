@@ -1,10 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
-import { directoryCta, primaryNav } from "@/config/nav";
+import { directoryCta } from "@/config/nav";
+import { listedNavItems } from "@/lib/menu";
+import { SITE_NAME } from "@/config/site";
 
 const FOOTER_NAV = [
   {
     heading: "Explore",
-    links: [...primaryNav, directoryCta, { label: "Search", href: "/search" }],
+    links: [...listedNavItems(), directoryCta, { label: "Search", href: "/search" }],
   },
   {
     heading: "Categories",
@@ -30,8 +33,10 @@ const FOOTER_NAV = [
   {
     heading: "Legal",
     links: [
-      { label: "Privacy policy", href: "/privacy-policy" },
-      { label: "Terms", href: "/terms" },
+      { label: "About Me", href: "/about" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms & Conditions", href: "/terms" },
+      { label: "Contact Me", href: "/contact" },
     ],
   },
 ];
@@ -43,9 +48,14 @@ export function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <div className="marigold-rule pt-3 mb-3">
-              <h3 className="font-display font-700 text-white text-base">
-                Tampa Bay Guide
-              </h3>
+              <Image
+                src="/brand/logo-light.png"
+                alt={SITE_NAME}
+                width={798}
+                height={358}
+                style={{ width: "auto", height: "72px" }}
+                className="h-[72px] w-auto max-w-full object-contain"
+              />
             </div>
             <p className="text-sm leading-relaxed text-white/60 max-w-[220px]">
               An independent guide to eating, drinking, and getting outside in Tampa, Florida.
@@ -85,7 +95,10 @@ export function Footer() {
             </Link>
           </p>
           <div className="flex flex-wrap items-center gap-4 text-xs text-white/40">
-            <span>© 2026 Tampa Bay Guide</span>
+            <span>© 2026 {SITE_NAME}</span>
+            <Link href="/about" className="hover:text-white/70 transition-hover">
+              About
+            </Link>
             <Link href="/privacy-policy" className="hover:text-white/70 transition-hover">
               Privacy policy
             </Link>

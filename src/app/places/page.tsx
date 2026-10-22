@@ -12,6 +12,7 @@ import {
 } from "@/lib/listings";
 import { CategorySlug, SortOption } from "@/types";
 import Link from "next/link";
+import { SITE_URL, withSiteName } from "@/config/site";
 
 interface SearchParams {
   category?: string;
@@ -37,8 +38,8 @@ export async function generateMetadata({
   }
 
   const title = parts.length
-    ? `${parts.join(" ")} — Tampa Bay Guide`
-    : "Places in Tampa — Tampa Bay Guide";
+    ? withSiteName(parts.join(" "))
+    : withSiteName("Places in Tampa");
 
   const noindex = !!(sp.page && parseInt(sp.page, 10) > 1) || !!sp.q;
 
@@ -46,7 +47,7 @@ export async function generateMetadata({
     title,
     description: "Restaurants, bars, beaches and shops we've visited, filtered how you like.",
     robots: noindex ? { index: false } : undefined,
-    alternates: { canonical: "https://tampabayguide.com/places" },
+    alternates: { canonical: `${SITE_URL}/places` },
   };
 }
 
@@ -87,7 +88,7 @@ export default async function PlacesPage({
       "@type": "ListItem",
       position: result.start + i,
       name: place.name,
-      url: `https://tampabayguide.com/places/${place.slug}`,
+      url: `${SITE_URL}/places/${place.slug}`,
     })),
   };
 

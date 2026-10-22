@@ -116,6 +116,12 @@ const TITLE_BANNED = [
 function titleFitsType(title: string, type: ArticleType, slug: string): boolean {
   if (slug === "tbpac-tampa") return /straz/i.test(title) && /honest guide/i.test(title);
   if (slug === "tpc-tampa") return /^playing\b/i.test(title) && /honest guide/i.test(title);
+  if (slug === "things-to-do-in-tampa-this-weekend") {
+    return /my favorite things to do in tampa this weekend/i.test(title) && !/\d/.test(title);
+  }
+  if (slug === "things-to-do-on-saturday-in-tampa") {
+    return /my favorite things to do in tampa on a saturday/i.test(title) && !/\d/.test(title);
+  }
   switch (type) {
     case "things-to-do":
       return /\bmy\b/i.test(title) && /favorite things to do/i.test(title);
@@ -293,6 +299,22 @@ export function runChecks(parsed: ParsedArticle, row: PlannerRow, notes: string)
     `${count} words (target ${band.min.toLocaleString("en-US")}–${band.max.toLocaleString("en-US")})`,
     true,
   );
+
+  const evergreenSlugs = new Set([
+    "things-to-do-in-tampa-this-weekend",
+    "things-to-do-on-saturday-in-tampa",
+  ]);
+  if (evergreenSlugs.has(row.slug)) {
+    const dated =
+      article.match(
+        /\b(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.?\s+\d|\b\d{1,2}\/\d{1,2}\b|\$\s?\d/gi,
+      ) ?? [];
+    add(
+      "evergreen dates and prices",
+      dated.length === 0,
+      dated.length ? dated.slice(0, 8).join("; ") : "no calendar dates or prices",
+    );
+  }
 
   const unsupported = extractFacts(article).filter((fact) => !includesInsensitive(notes, fact));
   add(

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { withSiteName } from "@/config/site";
 
 function titleFromSlug(slug: string) {
   return slug
@@ -15,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { regionSlug } = await params;
   return {
-    title: `${titleFromSlug(regionSlug)} — Tampa Bay Guide`,
+    title: withSiteName(titleFromSlug(regionSlug)),
     description: `${titleFromSlug(regionSlug)}. More soon.`,
   };
 }

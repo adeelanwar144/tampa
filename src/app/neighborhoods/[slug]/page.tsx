@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { PlaceCard } from "@/components/places/PlaceCard";
 import { getPlacesInNeighborhood, NEIGHBORHOODS } from "@/lib/listings";
 import { neighborhoodFromSlug, neighborhoodSlug } from "@/data/neighborhoods";
+import { SITE_URL, withSiteName } from "@/config/site";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +30,7 @@ export async function generateMetadata({
   const places = await getPlacesInNeighborhood(name);
   const count = places.length;
   return {
-    title: `${name} — Tampa Bay Guide`,
+    title: withSiteName(name),
     description: `${count} ${count === 1 ? "place" : "places"} in ${name}.`,
   };
 }
@@ -49,8 +50,8 @@ export default async function NeighborhoodPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://tampabayguide.com" },
-      { "@type": "ListItem", position: 2, name: "Neighborhoods", item: "https://tampabayguide.com/neighborhoods" },
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Neighborhoods", item: `${SITE_URL}/neighborhoods` },
       { "@type": "ListItem", position: 3, name },
     ],
   };

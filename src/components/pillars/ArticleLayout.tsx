@@ -3,8 +3,10 @@ import Image from "next/image";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { ArticleCard } from "@/components/pillars/ArticleCard";
 import { faqJsonLd } from "@/components/pillars/ArticleMarkdown";
+import { eventJsonLd } from "@/lib/event-dates";
 import { articleHref, getArticlesByPillar, PILLAR_META } from "@/lib/pillars";
 import type { PillarArticle } from "@/types";
+import { SITE_NAME, SITE_URL } from "@/config/site";
 
 export function ArticleLayout({
   article,
@@ -18,7 +20,7 @@ export function ArticleLayout({
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
 
-  const published = new Date(article.publishedAt).toLocaleDateString("en-US", {
+  const published = new Date(article.updatedAt || article.publishedAt).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -31,24 +33,29 @@ export function ArticleLayout({
     headline: article.metaTitle || article.title,
     description: article.metaDescription || article.dek,
     datePublished: article.publishedAt,
+    dateModified: article.updatedAt || article.publishedAt,
     image: article.coverImage ? [article.coverImage] : undefined,
-    mainEntityOfPage: `https://tampabayguide.com${articleHref(article)}`,
+    mainEntityOfPage: `${SITE_URL}${articleHref(article)}`,
     author: {
       "@type": "Person",
       name: "Ben",
-      url: "https://tampabayguide.com/about",
+      url: `${SITE_URL}/about`,
     },
     publisher: {
       "@type": "Organization",
-      name: "Tampa Bay Guide",
-      url: "https://tampabayguide.com",
+      name: SITE_NAME,
+      url: SITE_URL,
     },
   };
   const faqs = faqJsonLd(article.body);
+  const eventLd = eventJsonLd(article);
 
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
+      {eventLd ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventLd) }} />
+      ) : null}
       {faqs ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqs) }} />
       ) : null}
@@ -68,7 +75,7 @@ export function ArticleLayout({
       </h1>
       <p className="text-lg text-ink-600 mb-2">{article.dek}</p>
       <p className="text-sm text-ink-600 mb-6">
-        By Ben · {published}
+        By Ben · {article.updatedAt ? `Last updated ${published}` : published}
         {article.readTime ? ` · ${article.readTime}` : ""}
       </p>
 

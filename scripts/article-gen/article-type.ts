@@ -146,6 +146,16 @@ export function titleFormatBlock(type: ArticleType, slug?: string): string {
       'Use "Playing" instead of "Visiting". Example: "Playing TPC Tampa Bay: My Honest Guide and Tips Before You Go".',
     );
   }
+  if (slug === "things-to-do-in-tampa-this-weekend") {
+    extras.push(
+      'Use this H1 exactly: "My Favorite Things to Do in Tampa This Weekend". No date and no date range.',
+    );
+  }
+  if (slug === "things-to-do-on-saturday-in-tampa") {
+    extras.push(
+      'Use this H1 exactly: "My Favorite Things to Do in Tampa on a Saturday". No date and no date range.',
+    );
+  }
   return `Article type: ${type}
 Title format for this type: ${spec.format}
 Example: ${spec.example}${extras.length ? `\n${extras.join("\n")}` : ""}

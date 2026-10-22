@@ -1,5 +1,6 @@
 import { DROPPED_SLUGS } from "@/config/article-redirects";
 import { articles } from "@/data/articles";
+import { eventHasEnded } from "@/lib/event-dates";
 import type { PillarArticle, PillarSlug } from "@/types";
 
 export const PILLAR_META: Record<
@@ -44,14 +45,29 @@ export function pillarPageDescription(title: string) {
   return `${title} in Tampa.`;
 }
 
-export function getPublishedArticles(): PillarArticle[] {
+function byNewest(a: PillarArticle, b: PillarArticle) {
+  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+}
+
+/** Published articles, including ones whose event end date has passed. */
+export function getAllPublishedArticles(): PillarArticle[] {
   return articles
     .filter((article) => article.status === "published" && !DROPPED_SLUGS.has(article.slug))
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    .sort(byNewest);
+}
+
+/** Articles that belong on the homepage, hubs, sliders, and sitemap. */
+export function getPublishedArticles(): PillarArticle[] {
+  return getAllPublishedArticles().filter((article) => !eventHasEnded(article));
 }
 
 export function getArticlesByPillar(pillar: PillarSlug): PillarArticle[] {
   return getPublishedArticles().filter((article) => article.pillar === pillar);
+}
+
+export function getArticlesByCategory(category: string): PillarArticle[] {
+  const key = category.trim().toLowerCase();
+  return getPublishedArticles().filter((article) => article.plannerCategory.trim().toLowerCase() === key);
 }
 
 export function getArticleBySlug(pillar: PillarSlug, slug: string): PillarArticle | undefined {

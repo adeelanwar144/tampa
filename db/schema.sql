@@ -1,4 +1,4 @@
--- Tampa Bay Guide — D1 schema
+-- Visit In Tampa — D1 schema
 -- Apply with: wrangler d1 execute tampa-bay-guide --file=db/schema.sql
 --            wrangler d1 execute tampa-bay-guide --local --file=db/schema.sql
 
