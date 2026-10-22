@@ -6,6 +6,8 @@ import { articleHref, getPublishedArticles } from "@/lib/pillars";
 import type { PillarSlug } from "@/types";
 import { SITE_URL } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE_URL;
 

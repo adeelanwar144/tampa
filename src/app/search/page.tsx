@@ -6,6 +6,8 @@ import Image from "next/image";
 import { SearchForm } from "./SearchForm";
 import { SITE_URL, withSiteName } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: withSiteName("Search"),
   description: "Search the guide.",

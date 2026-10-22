@@ -14,6 +14,8 @@ import { CategorySlug, SortOption } from "@/types";
 import Link from "next/link";
 import { SITE_URL, withSiteName } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 interface SearchParams {
   category?: string;
   neighborhood?: string;

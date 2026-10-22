@@ -1,6 +1,8 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { connection } from "next/server";
 
 export async function getDb() {
+  await connection();
   try {
     const { env } = await getCloudflareContext({ async: true });
     return env.DB ?? null;
@@ -10,6 +12,7 @@ export async function getDb() {
 }
 
 export async function getPhotosBucket() {
+  await connection();
   try {
     const { env } = await getCloudflareContext({ async: true });
     return env.PHOTOS ?? null;
@@ -19,6 +22,7 @@ export async function getPhotosBucket() {
 }
 
 export async function getListingContentBucket() {
+  await connection();
   try {
     const { env } = await getCloudflareContext({ async: true });
     return env.LISTING_CONTENT ?? null;

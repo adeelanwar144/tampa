@@ -5,6 +5,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getPhotosBucket } from "@/lib/d1";
 import { PMTILES_ALIASES } from "@/data/map-tiles";
 
+export const dynamic = "force-dynamic";
+
 const ALLOWED_PREFIXES = ["places/", "maps/"];
 const VERSIONED_PMTILES = new Set(Object.keys(PMTILES_ALIASES));
 

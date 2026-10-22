@@ -6,6 +6,8 @@ import { getArticlesByCategory } from "@/lib/pillars";
 import { neighborhoodSlug } from "@/data/neighborhoods";
 import { withSiteName } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: withSiteName("Neighborhoods"),
   description: "Tampa neighborhoods.",

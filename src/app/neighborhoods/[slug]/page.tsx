@@ -13,10 +13,8 @@ function unslugify(slug: string) {
   return neighborhoodFromSlug(slug) ?? NEIGHBORHOODS.find((n) => neighborhoodSlug(n) === slug);
 }
 
-export async function generateStaticParams() {
-  return NEIGHBORHOODS.map((n) => ({
-    slug: neighborhoodSlug(n),
-  }));
+export function generateStaticParams() {
+  return [];
 }
 
 export async function generateMetadata({

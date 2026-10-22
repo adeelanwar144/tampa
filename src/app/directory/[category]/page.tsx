@@ -7,8 +7,10 @@ import type { CategorySlug } from "@/types";
 
 const VALID_CATEGORIES = Object.keys(CATEGORY_LABELS) as CategorySlug[];
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
-  return VALID_CATEGORIES.map((category) => ({ category }));
+  return [];
 }
 
 export async function generateMetadata({
