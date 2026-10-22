@@ -58,15 +58,12 @@ export default function PrivacyPage() {
         intended.
       </p>
 
-      <h2 className={headingClass}>4. Analytics</h2>
+      <h2 className={headingClass}>4. Google Analytics</h2>
       <p className={bodyClass}>
-        We use Google Analytics to understand how visitors find and use our site. This service
-        collects data such as pages viewed and time on site. You can opt out of Google Analytics
-        with the{" "}
-        <a
-          href="https://tools.google.com/dlpage/gaoptout"
-          className={linkClass}
-        >
+        We use Google Analytics to understand how visitors use the site. Google Analytics uses
+        cookies to collect information such as the pages you visit and how long you stay. You can
+        opt out of Google Analytics with the{" "}
+        <a href="https://tools.google.com/dlpage/gaoptout" className={linkClass}>
           Google Analytics Opt-out Browser Add-on
         </a>
         .
