@@ -9,7 +9,6 @@ import { withSiteName } from "@/config/site";
 export const metadata: Metadata = {
   title: withSiteName("Search"),
   description: "Search the guide.",
-  robots: { index: false },
 };
 
 interface SearchParams {

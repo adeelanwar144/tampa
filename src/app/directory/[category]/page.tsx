@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import NotFound from "@/app/not-found";
 import type { Metadata } from "next";
 import { DirectoryBrowse, type DirectorySearchParams } from "@/components/directory/DirectoryBrowse";
 import { CATEGORY_LABELS } from "@/lib/listings";
@@ -33,7 +33,7 @@ export default async function DirectoryCategoryPage({
   searchParams: Promise<DirectorySearchParams>;
 }) {
   const { category } = await params;
-  if (!VALID_CATEGORIES.includes(category as CategorySlug)) notFound();
+  if (!VALID_CATEGORIES.includes(category as CategorySlug)) return <NotFound />;
 
   const sp = await searchParams;
   return <DirectoryBrowse category={category as CategorySlug} searchParams={sp} />;

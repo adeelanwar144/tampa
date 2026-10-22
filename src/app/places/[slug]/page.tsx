@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import NotFound from "@/app/not-found";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import {
   formatTime,
   getPlaceTimeParts,
   CATEGORY_LABELS,
-  placeBelongsInSitemap,
 } from "@/lib/listings";
 import { getListingContent } from "@/lib/listing-content";
 import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
@@ -42,12 +41,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    robots:
-      place.status === "draft"
-        ? { index: false, follow: false }
-        : placeBelongsInSitemap(place)
-          ? undefined
-          : { index: false, follow: true },
     openGraph: {
       title: listingContent?.metaTitle || place.name,
       description,
@@ -71,7 +64,7 @@ const DAY_NAMES = [
 export default async function PlaceDetailPage({ params }: Props) {
   const { slug } = await params;
   const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
-  if (!place) notFound();
+  if (!place) return <NotFound />;
 
   const related = await getRelatedPlaces(place, 3);
   const now = new Date();

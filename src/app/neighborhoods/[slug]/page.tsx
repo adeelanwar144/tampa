@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import NotFound from "@/app/not-found";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -42,7 +42,7 @@ export default async function NeighborhoodPage({
 }) {
   const { slug } = await params;
   const name = unslugify(slug);
-  if (!name) notFound();
+  if (!name) return <NotFound />;
 
   const places = await getPlacesInNeighborhood(name);
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/config/site";
-import { eventHasEnded } from "@/lib/event-dates";
 import { articleHref, getAllPublishedArticles, getArticleBySlug } from "@/lib/pillars";
 import type { PillarSlug } from "@/types";
 
@@ -26,7 +25,6 @@ export async function articleMetadata(
     title,
     description,
     keywords: article.keywords,
-    robots: eventHasEnded(article) ? { index: false, follow: true } : undefined,
     authors: [{ name: "Ben", url: `${SITE_URL}/about` }],
     alternates: { canonical: url },
     openGraph: {

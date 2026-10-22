@@ -28,7 +28,7 @@ export interface PillarArticle {
   updatedAt?: string;
   /**
    * Last day the event or dated roundup is current, as YYYY-MM-DD in Tampa.
-   * After this date the page stays up, drops out of navigation and the sitemap, and is noindex.
+   * After this date the page stays up and drops out of navigation and the sitemap.
    */
   eventEndDate?: string;
   status: "draft" | "published";
@@ -83,8 +83,6 @@ export interface Place {
   neighborhood: string;
   neighborhoodSlug?: string | null;
   status?: "draft" | "published";
-  /** Google business status. Null and OPERATIONAL places are the ones listed in the sitemap. */
-  businessStatus?: string | null;
   address: string;
   lat: number;
   lng: number;

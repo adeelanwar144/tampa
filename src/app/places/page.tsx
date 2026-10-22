@@ -41,12 +41,9 @@ export async function generateMetadata({
     ? withSiteName(parts.join(" "))
     : withSiteName("Places in Tampa");
 
-  const noindex = !!(sp.page && parseInt(sp.page, 10) > 1) || !!sp.q;
-
   return {
     title,
     description: "Restaurants, bars, beaches and shops we've visited, filtered how you like.",
-    robots: noindex ? { index: false } : undefined,
     alternates: { canonical: `${SITE_URL}/places` },
   };
 }

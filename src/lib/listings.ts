@@ -246,7 +246,6 @@ function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): 
       : "",
     neighborhoodSlug: row.neighborhood_slug ?? null,
     status: row.status === "draft" ? "draft" : "published",
-    businessStatus: row.business_status,
     address: row.formatted_address ?? "",
     lat: row.lat ?? 0,
     lng: row.lng ?? 0,
@@ -282,8 +281,8 @@ async function loadPlaces(): Promise<Place[]> {
   if (!db) return allowDraftPreview() ? seedPlaces : [];
 
   const listingSql = allowDraftPreview()
-    ? "SELECT * FROM places WHERE business_status IS NULL OR business_status = 'OPERATIONAL'"
-    : "SELECT * FROM places WHERE status = 'published' AND (business_status IS NULL OR business_status = 'OPERATIONAL')";
+    ? "SELECT * FROM places"
+    : "SELECT * FROM places WHERE status = 'published'";
   const [placeResult, imageResult, reviewResult] = await Promise.all([
     db.prepare(listingSql).all<PlaceRow>(),
     db.prepare("SELECT place_id, r2_key, sort_order FROM place_images").all<ImageRow>(),
@@ -609,12 +608,6 @@ export async function getFeaturedPlaces(count = 6): Promise<Place[]> {
   const featured = all.filter((p) => p.featured);
   const pool = featured.length > 0 ? featured : all;
   return sortPlaces(pool, "best-overall").slice(0, count);
-}
-
-/** Published operational places are the place URLs included in the sitemap. */
-export function placeBelongsInSitemap(place: Place): boolean {
-  if (place.status === "draft") return false;
-  return place.businessStatus == null || place.businessStatus === "OPERATIONAL";
 }
 
 export async function getAllPlaces(): Promise<Place[]> {
