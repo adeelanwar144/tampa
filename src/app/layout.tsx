@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Public_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,18 +7,18 @@ import { WeatherWidget } from "@/components/WeatherWidget";
 import { resolveWeatherTips } from "@/lib/resolve-weather-tips";
 import { SITE_NAME, SITE_URL } from "@/config/site";
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  variable: "--font-bricolage",
-  weight: ["400", "500", "600", "700", "800"],
+const bricolage = localFont({
+  src: "../fonts/bricolage-grotesque-latin.woff2",
+  weight: "400 800",
   display: "swap",
+  variable: "--font-bricolage",
 });
 
-const publicSans = Public_Sans({
-  subsets: ["latin"],
-  variable: "--font-public-sans",
-  weight: ["400", "500", "600"],
+const publicSans = localFont({
+  src: "../fonts/public-sans-latin.woff2",
+  weight: "400 600",
   display: "swap",
+  variable: "--font-public-sans",
 });
 
 export const metadata: Metadata = {
