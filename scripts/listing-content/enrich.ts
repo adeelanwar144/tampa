@@ -92,7 +92,7 @@ function parseRobots(text: string): Robots {
     const key = line.slice(0, idx).trim().toLowerCase();
     const value = line.slice(idx + 1).trim();
     if (key === "user-agent") {
-      applies = value === "*" || /tampabayguide/i.test(value);
+      applies = value === "*" || /visitintampa/i.test(value);
       continue;
     }
     if (!applies) continue;
