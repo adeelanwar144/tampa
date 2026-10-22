@@ -83,6 +83,8 @@ export interface Place {
   neighborhood: string;
   neighborhoodSlug?: string | null;
   status?: "draft" | "published";
+  /** Google business status. Null and OPERATIONAL places are the ones listed in the sitemap. */
+  businessStatus?: string | null;
   address: string;
   lat: number;
   lng: number;

@@ -9,6 +9,7 @@ import {
   formatTime,
   getPlaceTimeParts,
   CATEGORY_LABELS,
+  placeBelongsInSitemap,
 } from "@/lib/listings";
 import { getListingContent } from "@/lib/listing-content";
 import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
@@ -41,7 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    robots: place.status === "draft" ? { index: false, follow: false } : undefined,
+    robots:
+      place.status === "draft"
+        ? { index: false, follow: false }
+        : placeBelongsInSitemap(place)
+          ? undefined
+          : { index: false, follow: true },
     openGraph: {
       title: listingContent?.metaTitle || place.name,
       description,

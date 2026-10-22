@@ -6,6 +6,7 @@ import {
   neighborhoodSlug as slugifyNeighborhood,
 } from "@/data/neighborhoods";
 import { getDb } from "@/lib/d1";
+import { getQuarantinedSlugs } from "@/lib/listing-content";
 import {
   Place,
   PlaceReview,
@@ -228,7 +229,7 @@ function reviewsFromRows(placeId: string, rows: ReviewRow[]): PlaceReview[] {
 
 function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): Place {
   const photoKeys = images
-    .filter((img) => img.place_id === row.id)
+    .filter((img) => img.place_id === row.id && !img.r2_key.startsWith("wm/"))
     .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
     .map((img) => `/api/photos/${img.r2_key}`);
   const imported = row.imported_at ?? new Date().toISOString();
@@ -245,6 +246,7 @@ function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): 
       : "",
     neighborhoodSlug: row.neighborhood_slug ?? null,
     status: row.status === "draft" ? "draft" : "published",
+    businessStatus: row.business_status,
     address: row.formatted_address ?? "",
     lat: row.lat ?? 0,
     lng: row.lng ?? 0,
@@ -292,8 +294,10 @@ async function loadPlaces(): Promise<Place[]> {
       .all<ReviewRow>(),
   ]);
 
-  const rows = (placeResult.results ?? []) as PlaceRow[];
-  if (rows.length === 0) return allowDraftPreview() ? seedPlaces : [];
+  const fetched = (placeResult.results ?? []) as PlaceRow[];
+  if (fetched.length === 0) return allowDraftPreview() ? seedPlaces : [];
+  const hidden = await getQuarantinedSlugs();
+  const rows = fetched.filter((row) => !hidden.has(row.slug));
   const images = (imageResult.results ?? []) as ImageRow[];
   const reviews = (reviewResult.results ?? []) as ReviewRow[];
   return rows.map((row) => placeFromRow(row, images, reviews));
@@ -551,6 +555,7 @@ function allowDraftPreview() {
 }
 
 export async function getPlaceBySlug(slug: string): Promise<Place | undefined> {
+  if ((await getQuarantinedSlugs()).has(slug)) return undefined;
   const db = await getDb();
   if (db) {
     const row = (await db.prepare("SELECT * FROM places WHERE slug = ?").bind(slug).first<PlaceRow>()) as
@@ -604,6 +609,12 @@ export async function getFeaturedPlaces(count = 6): Promise<Place[]> {
   const featured = all.filter((p) => p.featured);
   const pool = featured.length > 0 ? featured : all;
   return sortPlaces(pool, "best-overall").slice(0, count);
+}
+
+/** Published operational places are the place URLs included in the sitemap. */
+export function placeBelongsInSitemap(place: Place): boolean {
+  if (place.status === "draft") return false;
+  return place.businessStatus == null || place.businessStatus === "OPERATIONAL";
 }
 
 export async function getAllPlaces(): Promise<Place[]> {
