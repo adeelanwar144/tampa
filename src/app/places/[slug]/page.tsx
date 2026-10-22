@@ -1,4 +1,4 @@
-import NotFound from "@/app/not-found";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -64,7 +64,7 @@ const DAY_NAMES = [
 export default async function PlaceDetailPage({ params }: Props) {
   const { slug } = await params;
   const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
-  if (!place) return <NotFound />;
+  if (!place) notFound();
 
   const related = await getRelatedPlaces(place, 3);
   const now = new Date();

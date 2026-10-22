@@ -4,11 +4,12 @@ import { getAllPlaces, getAllGuides } from "@/lib/listings";
 import Link from "next/link";
 import Image from "next/image";
 import { SearchForm } from "./SearchForm";
-import { withSiteName } from "@/config/site";
+import { SITE_URL, withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
   title: withSiteName("Search"),
   description: "Search the guide.",
+  alternates: { canonical: `${SITE_URL}/search` },
 };
 
 interface SearchParams {
