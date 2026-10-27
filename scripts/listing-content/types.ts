@@ -32,6 +32,8 @@ export type CompactListing = {
   description?: string;
   tags?: string[];
   websiteText?: string;
+  nearbyPlaces?: string[];
+  status?: string;
 };
 
 export type RichnessTier = "rich" | "medium" | "thin";
@@ -103,4 +105,6 @@ export type GenerateOptions = {
   resume: boolean;
   revalidate: boolean;
   source: "remote" | "local";
+  gap: boolean;
+  preview: boolean;
 };

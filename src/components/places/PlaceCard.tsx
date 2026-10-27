@@ -59,18 +59,24 @@ export function PlaceCard({ place }: { place: Place }) {
         <p className="text-sm text-ink-600 line-clamp-2 leading-snug">{place.tagline}</p>
 
         <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-sm text-ink-600 mt-auto pt-1">
-          <Star size={13} fill="#D8A02E" stroke="none" aria-hidden="true" />
-          <span className="font-medium text-gulf-900">{place.rating.toFixed(1)}</span>
-          <span className="text-ink-600">({place.reviewCount.toLocaleString("en-US")})</span>
+          {place.reviewCount > 0 ? (
+            <>
+              <Star size={13} fill="#D8A02E" stroke="none" aria-hidden="true" />
+              <span className="font-medium text-gulf-900">{place.rating.toFixed(1)}</span>
+              <span className="text-ink-600">({place.reviewCount.toLocaleString("en-US")})</span>
+            </>
+          ) : null}
           {place.priceLevel ? (
             <>
-              <span className="opacity-40" aria-hidden="true">·</span>
+              {place.reviewCount > 0 ? <span className="opacity-40" aria-hidden="true">·</span> : null}
               <PriceLevel level={place.priceLevel} />
             </>
           ) : null}
           {place.neighborhood ? (
             <>
-              <span className="opacity-40" aria-hidden="true">·</span>
+              {place.reviewCount > 0 || place.priceLevel ? (
+                <span className="opacity-40" aria-hidden="true">·</span>
+              ) : null}
               <MapPin size={12} className="text-gulf-500" aria-hidden="true" />
               <span>{place.neighborhood}</span>
             </>

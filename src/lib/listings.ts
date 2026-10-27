@@ -369,7 +369,7 @@ export function getPlaceTimeParts(
 export function getPlaceStatus(place: Place, now: Date = new Date()): PlaceStatus {
   const { hours } = place;
   if (!hours || Object.keys(hours).length === 0) {
-    return { type: "no-hours", label: "Hours not available" };
+    return { type: "no-hours", label: "Call ahead to confirm hours" };
   }
 
   const { dayOfWeek, hours: curHours, minutes: curMinutes } = getPlaceTimeParts(place, now);
@@ -377,7 +377,7 @@ export function getPlaceStatus(place: Place, now: Date = new Date()): PlaceStatu
   const currentMinutes = toMinutes(curHours, curMinutes);
 
   if (todayHours === undefined) {
-    return { type: "no-hours", label: "Hours not available" };
+    return { type: "no-hours", label: "Call ahead to confirm hours" };
   }
 
   if (todayHours) {
@@ -445,7 +445,7 @@ export function getTodayHoursLabel(place: Place): string {
   const now = new Date();
   const { dayOfWeek } = getPlaceTimeParts(place, now);
   const todayHours = place.hours[dayOfWeek];
-  if (todayHours === undefined) return "Hours not available";
+  if (todayHours === undefined) return "Call ahead to confirm hours";
   if (!todayHours) return "Closed today";
   return `${formatTime(todayHours.open)} – ${formatTime(todayHours.close)}`;
 }

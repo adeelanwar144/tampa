@@ -56,6 +56,7 @@ function scoreSentence(sentence: string, index: number, name: string): number {
     score -= 4;
   }
   if (/\b(examples include|such as|known for|house-made|homemade)\b/i.test(sentence)) score += 8;
+  if (/\bother businesses in\b/i.test(sentence) && /\binclude\b/i.test(sentence)) score += 8;
   if (
     /\b(mediterranean|italian|mexican|chinese|vietnamese|cuban|greek|thai|indian|japanese|korean|seafood|barbecue|pizza|sushi|wine list|grouper|eggplant)\b/i.test(
       sentence,

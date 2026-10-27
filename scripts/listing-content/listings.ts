@@ -92,6 +92,7 @@ type PlaceRow = {
   wheelchair_accessible: number | null;
   tagline: string | null;
   business_status: string | null;
+  status: string | null;
 };
 
 export function categoryFromType(primaryType: string | null): CategorySlug {
@@ -248,6 +249,7 @@ function compactFromRow(row: PlaceRow): CompactListing {
   if (row.wheelchair_accessible === 1) listing.wheelchairAccessible = true;
   if (row.tagline?.trim()) listing.tagline = row.tagline.trim();
   if (row.description?.trim()) listing.description = row.description.trim();
+  if (row.status) listing.status = row.status;
   return listing;
 }
 
@@ -283,7 +285,7 @@ function rowsFromExecute(payload: unknown): PlaceRow[] {
 }
 
 const LISTING_SQL =
-  "SELECT p.slug, p.name, p.neighborhood_slug, n.name AS neighborhood_name, p.formatted_address, p.phone, p.website, p.price_level, p.primary_type, p.hours_json, p.delivery, p.takeout, p.dine_in, p.wheelchair_accessible, p.tagline, p.description, p.business_status FROM places p LEFT JOIN neighborhoods n ON n.slug = p.neighborhood_slug WHERE p.business_status IS NULL OR p.business_status = 'OPERATIONAL'";
+  "SELECT p.slug, p.name, p.neighborhood_slug, n.name AS neighborhood_name, p.formatted_address, p.phone, p.website, p.price_level, p.primary_type, p.hours_json, p.delivery, p.takeout, p.dine_in, p.wheelchair_accessible, p.tagline, p.description, p.business_status, p.status FROM places p LEFT JOIN neighborhoods n ON n.slug = p.neighborhood_slug WHERE p.business_status IS NULL OR p.business_status = 'OPERATIONAL'";
 
 export async function loadListings(source: "remote" | "local" = "remote"): Promise<CompactListing[]> {
   const flag = source === "local" ? "--local" : "--remote";

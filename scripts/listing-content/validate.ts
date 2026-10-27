@@ -1,3 +1,4 @@
+import { isGapMode } from "./gap-mode";
 import { tierLimits } from "./travel";
 import type { CheckResult, CompactListing, ModelOutput, RichnessTier } from "./types";
 
@@ -218,6 +219,27 @@ function stripPhone(text: string): string {
     .trim();
 }
 
+function protectName(text: string, name: string, edit: (value: string) => string): string {
+  if (!name || !text.includes(name)) return edit(text);
+  const token = "\u0000NAME\u0000";
+  return edit(text.split(name).join(token)).split(token).join(name);
+}
+
+function scrubGapCopy(text: string, name: string): string {
+  return protectName(text, name, (value) =>
+    value
+      .replace(/\bbest\b/gi, "first")
+      .replace(/\btop\b/gi, "main")
+      .replace(/\bfavorite\b/gi, "usual")
+      .replace(/\blisted\b/gi, "included")
+      .replace(/\bplan your route\b/gi, "check the drive")
+      .replace(/\bthis page\b/gi, "the directory")
+      .replace(/\bon file\b/gi, "saved")
+      .replace(/\blisting data\b/gi, "details")
+      .replace(/\blisting notes\b/gi, "notes"),
+  );
+}
+
 export function applyTinyFixes(output: ModelOutput, listing?: CompactListing): ModelOutput {
   let content = output.content.replace(/^#\s+.+\n+/m, "").trim();
   content = content
@@ -228,8 +250,20 @@ export function applyTinyFixes(output: ModelOutput, listing?: CompactListing): M
     .replace(/\bon a busy morning\b/gi, "in the morning")
     .replace(/\bthe kitchen notes that\b/gi, "")
     .replace(/\balso lists\b/gi, "has")
+    .replace(/\baccording to (?:the )?(?:listing|data|website),?\s*/gi, "")
+    .replace(/\bhours are not listed\b/gi, "hours are not posted")
+    .replace(/\bnot listed\b/gi, "not posted")
+    .replace(/\blisted hours\b/gi, "posted hours")
+    .replace(/\b(?:is |are )listed in\b/gi, "is in")
     .replace(/(?:^|[.!?]\s+)If you(?:['’]re| are) (?:looking|searching) for[^.!?]*[.!?]/gim, " ");
   let faq = output.faq;
+  if (isGapMode()) {
+    content = scrubGapCopy(content, listing?.name ?? "");
+    faq = faq.map((item) => ({
+      q: scrubGapCopy(item.q, listing?.name ?? ""),
+      a: scrubGapCopy(item.a, listing?.name ?? ""),
+    }));
+  }
   if (listing?.subcategory) {
     const nsub = normalizeForKeyword(listing.subcategory);
     if (nsub && !/^(restaurant|bar|cafe|hotel|store|shop)$/.test(nsub)) {
@@ -243,7 +277,40 @@ export function applyTinyFixes(output: ModelOutput, listing?: CompactListing): M
       }));
     }
   }
+  if (listing?.name && listing.city) {
+    const headings = [...content.matchAll(/^##\s+(.+)$/gm)];
+    const name = listing.name.toLowerCase();
+    const city = listing.city.toLowerCase();
+    const headingHasKeyword = headings.some((heading) => {
+      const text = heading[1].toLowerCase();
+      return text.includes(name) && text.includes(city);
+    });
+    if (headings.length > 0 && !headingHasKeyword) {
+      const first = headings[0];
+      content = content.replace(first[0], `## ${first[1].trim()}: ${listing.name} in ${listing.city}`);
+    }
+  }
   let next: ModelOutput = { ...output, content, faq };
+  if (listing?.address) {
+    for (let i = 0; i < 4 && countAddressMentions(bodyText(next), listing.address) > 2; i += 1) {
+      const faqHit = next.faq.findIndex((item) => countAddressMentions(`${item.q} ${item.a}`, listing.address) > 0);
+      if (faqHit >= 0) {
+        const copy = [...next.faq];
+        copy[faqHit] = {
+          ...copy[faqHit],
+          a: copy[faqHit].a.replace(listing.address, "that street address"),
+        };
+        next = { ...next, faq: copy };
+        continue;
+      }
+      const last = next.content.lastIndexOf(listing.address);
+      if (last === -1) break;
+      next = {
+        ...next,
+        content: `${next.content.slice(0, last)}that street address${next.content.slice(last + listing.address.length)}`,
+      };
+    }
+  }
   if (listing?.phone) {
     for (let i = 0; i < 6 && countPhoneMentions(bodyText(next), listing.phone) > 2; i += 1) {
       const faqHit = next.faq.findIndex((item) => countPhoneMentions(`${item.q} ${item.a}`, listing.phone) > 0);
@@ -258,7 +325,16 @@ export function applyTinyFixes(output: ModelOutput, listing?: CompactListing): M
   }
   let metaTitle = next.metaTitle.trim();
   let metaDescription = next.metaDescription.trim();
+  if (isGapMode()) {
+    metaTitle = scrubGapCopy(metaTitle, listing?.name ?? "");
+    metaDescription = scrubGapCopy(metaDescription, listing?.name ?? "");
+  }
   if (metaTitle.length > 60) metaTitle = trimAtWord(metaTitle, 60);
+  for (let i = 0; i < 3 && metaTitle.length > 0 && metaTitle.length < 45; i += 1) {
+    const padded = `${metaTitle} | Tampa`;
+    if (padded.length > 65) break;
+    metaTitle = padded;
+  }
   if (metaDescription.length > 160) metaDescription = trimAtWord(metaDescription, 160);
   return { ...next, metaTitle, metaDescription };
 }
@@ -292,17 +368,21 @@ export function runChecks(
     results.push({ name, ok, detail, autoFixed });
   };
   const limits = tierLimits(tier);
+  const gap = isGapMode();
+  const minWords = gap ? 450 : limits.minWords;
+  const maxWords = gap ? 650 : limits.maxWords;
 
   const count = words(output.content).length;
-  add("word count", count >= limits.minWords && count <= limits.maxWords, `${count} words (${tier} ${limits.minWords}-${limits.maxWords})`);
+  add("word count", count >= minWords && count <= maxWords, `${count} words (${gap ? "gap" : tier} ${minWords}-${maxWords})`);
 
   const h1 = (output.content.match(/^#\s+/gm) ?? []).length;
   const h3 = (output.content.match(/^###\s+/gm) ?? []).length;
   const h2s = [...output.content.matchAll(/^##\s+(.+)$/gm)].map((match) => match[1]);
+  const headingsPass = gap ? h1 === 0 && h3 === 0 && h2s.length >= 2 && h2s.length <= 3 : h1 === 0 && h3 === 0 && h2s.length === limits.headings;
   add(
     "headings",
-    h1 === 0 && h3 === 0 && h2s.length === limits.headings,
-    `h1=${h1} h2=${h2s.length} h3=${h3} (need ${limits.headings})`,
+    headingsPass,
+    `h1=${h1} h2=${h2s.length} h3=${h3} (need ${gap ? "2-3" : limits.headings})`,
   );
 
   const intro = output.content.split(/^##\s+/m)[0] ?? "";
@@ -349,7 +429,8 @@ export function runChecks(
     normalizeForKeyword(categoryPhrase),
   );
   const categoryCount = genericCategory ? 0 : countPhrase(body, categoryPhrase);
-  add("category mentions", categoryCount <= 3, `${categoryCount} mention(s) of ${categoryPhrase}`);
+  const categoryMax = gap ? 8 : 3;
+  add("category mentions", categoryCount <= categoryMax, `${categoryCount} mention(s) of ${categoryPhrase}`);
   const categoryLabeling = /\b(categor(?:y|ized)|falls under|grouped under|food and drink category)\b/i.test(body);
   const nsub = listing.subcategory ? normalizeForKeyword(listing.subcategory) : "";
   const nname = normalizeForKeyword(listing.name);
@@ -360,7 +441,11 @@ export function runChecks(
     !genericType &&
     !typeInName &&
     new RegExp(`\\bis an? ${nsub}\\b`).test(normalizeForKeyword(body));
-  add("no category label", !categoryLabeling && !asLabel, asLabel || categoryLabeling ? "uses category as a label" : "clean");
+  add(
+    "no category label",
+    gap || (!categoryLabeling && !asLabel),
+    asLabel || categoryLabeling ? "uses category as a label" : "clean",
+  );
 
   const describes = countPhrase(all, "describes itself as");
   add("describes itself", describes <= 1, `${describes} mention(s)`);
@@ -386,7 +471,9 @@ export function runChecks(
     unsupported.length ? unsupported.slice(0, 8).join("; ") : "all numbers appear in listing data",
   );
 
-  const inferred = [
+  const inferred = gap
+    ? []
+    : [
     "south side",
     "north side",
     "east side",

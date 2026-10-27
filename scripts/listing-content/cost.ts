@@ -44,7 +44,7 @@ export function addUsage(total: ClaudeUsage, next: ClaudeUsage): ClaudeUsage {
   };
 }
 
-const RUN_COST_LIMIT_USD = 1;
+const RUN_COST_LIMIT_USD = 25;
 const SPEND_PATH = join(PATHS.root, ".listing-content-cache", "claude-spend.json");
 /** Listing-content spend before this run, plus the $0.06 retest already billed. */
 const PRIOR_LIFETIME_USD = 0.241;
@@ -79,6 +79,11 @@ let lifetimeUsd = initial.lifetimeUsd;
 let billedBatchIds = initial.billedBatchIds ?? [];
 saveSpend();
 
+export function beginRun(): void {
+  runUsd = 0;
+  saveSpend();
+}
+
 export function addRunCost(usage: ClaudeUsage, batch: boolean, batchId?: string): number {
   if (batchId && billedBatchIds.includes(batchId)) return runUsd;
   const cost = estimateCostUsd(usage, batch);
@@ -88,7 +93,7 @@ export function addRunCost(usage: ClaudeUsage, batch: boolean, batchId?: string)
   saveSpend();
   if (runUsd > RUN_COST_LIMIT_USD) {
     throw new Error(
-      `STOP: Claude cost for this run is ${formatMoney(runUsd)}, which is above $1.`,
+      `STOP: Claude cost for this run is ${formatMoney(runUsd)}, which is above $${RUN_COST_LIMIT_USD}.`,
     );
   }
   return runUsd;

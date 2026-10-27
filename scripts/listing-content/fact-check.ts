@@ -132,3 +132,19 @@ export function claimIsSupported(claim: string, listingJson: string, websiteText
 export function filterUnsupported(claims: string[], listingJson: string, websiteText?: string): string[] {
   return claims.filter((claim) => !claimIsSupported(claim, listingJson, websiteText));
 }
+
+const GAP_CONCRETE =
+  /\b(bridges?|corridor|plaza|congested|crowded|residential|commercial district|commercial area|west side|east side|north side|south side|eastern|western|northern|southern|busy street|busy road|busy corridor|fills?(?:\s+up)?|lunch hour|on file|awards?|founded|owners?|chefs?|\$\s?\d|atmosphere|cozy|upscale|historic|family-owned|valet|free parking|parking lot)\b/i;
+
+/** Gap essays may give general advice. Keep a fact-check flag only when the sentence adds a concrete claim. */
+export function keepGapFlag(claim: string): boolean {
+  if (/\b\d{1,2}:\d{2}\b|\b\d{1,2}\s*(?:a\.m\.|p\.m\.)\b|\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i.test(claim)) {
+    return true;
+  }
+  if (GAP_CONCRETE.test(claim)) return true;
+  if (/\bother businesses in\b/i.test(claim)) return true;
+  if (/\b(offers?|serves?|specializes?|has been|since \d{4}|rated|reviews?|walk-ins are)\b/i.test(claim) && !/\b(ask|asking|question)\b/i.test(claim)) {
+    return true;
+  }
+  return false;
+}

@@ -28,9 +28,13 @@ export function StatusChip({ place }: { place: Place }) {
     setStatus(getPlaceStatus(place));
   }, [place]);
 
+  if (!place.hours || Object.keys(place.hours).length === 0) return null;
+
   if (!status) {
     return <span className={`${CHIP_BASE} bg-gulf-900/80`}>Checking hours</span>;
   }
+
+  if (status.type === "no-hours") return null;
 
   return <span className={chipClass(status.type)}>{status.label}</span>;
 }

@@ -210,20 +210,22 @@ export default async function PlaceDetailPage({ params }: Props) {
               </h1>
 
               <div className="flex items-center flex-wrap gap-x-3 gap-y-2 text-sm text-ink-600 mb-4">
-                <span className="flex items-center gap-1">
-                  <Star size={15} fill="#D8A02E" stroke="none" />
-                  <span className="font-semibold text-gulf-900">{place.rating.toFixed(1)}</span>
-                  <span>({place.reviewCount.toLocaleString("en-US")} reviews)</span>
-                </span>
+                {place.reviewCount > 0 ? (
+                  <span className="flex items-center gap-1">
+                    <Star size={15} fill="#D8A02E" stroke="none" />
+                    <span className="font-semibold text-gulf-900">{place.rating.toFixed(1)}</span>
+                    <span>({place.reviewCount.toLocaleString("en-US")} reviews)</span>
+                  </span>
+                ) : null}
                 {priceLabel ? (
                   <>
-                    <span className="opacity-40">·</span>
+                    {place.reviewCount > 0 ? <span className="opacity-40">·</span> : null}
                     <span aria-label={`Price ${priceLabel}`}>{priceLabel}</span>
                   </>
                 ) : null}
                 {place.neighborhood ? (
                   <>
-                    <span className="opacity-40">·</span>
+                    {place.reviewCount > 0 || priceLabel ? <span className="opacity-40">·</span> : null}
                     {neighborhoodHref ? (
                       <Link
                         href={neighborhoodHref}
@@ -242,7 +244,9 @@ export default async function PlaceDetailPage({ params }: Props) {
                 ) : null}
                 {place.wheelchairAccessible ? (
                   <>
-                    <span className="opacity-40">·</span>
+                    {place.reviewCount > 0 || priceLabel || place.neighborhood ? (
+                      <span className="opacity-40">·</span>
+                    ) : null}
                     <span className="flex items-center gap-1 text-gulf-700">
                       <Accessibility size={14} aria-hidden="true" />
                       Wheelchair accessible
@@ -342,6 +346,9 @@ export default async function PlaceDetailPage({ params }: Props) {
           <div className="space-y-6">
             <div className="sticky top-24 rounded-[var(--radius-card)] border border-line bg-white p-5">
               <h2 className="font-display font-700 text-base text-gulf-900 mb-4">Hours</h2>
+              {Object.keys(place.hours).length === 0 ? (
+                <p className="text-sm text-ink-600 mb-5">Call ahead to confirm hours.</p>
+              ) : (
               <table className="w-full text-sm mb-5" aria-label="Weekly hours">
                 <tbody>
                   {DAY_NAMES.map((day, i) => {
@@ -367,6 +374,7 @@ export default async function PlaceDetailPage({ params }: Props) {
                   })}
                 </tbody>
               </table>
+              )}
 
               <div className="border-t border-line pt-4 space-y-3">
                 <div>

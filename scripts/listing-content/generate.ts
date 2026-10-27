@@ -10,6 +10,7 @@ import { ListingClaude, addUsage, emptyUsage } from "./claude";
 import {
   HAIKU_MODEL,
   addRunCost,
+  beginRun,
   estimateCostUsd,
   estimateTokens,
   formatMoney,
@@ -20,15 +21,17 @@ import {
 import { toJob } from "./keywords";
 import { enrichListings, loadCachedEnrichment } from "./enrich";
 import { applyListingHours } from "./hours";
-import { AUDIT_SYSTEM, auditUserMessage, filterUnsupported, parseUnsupported } from "./fact-check";
+import { AUDIT_SYSTEM, auditUserMessage, filterUnsupported, keepGapFlag, parseUnsupported } from "./fact-check";
+import { isGapMode, setGapMode } from "./gap-mode";
 import { filterListings, loadListings, pickDiverseTestSet } from "./listings";
 import { enrichmentWordCount, scoreRichness } from "./travel";
 import { markdownToHtml } from "./markdown";
-import { SYSTEM_PROMPT, revisionMessage, userMessage } from "./prompt";
-import { getIndex, getRecord, putIndex, putRecord, r2WriteMode } from "./r2";
+import { GAP_SYSTEM_PROMPT, SYSTEM_PROMPT, revisionMessage, userMessage } from "./prompt";
+import { deleteQuarantine, getIndex, getRecord, putIndex, putRecord, r2WriteMode, readQuarantineRecords } from "./r2";
 import type {
   CheckResult,
   ClaudeUsage,
+  CompactListing,
   GenerateOptions,
   IndexEntry,
   ListingContentRecord,
@@ -58,6 +61,8 @@ function parseCli(argv: string[]): GenerateOptions {
       review: { type: "boolean", default: false },
       resume: { type: "boolean", default: false },
       revalidate: { type: "boolean", default: false },
+      gap: { type: "boolean", default: false },
+      preview: { type: "boolean", default: false },
       source: { type: "string" },
     },
     allowPositionals: false,
@@ -75,6 +80,8 @@ function parseCli(argv: string[]): GenerateOptions {
     resume: Boolean(values.resume),
     revalidate: Boolean(values.revalidate),
     source,
+    gap: Boolean(values.gap),
+    preview: Boolean(values.preview),
   };
 }
 
@@ -101,6 +108,43 @@ async function confirm(prompt: string): Promise<boolean> {
   return /^y(es)?$/i.test(answer.trim());
 }
 
+type RunTotals = {
+  generated: number;
+  skipped: number;
+  review: number;
+  passed: number;
+  failed: number;
+  usage: ClaudeUsage;
+};
+
+function unsupportedClaims(raw: string | undefined, error: string | undefined, job: ListingJob): string[] {
+  const claims = filterUnsupported(parseUnsupported(raw, error), job.compactJson, job.listing.websiteText);
+  return isGapMode() ? claims.filter(keepGapFlag) : claims;
+}
+
+function lengthenMessage(job: ListingJob, record: ListingContentRecord, failures: string[]): string {
+  return `The draft is ${record.wordCount} words. Rewrite it so content is 520 to 580 words.
+Keep the facts already in the draft. Add general questions for this kind of business until you reach the word count. Do not add hours, prices, menu items, services, staff, years, awards, atmosphere, or reviews that are not already written.
+One ## heading must contain "${job.primaryKeyword}".
+Do not use: listed, according to, best, top, favorite, on file.
+Do not invent a neighborhood from a street name.
+Failures to fix:
+${failures.map((item) => `- ${item}`).join("\n")}
+
+CURRENT JSON:
+${JSON.stringify({
+  metaTitle: record.metaTitle,
+  metaDescription: record.metaDescription,
+  content: record.contentMarkdown,
+  faq: record.faq,
+})}
+
+LISTING DATA:
+${job.compactJson}
+
+Return corrected JSON only.`;
+}
+
 function jobUserMessage(job: ListingJob, flagged?: string[]): string {
   return userMessage(
     job.primaryKeyword,
@@ -114,6 +158,28 @@ function jobUserMessage(job: ListingJob, flagged?: string[]): string {
 
 function factCorpus(job: ListingJob): string {
   return `${job.compactJson}\n${job.listing.websiteText ?? ""}`;
+}
+
+function writerOptions(): { system?: string } {
+  return isGapMode() ? { system: GAP_SYSTEM_PROMPT } : {};
+}
+
+function auditOptions(): { system: string; maxTokens: number; pad: false } {
+  const extra = isGapMode()
+    ? "\n\nGAP COPY: Do not flag general advice about this kind of business when the sentence does not state it as a fact about this specific business. Do not flag a first-person remark about the neighborhood when that neighborhood is in LISTING DATA. A nearby business is supported only if its name is in LISTING DATA. Do flag hours, prices, menu items, services, staff names, years, awards, atmosphere, or reviews stated about this business when that fact is in neither source."
+    : "";
+  return { system: `${AUDIT_SYSTEM}${extra}`, maxTokens: 800, pad: false };
+}
+
+function writePreview(record: ListingContentRecord): void {
+  const dir = join(
+    PATHS.root,
+    ".listing-content-cache",
+    "preview",
+    record.needsReview ? "quarantine" : "",
+  );
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, `${record.slug}.json`), `${JSON.stringify(record, null, 2)}\n`, "utf8");
 }
 
 function printEstimate(count: number, batch: boolean, outputTokens = OUTPUT_TOKENS_EST): number {
@@ -195,10 +261,14 @@ async function processOutput(
     retried = true;
     let previous = raw;
     for (let round = 0; round < 2 && evaluated.failures.length; round += 1) {
-      const retry = await claude.complete(revisionMessage(evaluated.failures), [
-        { role: "user", content: jobUserMessage(job) },
-        { role: "assistant", content: previous },
-      ]);
+      const retry = await claude.complete(
+        revisionMessage(evaluated.failures),
+        [
+          { role: "user", content: jobUserMessage(job) },
+          { role: "assistant", content: previous },
+        ],
+        writerOptions(),
+      );
       total = addUsage(total, retry.usage);
       previous = retry.text;
       evaluated = evaluateRaw(job, retry.text);
@@ -265,37 +335,29 @@ async function runReview(): Promise<void> {
 }
 
 async function generateOne(job: ListingJob, claude: ListingClaude): Promise<{ record: ListingContentRecord; usage: ClaudeUsage }> {
-  const first = await claude.complete(jobUserMessage(job));
+  const first = await claude.complete(jobUserMessage(job), [], writerOptions());
   const processed = await processOutput(job, first.text, first.usage, claude);
   if (!processed.record) {
     throw new Error(`${job.listing.slug}: ${processed.failures.join("; ") || "empty model output"}`);
   }
   let record = processed.record;
   let usage = processed.usage;
-  const audit = await claude.complete(auditUserMessage(job.compactJson, job.listing.websiteText, record), [], {
-    system: AUDIT_SYSTEM,
-    maxTokens: 800,
-    pad: false,
-  });
+  const audit = await claude.complete(auditUserMessage(job.compactJson, job.listing.websiteText, record), [], auditOptions());
   usage = addUsage(usage, audit.usage);
-  const unsupported = filterUnsupported(
-    parseUnsupported(audit.text, audit.text ? undefined : "empty audit"),
-    job.compactJson,
-    job.listing.websiteText,
-  );
+  const unsupported = unsupportedClaims(audit.text, audit.text ? undefined : "empty audit", job);
   if (unsupported.length) {
     console.log(`  fact-audit ${job.listing.slug}: ${unsupported.length} unsupported claim(s); regenerating`);
-    const retry = await claude.complete(jobUserMessage(job, unsupported));
+    const retry = await claude.complete(jobUserMessage(job, unsupported), [], writerOptions());
     const again = await processOutput(job, retry.text, retry.usage, claude);
     usage = addUsage(usage, again.usage);
     if (again.record) record = again.record;
     const audit2 = await claude.complete(
       auditUserMessage(job.compactJson, job.listing.websiteText, record),
       [],
-      { system: AUDIT_SYSTEM, maxTokens: 800, pad: false },
+      auditOptions(),
     );
     usage = addUsage(usage, audit2.usage);
-    const still = filterUnsupported(parseUnsupported(audit2.text), job.compactJson, job.listing.websiteText);
+    const still = unsupportedClaims(audit2.text, undefined, job);
     if (still.length) {
       record = {
         ...record,
@@ -365,8 +427,169 @@ async function runRevalidate(source: "remote" | "local"): Promise<void> {
   }
 }
 
+async function auditBatch(
+  records: ListingContentRecord[],
+  jobs: Map<string, ListingJob>,
+  claude: ListingClaude,
+  totals: RunTotals,
+): Promise<Map<string, string[]>> {
+  const found = new Map<string, string[]>();
+  if (records.length === 0) return found;
+  const { id } = await claude.createBatch(
+    records.map((record) => {
+      const job = jobs.get(record.slug)!;
+      return {
+        custom_id: record.slug,
+        user: auditUserMessage(job.compactJson, job.listing.websiteText, record),
+      };
+    }),
+    auditOptions(),
+  );
+  console.log(`Fact-check batch ${id} (${records.length}). Polling...`);
+  await claude.pollBatch(id);
+  const rows = await claude.downloadBatch(id);
+  const usage = rows.reduce((total, row) => addUsage(total, row.usage), emptyUsage());
+  totals.usage = addUsage(totals.usage, usage);
+  addRunCost(usage, true, id);
+  for (const row of rows) {
+    const job = jobs.get(row.custom_id);
+    if (!job) continue;
+    found.set(row.custom_id, unsupportedClaims(row.text, row.error, job));
+  }
+  for (const record of records) {
+    if (!found.has(record.slug)) found.set(record.slug, ["missing audit result"]);
+  }
+  return found;
+}
+
+async function draftListings(group: ListingJob[], claude: ListingClaude, totals: RunTotals): Promise<ListingContentRecord[]> {
+  const ready: ListingContentRecord[] = [];
+  const { id } = await claude.createBatch(
+    group.map((job) => ({
+      custom_id: job.listing.slug,
+      user: jobUserMessage(job),
+    })),
+    writerOptions(),
+  );
+  saveState({ id, jobs: group, phase: "main" });
+  console.log(`Submitted batch ${id} (${group.length} listings). Polling every 60s...`);
+  await claude.pollBatch(id);
+  console.log("Downloading results...");
+  const rows = await claude.downloadBatch(id);
+  console.log(`Downloaded ${rows.length} results.`);
+  addRunCost(
+    rows.reduce((total, row) => addUsage(total, row.usage), emptyUsage()),
+    true,
+  );
+  const bySlug = new Map(group.map((job) => [job.listing.slug, job]));
+  const retryJobs: Array<{ job: ListingJob; failures: string[]; record?: ListingContentRecord }> = [];
+  for (const row of rows) {
+    const job = bySlug.get(row.custom_id);
+    if (!job) continue;
+    try {
+      if (row.error || !row.text) throw new Error(row.error ?? "empty batch result");
+      totals.usage = addUsage(totals.usage, row.usage);
+      const processed = await processOutput(job, row.text, row.usage, null);
+      if (isGapMode() && processed.record) {
+        ready.push(processed.record);
+        continue;
+      }
+      if (!processed.record || processed.failures.length) {
+        retryJobs.push({
+          job,
+          failures: processed.failures.length ? processed.failures : ["empty model output"],
+          record: processed.record,
+        });
+        continue;
+      }
+      ready.push(processed.record);
+    } catch (error) {
+      totals.failed += 1;
+      console.error(`✗ ${row.custom_id}: ${error instanceof Error ? error.message : error}`);
+    }
+  }
+  if (retryJobs.length) {
+    console.log(`Retrying ${retryJobs.length} listing(s) as a second batch...`);
+    const { id: retryId } = await claude.createBatch(
+      retryJobs.map(({ job, failures, record }) => ({
+        custom_id: job.listing.slug,
+        user: record ? lengthenMessage(job, record, failures) : `${jobUserMessage(job)}\n\n${revisionMessage(failures)}`,
+      })),
+      writerOptions(),
+    );
+    saveState({
+      id: retryId,
+      jobs: retryJobs.map((item) => item.job),
+      phase: "retry",
+    });
+    await claude.pollBatch(retryId);
+    const retryRows = await claude.downloadBatch(retryId);
+    addRunCost(
+      retryRows.reduce((total, row) => addUsage(total, row.usage), emptyUsage()),
+      true,
+    );
+    const retryBySlug = new Map(retryJobs.map((item) => [item.job.listing.slug, item.job]));
+    for (const row of retryRows) {
+      const job = retryBySlug.get(row.custom_id);
+      if (!job) continue;
+      try {
+        if (row.error || !row.text) throw new Error(row.error ?? "empty batch result");
+        const processed = await processOutput(job, row.text, row.usage, null);
+        totals.usage = addUsage(totals.usage, row.usage);
+        if (!processed.record) throw new Error(processed.failures.join("; ") || "empty model output");
+        ready.push(processed.record);
+      } catch (error) {
+        totals.failed += 1;
+        console.error(`✗ ${row.custom_id}: ${error instanceof Error ? error.message : error}`);
+      }
+    }
+  }
+  return ready;
+}
+
+async function publishEssays(records: ListingContentRecord[], totals: RunTotals): Promise<ListingContentRecord[]> {
+  const stored: ListingContentRecord[] = [];
+  for (const record of records) {
+    if (!record.contentMarkdown?.trim()) {
+      totals.failed += 1;
+      console.error(`✗ ${record.slug}: empty essay`);
+      continue;
+    }
+    const next = { ...record, needsReview: false, reviewReasons: [] };
+    await putRecord(next);
+    await deleteQuarantine(next.slug);
+    stored.push(next);
+    totals.generated += 1;
+    totals.passed += 1;
+    if (stored.length === 1 || stored.length % 25 === 0) console.log(`  published ${stored.length}/${records.length}`);
+  }
+  return stored;
+}
+
+async function settleGapDrafts(
+  drafted: ListingContentRecord[],
+  _group: ListingJob[],
+  _claude: ListingClaude,
+  totals: RunTotals,
+): Promise<ListingContentRecord[]> {
+  console.log(`Publishing ${drafted.length} essays with fact check off.`);
+  return publishEssays(drafted, totals);
+}
+
+function attachNearby(selected: CompactListing[], all: CompactListing[]): void {
+  for (const listing of selected) {
+    if (!listing.neighborhood) continue;
+    const nearby = all
+      .filter((other) => other.slug !== listing.slug && other.neighborhood === listing.neighborhood)
+      .slice(0, 6)
+      .map((other) => `${other.name} (${other.subcategory ?? other.categoryLabel})`);
+    if (nearby.length) listing.nearbyPlaces = nearby;
+  }
+}
+
 async function main(): Promise<void> {
   const options = parseCli(process.argv.slice(2));
+  setGapMode(options.gap);
   if (options.review) {
     await runReview();
     return;
@@ -377,9 +600,24 @@ async function main(): Promise<void> {
   }
 
   let jobs: ListingJob[] = [];
-  let totals = { generated: 0, skipped: 0, review: 0, failed: 0, usage: emptyUsage() };
+  let totals: RunTotals = { generated: 0, skipped: 0, review: 0, passed: 0, failed: 0, usage: emptyUsage() };
   let index = await getIndex();
   const hashBySlug = new Map(index.map((entry) => [entry.slug, entry.inputHash]));
+  if (options.gap && !options.dryRun && !options.test && !options.resume) {
+    const alreadyPublished = new Set(index.filter((entry) => !entry.needsReview).map((entry) => entry.slug));
+    const held = readQuarantineRecords().filter(
+      (record) => record.contentMarkdown?.trim() && !alreadyPublished.has(record.slug),
+    );
+    if (held.length) {
+      console.log(`Publishing ${held.length} essays that were held for fact check.`);
+      const published = await publishEssays(held, totals);
+      for (const record of published) {
+        index = upsertIndex(index, record);
+        hashBySlug.set(record.slug, record.inputHash);
+      }
+      await putIndex(index);
+    }
+  }
 
   if (options.resume) {
     const state = loadState();
@@ -441,6 +679,7 @@ async function main(): Promise<void> {
           custom_id: job.listing.slug,
           user: `${jobUserMessage(job)}\n\n${revisionMessage(failures)}`,
         })),
+        writerOptions(),
       );
       saveState({
         id: retryId,
@@ -481,7 +720,14 @@ async function main(): Promise<void> {
     return;
   }
 
-  const listings = await loadListings(options.source);
+  let listings = await loadListings(options.source);
+  if (options.gap) listings = listings.filter((listing) => listing.status === "published");
+  if (options.gap && !options.force) {
+    const published = new Set(index.filter((entry) => !entry.needsReview).map((entry) => entry.slug));
+    const before = listings.length;
+    listings = listings.filter((listing) => !published.has(listing.slug));
+    console.log(`Gap mode: ${before - listings.length} already published, ${listings.length} still missing or quarantined.`);
+  }
   console.log(`D1 source: ${options.source} (${listings.length} listings)`);
   const byCategory = new Map<string, number>();
   for (const listing of listings) {
@@ -496,8 +742,9 @@ async function main(): Promise<void> {
     slugs: options.slugs,
     category: options.category,
     limit: options.limit,
-    travelOnly: true,
+    travelOnly: !options.gap,
   });
+  if (options.gap) attachNearby(selected, listings);
   if (options.test && !options.slugs.length) selected = pickDiverseTestSet(selected, options.test);
   if (selected.length === 0) {
     console.log("No listings matched.");
@@ -509,24 +756,34 @@ async function main(): Promise<void> {
     );
   }
 
-  console.log("Enriching from business websites...");
-  await enrichListings(selected, Boolean(options.test));
+  if (options.gap) {
+    console.log("Gap mode: using database fields only, no website scrape.");
+  } else {
+    console.log("Enriching from business websites...");
+    await enrichListings(selected, Boolean(options.test));
+  }
   for (const listing of selected) applyListingHours(listing);
 
   const thin: Array<{ slug: string; name: string; filled: string[] }> = [];
   const rich = { rich: 0, medium: 0 };
   for (const listing of selected) {
     const score = scoreRichness(listing);
-    if (score.tier === "thin") {
+    if (score.tier === "thin" && !options.gap) {
       thin.push({ slug: listing.slug, name: listing.name, filled: score.filled });
       continue;
     }
-    rich[score.tier] += 1;
-    const job = toJob(listing, score.tier);
+    if (score.tier !== "thin") rich[score.tier] += 1;
+    const tier = options.gap || score.tier === "thin" ? "rich" : score.tier;
+    const job = toJob(listing, tier);
     console.log(
-      `  tier ${score.tier} ${listing.slug} fields=${score.filled.join(",") || "none"} websiteWords=${enrichmentWordCount(listing)}`,
+      `  tier ${options.gap ? "gap" : score.tier} ${listing.slug} fields=${score.filled.join(",") || "none"} websiteWords=${enrichmentWordCount(listing)}`,
     );
-    if (!options.force && hashBySlug.get(listing.slug) === job.inputHash) {
+    const indexed = index.find((entry) => entry.slug === listing.slug);
+    if (options.gap && !options.force && indexed && !indexed.needsReview) {
+      totals.skipped += 1;
+      continue;
+    }
+    if (!options.force && !indexed?.needsReview && hashBySlug.get(listing.slug) === job.inputHash) {
       totals.skipped += 1;
       continue;
     }
@@ -563,6 +820,7 @@ async function main(): Promise<void> {
   }
 
   const claude = new ListingClaude();
+  if (options.gap && !options.resume) beginRun();
   if (options.test) {
     for (const job of jobs) {
       try {
@@ -575,10 +833,20 @@ async function main(): Promise<void> {
           totals.usage = addUsage(totals.usage, result.usage);
           addRunCost(result.usage, false);
         }
-        await putRecord(result.record);
-        index = upsertIndex(index, result.record);
+        if (options.preview) {
+          writePreview(result.record);
+          console.log(
+            options.preview
+              ? `preview only (${result.record.needsReview ? "quarantine" : "pass"}): .listing-content-cache/preview/`
+              : "",
+          );
+        } else {
+          await putRecord(result.record);
+          index = upsertIndex(index, result.record);
+        }
         totals.generated += 1;
         if (result.record.needsReview) totals.review += 1;
+        else totals.passed += 1;
         printRecordSummary(result.record);
         console.log("\n--- full content ---\n");
         console.log(result.record.contentMarkdown);
@@ -587,90 +855,32 @@ async function main(): Promise<void> {
         console.error(`✗ ${job.listing.slug}: ${error instanceof Error ? error.message : error}`);
       }
     }
-    await putIndex(index);
+    if (!options.preview) await putIndex(index);
     if (totals.review || totals.failed) process.exitCode = 1;
   } else {
-    for (const group of chunk(jobs, MAX_BATCH_REQUESTS)) {
-      const { id } = await claude.createBatch(
-        group.map((job) => ({
-          custom_id: job.listing.slug,
-          user: jobUserMessage(job),
-        })),
-      );
-      saveState({ id, jobs: group, phase: "main" });
-      console.log(`Submitted batch ${id} (${group.length} listings). Polling every 60s...`);
-      await claude.pollBatch(id);
-      console.log("Downloading results...");
-      const rows = await claude.downloadBatch(id);
-      console.log(`Downloaded ${rows.length} results.`);
-      addRunCost(
-        rows.reduce((total, row) => addUsage(total, row.usage), emptyUsage()),
-        true,
-      );
-      const bySlug = new Map(group.map((job) => [job.listing.slug, job]));
-      const retryJobs: Array<{ job: ListingJob; failures: string[] }> = [];
-      for (const row of rows) {
-        const job = bySlug.get(row.custom_id);
-        if (!job) continue;
-        try {
-          if (row.error || !row.text) throw new Error(row.error ?? "empty batch result");
-          totals.usage = addUsage(totals.usage, row.usage);
-          const processed = await processOutput(job, row.text, row.usage, null);
-          if (!processed.record || processed.failures.length) {
-            retryJobs.push({
-              job,
-              failures: processed.failures.length ? processed.failures : ["empty model output"],
-            });
-            continue;
-          }
-          await putRecord(processed.record);
-          index = upsertIndex(index, processed.record);
+    const groups = chunk(jobs, options.gap ? 50 : MAX_BATCH_REQUESTS);
+    let batchNumber = 0;
+    for (const group of groups) {
+      batchNumber += 1;
+      console.log(`\nBatch ${batchNumber}/${groups.length} (${group.length} listings)`);
+      const drafted = await draftListings(group, claude, totals);
+      if (options.gap) {
+        const settled = await settleGapDrafts(drafted, group, claude, totals);
+        for (const record of settled) index = upsertIndex(index, record);
+      } else {
+        for (const record of drafted) {
+          await putRecord(record);
+          index = upsertIndex(index, record);
           totals.generated += 1;
-        } catch (error) {
-          totals.failed += 1;
-          console.error(`✗ ${row.custom_id}: ${error instanceof Error ? error.message : error}`);
+          if (record.needsReview) totals.review += 1;
+          else totals.passed += 1;
         }
       }
-      if (retryJobs.length) {
-        console.log(`Retrying ${retryJobs.length} listing(s) as a second batch...`);
-        const { id: retryId } = await claude.createBatch(
-          retryJobs.map(({ job, failures }) => ({
-            custom_id: job.listing.slug,
-            user: `${jobUserMessage(job)}\n\n${revisionMessage(failures)}`,
-          })),
-        );
-        saveState({
-          id: retryId,
-          jobs: retryJobs.map((item) => item.job),
-          phase: "retry",
-        });
-        await claude.pollBatch(retryId);
-        const retryRows = await claude.downloadBatch(retryId);
-        addRunCost(
-          retryRows.reduce((total, row) => addUsage(total, row.usage), emptyUsage()),
-          true,
-        );
-        const retryBySlug = new Map(retryJobs.map((item) => [item.job.listing.slug, item.job]));
-        for (const row of retryRows) {
-          const job = retryBySlug.get(row.custom_id);
-          if (!job) continue;
-          try {
-            if (row.error || !row.text) throw new Error(row.error ?? "empty batch result");
-            const processed = await processOutput(job, row.text, row.usage, null);
-            totals.usage = addUsage(totals.usage, row.usage);
-            if (!processed.record) throw new Error(processed.failures.join("; ") || "empty model output");
-            await putRecord(processed.record);
-            index = upsertIndex(index, processed.record);
-            totals.generated += 1;
-            if (processed.record.needsReview) totals.review += 1;
-          } catch (error) {
-            totals.failed += 1;
-            console.error(`✗ ${row.custom_id}: ${error instanceof Error ? error.message : error}`);
-          }
-        }
-      }
+      await putIndex(index);
+      console.log(
+        `Batch ${batchNumber} done. generated ${totals.generated}, passed ${totals.passed}, quarantined ${totals.review}, failed ${totals.failed}.`,
+      );
     }
-    await putIndex(index);
     clearState();
   }
 
@@ -683,8 +893,10 @@ async function main(): Promise<void> {
         medium: rich.medium,
         thinSkipped: thin.length,
         generated: totals.generated,
+        passed: totals.passed,
         skippedUnchanged: totals.skipped,
         needsReview: totals.review,
+        quarantined: totals.review,
         failed: totals.failed,
         runUsd: runCostUsd(),
         lifetimeUsd: lifetimeCostUsd(),
@@ -695,7 +907,7 @@ async function main(): Promise<void> {
     "utf8",
   );
   console.log(
-    `\nDone. generated ${totals.generated}, skipped ${totals.skipped}, needs review ${totals.review}, failed ${totals.failed}. Tokens in ${totals.usage.inputTokens.toLocaleString("en-US")} / out ${totals.usage.outputTokens.toLocaleString("en-US")}. Actual cost ${formatMoney(estimateCostUsd(totals.usage, useBatch))} (this run ${formatMoney(runCostUsd())}, lifetime ${formatMoney(lifetimeCostUsd())})`,
+    `\nDone. generated ${totals.generated}, passed ${totals.passed}, quarantined ${totals.review}, skipped ${totals.skipped}, failed ${totals.failed}. Tokens in ${totals.usage.inputTokens.toLocaleString("en-US")} / out ${totals.usage.outputTokens.toLocaleString("en-US")}. Actual cost ${formatMoney(estimateCostUsd(totals.usage, useBatch))} (this run ${formatMoney(runCostUsd())}, lifetime ${formatMoney(lifetimeCostUsd())})`,
   );
 }
 

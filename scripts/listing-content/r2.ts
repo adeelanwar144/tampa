@@ -235,6 +235,24 @@ export async function deleteRecord(slug: string): Promise<void> {
   );
 }
 
+export async function deleteQuarantine(slug: string): Promise<void> {
+  const path = join(LOCAL_CACHE, "quarantine", `${slug}.json`);
+  if (!existsSync(path)) return;
+  try {
+    unlinkSync(path);
+  } catch {
+    /* already removed */
+  }
+  const key = `quarantine/${slug}.json`;
+  try {
+    await withPutSlot(() =>
+      withRetry(`R2 delete ${key}`, () => (s3Ready() ? deleteViaS3(key) : deleteViaWrangler(key))),
+    );
+  } catch {
+    /* no remote quarantine object */
+  }
+}
+
 export function readLocalRecords(): ListingContentRecord[] {
   if (!existsSync(LOCAL_CACHE)) return [];
   const records: ListingContentRecord[] = [];
