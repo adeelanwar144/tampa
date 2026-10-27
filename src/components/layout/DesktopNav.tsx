@@ -28,7 +28,7 @@ export function DesktopNav({ items, compact = false }: { items: NavItem[]; compa
   const pathname = usePathname();
   const moreLabels = new Set<string>([
     ...MORE_NAV_LABELS,
-    ...(compact ? ["Events", "Neighborhoods"] : []),
+    ...(compact ? ["Sports & Entertainment", "Neighborhoods"] : []),
   ]);
   const moreItems = [
     ...items.filter((item) => moreLabels.has(item.label)),

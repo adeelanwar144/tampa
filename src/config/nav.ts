@@ -8,7 +8,7 @@ export const primaryNav: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Things to do", href: "/things-to-do" },
   { label: "Food & drink", href: "/food-and-drink" },
-  { label: "Events", href: "/events" },
+  { label: "Sports & Entertainment", href: "/events" },
   { label: "Neighborhoods", href: "/neighborhoods" },
   { label: "Outdoors & beaches", href: "/outdoors-beaches" },
   { label: "Shopping", href: "/shopping" },

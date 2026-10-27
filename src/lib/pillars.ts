@@ -18,8 +18,8 @@ export const PILLAR_META: Record<
     href: "/food-and-drink",
   },
   events: {
-    title: "Events",
-    dek: "Concerts, games and what's on around town.",
+    title: "Sports & Entertainment",
+    dek: "TPC Tampa Bay, Topgolf, and Altitude.",
     href: "/events",
   },
   "outdoors-beaches": {

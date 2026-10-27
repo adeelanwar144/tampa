@@ -27,7 +27,7 @@ const FOOTER_NAV = [
       { label: "Getting around", href: "/getting-around" },
       { label: "Parking", href: "/getting-around#parking" },
       { label: "Beaches", href: "/outdoors-beaches" },
-      { label: "Events", href: "/events" },
+      { label: "Sports & Entertainment", href: "/events" },
     ],
   },
   {
