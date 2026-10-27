@@ -5,7 +5,8 @@ import { ChevronRight } from "lucide-react";
 import { PlaceCard } from "@/components/places/PlaceCard";
 import { getPlacesInNeighborhood, NEIGHBORHOODS } from "@/lib/listings";
 import { neighborhoodFromSlug, neighborhoodSlug } from "@/data/neighborhoods";
-import { SITE_URL, withSiteName } from "@/config/site";
+import { SITE_URL } from "@/config/site";
+import { neighborhoodMeta } from "@/lib/directory-seo";
 
 export const dynamic = "force-dynamic";
 
@@ -26,10 +27,11 @@ export async function generateMetadata({
   const name = unslugify(slug);
   if (!name) return {};
   const places = await getPlacesInNeighborhood(name);
-  const count = places.length;
+  const meta = neighborhoodMeta(name, places);
   return {
-    title: withSiteName(name),
-    description: `${count} ${count === 1 ? "place" : "places"} in ${name}.`,
+    title: meta.title,
+    description: meta.description,
+    alternates: { canonical: `${SITE_URL}/neighborhoods/${slug}` },
   };
 }
 

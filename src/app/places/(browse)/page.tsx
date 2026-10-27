@@ -7,12 +7,23 @@ import { SortSelect } from "@/components/places/SortSelect";
 import { PlacesGridSkeleton } from "@/components/places/PlacesGridSkeleton";
 import { PlacesHero } from "@/components/places/PlacesHero";
 import {
+  getAllPlaces,
   getFilteredPlaces,
+  isOpenNow,
   CATEGORY_LABELS,
 } from "@/lib/listings";
 import { CategorySlug, SortOption } from "@/types";
 import Link from "next/link";
-import { SITE_URL, withSiteName } from "@/config/site";
+import { SITE_URL } from "@/config/site";
+import {
+  CATEGORY_SEO_LABEL,
+  canonicalUrl,
+  categoryMeta,
+  filteredListingMeta,
+  matchingPlaces,
+  parsePage,
+  placesIndexMeta,
+} from "@/lib/directory-seo";
 
 export const dynamic = "force-dynamic";
 
@@ -31,22 +42,68 @@ export async function generateMetadata({
   searchParams: Promise<SearchParams>;
 }): Promise<Metadata> {
   const sp = await searchParams;
-  const parts: string[] = [];
-  if (sp.category && CATEGORY_LABELS[sp.category as CategorySlug]) {
-    parts.push(CATEGORY_LABELS[sp.category as CategorySlug]);
-  }
-  if (sp.neighborhood) {
-    parts.push(parts.length ? `in ${sp.neighborhood}` : `Places in ${sp.neighborhood}`);
+  const page = parsePage(sp.page);
+  const category =
+    sp.category && CATEGORY_LABELS[sp.category as CategorySlug]
+      ? (sp.category as CategorySlug)
+      : undefined;
+  const filtered = Boolean(
+    sp.neighborhood || sp.q || sp.open === "true" || (sp.sort && sp.sort !== "best-overall"),
+  );
+  const onlyCategory = Boolean(category) && !filtered;
+  const places = await getAllPlaces();
+
+  if (onlyCategory && category) {
+    const meta = categoryMeta(
+      category,
+      places.filter((place) => place.category === category),
+      page,
+    );
+    return {
+      title: meta.title,
+      description: meta.description,
+      alternates: {
+        canonical:
+          page > 1
+            ? `${SITE_URL}/directory/${category}?page=${page}`
+            : `${SITE_URL}/directory/${category}`,
+      },
+    };
   }
 
-  const title = parts.length
-    ? withSiteName(parts.join(" "))
-    : withSiteName("Places in Tampa");
+  const listed = matchingPlaces(
+    places,
+    { category, neighborhood: sp.neighborhood, q: sp.q, open: sp.open === "true" },
+    isOpenNow,
+  );
+  const meta = filtered
+    ? filteredListingMeta({
+        label: category ? CATEGORY_SEO_LABEL[category] : "Places",
+        places: listed,
+        page,
+        neighborhood: sp.neighborhood,
+        q: sp.q,
+        open: sp.open === "true",
+        sort: sp.sort,
+      })
+    : placesIndexMeta(places, page);
 
   return {
-    title,
-    description: "Restaurants, bars, beaches and shops we've visited, filtered how you like.",
-    alternates: { canonical: `${SITE_URL}/places` },
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: canonicalUrl(
+        "/places",
+        {
+          category: sp.category,
+          neighborhood: sp.neighborhood,
+          q: sp.q,
+          open: sp.open,
+          sort: sp.sort,
+        },
+        page,
+      ),
+    },
   };
 }
 

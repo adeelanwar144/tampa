@@ -6,9 +6,16 @@ import { NewsletterBand } from "@/components/home/NewsletterBand";
 import { PillarRail } from "@/components/home/PillarRail";
 import { SITE_NAME } from "@/config/site";
 
+const HOME_DESCRIPTION =
+  "An independent guide to Tampa, FL from Ben, who spent six months there with family. Things to do, where to eat, Ybor City, Bayshore, and local tips.";
+
 export const metadata: Metadata = {
   title: `${SITE_NAME} — An independent guide to Tampa, FL`,
-  description: "Stories, spots, and honest opinions from people who actually live here.",
+  description: HOME_DESCRIPTION,
+  openGraph: {
+    title: `${SITE_NAME} — An independent guide to Tampa, FL`,
+    description: HOME_DESCRIPTION,
+  },
 };
 
 const HOME_PILLARS = [

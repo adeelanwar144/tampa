@@ -4,12 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star, MapPin, Phone, Globe, ChevronRight, Accessibility, Navigation } from "lucide-react";
 import {
+  getAllPlaces,
   getPlaceBySlug,
   getRelatedPlaces,
   formatTime,
   getPlaceTimeParts,
   CATEGORY_LABELS,
 } from "@/lib/listings";
+import { placeMetaDescription, placeMetaTitle } from "@/lib/directory-seo";
 import { getListingContent } from "@/lib/listing-content";
 import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
 import { PlaceCard } from "@/components/places/PlaceCard";
@@ -18,7 +20,7 @@ import { StatusBadge } from "@/components/places/PlaceLiveStatus";
 import { PlaceMapSection } from "@/components/places/PlaceMapSection";
 import { coordsInPmtilesBbox } from "@/data/map-tiles";
 import { neighborhoodFromSlug } from "@/data/neighborhoods";
-import { SITE_URL, withSiteName } from "@/config/site";
+import { SITE_URL } from "@/config/site";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -32,22 +34,26 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const [place, listingContent] = await Promise.all([getPlaceBySlug(slug), getListingContent(slug)]);
+  const place = await getPlaceBySlug(slug);
   if (!place) return {};
 
-  const title = listingContent?.metaTitle || withSiteName(place.name);
-  const description = listingContent?.metaDescription || place.tagline;
+  const peers = await getAllPlaces();
+  const title = placeMetaTitle(place, peers);
+  const description = placeMetaDescription(place, peers);
+  const canonical = `${SITE_URL}/places/${place.slug}`;
 
   return {
     title,
     description,
+    alternates: { canonical },
     openGraph: {
-      title: listingContent?.metaTitle || place.name,
+      title,
       description,
+      url: canonical,
       images: place.images[0] ? [{ url: place.images[0] }] : [],
       type: "article",
     },
-    twitter: { card: "summary_large_image" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

@@ -82,6 +82,8 @@ export interface Place {
   subcategory: string;
   neighborhood: string;
   neighborhoodSlug?: string | null;
+  /** Google business status, when the database has one. */
+  businessStatus?: string | null;
   status?: "draft" | "published";
   address: string;
   lat: number;

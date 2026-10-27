@@ -245,6 +245,7 @@ function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): 
       ? (NEIGHBORHOOD_BY_SLUG[row.neighborhood_slug] ?? row.neighborhood_slug)
       : "",
     neighborhoodSlug: row.neighborhood_slug ?? null,
+    businessStatus: row.business_status,
     status: row.status === "draft" ? "draft" : "published",
     address: row.formatted_address ?? "",
     lat: row.lat ?? 0,

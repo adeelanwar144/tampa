@@ -1,8 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DirectoryBrowse, type DirectorySearchParams } from "@/components/directory/DirectoryBrowse";
-import { CATEGORY_LABELS } from "@/lib/listings";
-import { SITE_NAME, SITE_URL, withSiteName } from "@/config/site";
+import { CATEGORY_LABELS, getAllPlaces, isOpenNow } from "@/lib/listings";
+import { SITE_URL } from "@/config/site";
+import {
+  CATEGORY_SEO_LABEL,
+  canonicalUrl,
+  categoryMeta,
+  filteredListingMeta,
+  matchingPlaces,
+  parsePage,
+} from "@/lib/directory-seo";
 import type { CategorySlug } from "@/types";
 
 const VALID_CATEGORIES = Object.keys(CATEGORY_LABELS) as CategorySlug[];
@@ -15,16 +23,45 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ category: string }>;
+  searchParams: Promise<DirectorySearchParams>;
 }): Promise<Metadata> {
   const { category } = await params;
   const label = CATEGORY_LABELS[category as CategorySlug];
   if (!label) return {};
+  const cat = category as CategorySlug;
+  const sp = await searchParams;
+  const page = parsePage(sp.page);
+  const places = (await getAllPlaces()).filter((place) => place.category === cat);
+  const filtered = Boolean(
+    sp.neighborhood || sp.q || sp.open === "true" || (sp.sort && sp.sort !== "best-overall"),
+  );
+  const meta = filtered
+    ? filteredListingMeta({
+        label: CATEGORY_SEO_LABEL[cat],
+        places: matchingPlaces(
+          places,
+          { neighborhood: sp.neighborhood, q: sp.q, open: sp.open === "true" },
+          isOpenNow,
+        ),
+        page,
+        neighborhood: sp.neighborhood,
+        q: sp.q,
+        open: sp.open === "true",
+        sort: sp.sort,
+      })
+    : categoryMeta(cat, places, page);
+  const canonical = filtered
+    ? canonicalUrl(`/directory/${cat}`, sp, page)
+    : page > 1
+      ? `${SITE_URL}/directory/${cat}?page=${page}`
+      : `${SITE_URL}/directory/${cat}`;
   return {
-    title: withSiteName(label),
-    description: `${label} listed in the ${SITE_NAME}.`,
-    alternates: { canonical: `${SITE_URL}/directory/${category}` },
+    title: meta.title,
+    description: meta.description,
+    alternates: { canonical },
   };
 }
 
