@@ -3,7 +3,7 @@ import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
   title: withSiteName("Getting around"),
-  description: "Notes on getting around Tampa. More soon.",
+  description: "Getting around is how I move through Tampa: driving between neighborhoods, the streetcar from downtown to Ybor, and parking before you set out.",
 };
 
 export default function GettingAroundPage() {

@@ -8,7 +8,7 @@ const pillar = PILLAR_META.shopping;
 export const metadata: Metadata = {
   title: withSiteName(pillar.title),
   description:
-    "Shopping is the shelf for store guides, and I haven't published any here yet. Until those are up, the directory is where the shops are listed.",
+    "Shopping is my section for stores and markets around Tampa. The shopping directory lists the shops, from grocery stores to the everyday stops.",
 };
 
 export default function ShoppingPage() {

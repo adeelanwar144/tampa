@@ -8,7 +8,7 @@ const pillar = PILLAR_META["outdoors-beaches"];
 export const metadata: Metadata = {
   title: withSiteName(pillar.title),
   description:
-    "Outdoors and beaches is where park and water guides will go. None are published yet, so the neighborhood pages are the useful stop while I write them.",
+    "Outdoors and beaches is for public parks and time on the water around Tampa. Park and water listings belong in the beaches and outdoors directory.",
 };
 
 export default function OutdoorsBeachesPage() {
