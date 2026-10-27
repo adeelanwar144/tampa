@@ -404,7 +404,8 @@ function factOptions(detail: string): string[] {
             option.length >= 18 &&
             option.length <= 90 &&
             !isDangling(option) &&
-            !/^(which|that|before|if|and|but)\b/i.test(option),
+            !/^(which|that|before|if|and|but)\b/i.test(option) &&
+            !/\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)$/i.test(option),
         ),
     ),
   ];
