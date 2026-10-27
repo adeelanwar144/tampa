@@ -12,6 +12,7 @@ import {
   CATEGORY_LABELS,
 } from "@/lib/listings";
 import { placeMetaDescription, placeMetaTitle } from "@/lib/directory-seo";
+import { extractListingFact } from "@/lib/listing-fact";
 import { getListingContent } from "@/lib/listing-content";
 import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
 import { PlaceCard } from "@/components/places/PlaceCard";
@@ -34,12 +35,16 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const place = await getPlaceBySlug(slug);
+  const [place, peers, listing] = await Promise.all([
+    getPlaceBySlug(slug),
+    getAllPlaces(),
+    getListingContent(slug),
+  ]);
   if (!place) return {};
 
-  const peers = await getAllPlaces();
   const title = placeMetaTitle(place, peers);
-  const description = placeMetaDescription(place, peers);
+  const fact = listing ? extractListingFact(listing.contentHtml, place.name) : "";
+  const description = placeMetaDescription(place, peers, fact);
   const canonical = `${SITE_URL}/places/${place.slug}`;
 
   return {

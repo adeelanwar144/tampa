@@ -3,7 +3,8 @@ import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
   title: withSiteName("Contact Me"),
-  description: "Email Ben at Visit In Tampa with a question, a correction, or a place to cover.",
+  description:
+    "Email me at contact@visitintampa.com if you have a question, a correction, or a place I should cover. I read those notes and use them to fix the guide.",
 };
 
 export default function ContactPage() {

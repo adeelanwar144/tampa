@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: withSiteName("Search"),
-  description: "Search the guide.",
+  description:
+    "Search the places and guides on Visit In Tampa. A neighborhood, a cuisine, or a business name will get you to the address, photos, and tips.",
   alternates: { canonical: `${SITE_URL}/search` },
 };
 

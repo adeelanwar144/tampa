@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: withSiteName("Neighborhoods"),
-  description: "Tampa neighborhoods.",
+  description:
+    "Neighborhood pages for Ybor, Hyde Park, Seminole Heights, Bayshore, Westshore, and the rest of Tampa. Each one lists the places I've grouped there.",
 };
 
 function slugify(name: string) {

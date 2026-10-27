@@ -22,6 +22,26 @@ const CATEGORY_SEO_SHORT: Record<CategorySlug, string> = {
   "hotels-lodging": "Hotels",
 };
 
+const CATEGORY_COUNT_LABEL: Record<CategorySlug, { one: string; many: string }> = {
+  "food-drink": { one: "Place to Eat", many: "Places to Eat" },
+  "bars-nightlife": { one: "Bar to Try", many: "Bars to Try" },
+  "beaches-outdoors": { one: "Place to Try", many: "Places to Try" },
+  attractions: { one: "Place to Try", many: "Places to Try" },
+  shopping: { one: "Place to Shop", many: "Places to Shop" },
+  services: { one: "Local Service", many: "Local Services" },
+  "hotels-lodging": { one: "Place to Stay", many: "Places to Stay" },
+};
+
+function placeLabel(neighborhood: string, city: string): string {
+  if (neighborhood.toLowerCase().endsWith(city.toLowerCase())) return neighborhood;
+  return `${neighborhood}, ${city}`;
+}
+
+function categoryCountLabel(category: CategorySlug, count: number): string {
+  const labels = CATEGORY_COUNT_LABEL[category];
+  return count === 1 ? labels.one : labels.many;
+}
+
 const TITLE_MAX = 60;
 const DESC_MIN = 140;
 const DESC_MAX = 155;
@@ -48,10 +68,55 @@ export function matchingPlaces(
   });
 }
 
-export function isClosedPlace(place: Pick<Place, "name" | "businessStatus">): boolean {
-  const status = (place.businessStatus ?? "").toUpperCase();
-  if (status.includes("CLOSED")) return true;
-  return /\bclosed\b/i.test(place.name);
+export function isClosedPlace(place: Pick<Place, "businessStatus">): boolean {
+  return (place.businessStatus ?? "").toUpperCase().includes("CLOSED");
+}
+
+/** Name for titles and descriptions, without status notes such as "Temporarily closed". */
+export function listingSeoName(name: string): string {
+  let value = name.replace(/\s+/g, " ").trim();
+  const patterns = [
+    /\s+is\s+temporar(?:y|ily)\s+closed\b[\s\S]*$/i,
+    /\s*[-–—:,]*\s*temporar(?:y|ily)\s+closed\b[\s\S]*$/i,
+    /\s*[-–—:,]*\s*permanently\s+closed\b[\s\S]*$/i,
+    /\s+due to relocation\b[\s\S]*$/i,
+    /\s*[-–—:,]*\s*be back soon\b[\s\S]*$/i,
+    /\s*[-–—:]\s*closed\b[\s\S]*$/i,
+  ];
+  for (const pattern of patterns) value = value.replace(pattern, "");
+  value = value.replace(/[.\s,;:–—-]+$/g, "").replace(/\s+/g, " ").trim();
+  return value || name.replace(/\s+/g, " ").trim();
+}
+
+/** City written in the address. Unknown or unusable fragments stay Tampa. */
+export function placeCity(address: string | undefined): string {
+  const parts = (address ?? "")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  for (const part of parts.slice(1)) {
+    if (isStreetFragment(part)) continue;
+    const city = part.replace(/\s+FL\b.*$/i, "").trim();
+    if (city && !isStreetFragment(city)) return city;
+  }
+  return "Tampa";
+}
+
+function isStreetFragment(part: string): boolean {
+  if (/^[A-Za-z]$/.test(part)) return true;
+  if (/^#/.test(part) || /^FL\b/i.test(part) || /^\d/.test(part)) return true;
+  if (/^(suite|ste|apt|unit|bldg|building|floor)\b/i.test(part)) return true;
+  if (/^corner\b/i.test(part)) return true;
+  if (
+    /^(?:N|S|E|W|NE|NW|SE|SW)\b/i.test(part) &&
+    /\b(?:blvd|boulevard|ave|avenue|st|street|rd|road|dr|drive|hwy|highway|ln|lane|pkwy|parkway)\b/i.test(part)
+  ) {
+    return true;
+  }
+  return (
+    /\d/.test(part) &&
+    /\b(?:blvd|boulevard|ave|avenue|st|street|rd|road|dr|drive|hwy|highway)\b/i.test(part)
+  );
 }
 
 export function withPageSuffix(title: string, page: number): string {
@@ -93,12 +158,16 @@ export function placeMetaTitle(place: Place, peers: Place[] = []): string {
   return fitTitle(slugTitle(place));
 }
 
-export function placeMetaDescription(place: Place, peers: Place[] = []): string {
-  const plain = placeLeadOptions(place, false)[0];
+export function placeMetaDescription(place: Place, peers: Place[] = [], fact = ""): string {
+  const name = listingSeoName(place.name);
+  const city = placeCity(place.address);
   const withSlug = peers.some(
-    (peer) => peer.slug !== place.slug && placeLeadOptions(peer, false)[0] === plain,
+    (peer) =>
+      peer.slug !== place.slug &&
+      listingSeoName(peer.name) === name &&
+      placeCity(peer.address) === city,
   );
-  return finishFromOptions(placeLeadOptions(place, withSlug));
+  return finishFromOptions(placeLeadOptions(place, withSlug, fact), city);
 }
 
 export function categoryMeta(category: CategorySlug, places: Place[], page = 1): {
@@ -106,9 +175,8 @@ export function categoryMeta(category: CategorySlug, places: Place[], page = 1):
   description: string;
 } {
   const label = CATEGORY_SEO_LABEL[category];
-  const noun = places.length === 1 ? "Place" : "Places";
   const title = withPageSuffix(
-    `${label} in Tampa, FL: ${places.length} ${noun} to Try`,
+    `${label} in Tampa, FL: ${places.length} ${categoryCountLabel(category, places.length)}`,
     page,
   );
   return { title, description: categoryDescription(label, places, page) };
@@ -229,7 +297,7 @@ function streetTitle(place: Place): string {
   const street = streetLine(place.address);
   if (!street) return preferredTitle(place);
   const prefix = closedPrefix(place);
-  const name = place.name.trim();
+  const name = listingSeoName(place.name);
   const full = CATEGORY_SEO_LABEL[place.category];
   const short = CATEGORY_SEO_SHORT[place.category];
   const options = [
@@ -248,80 +316,110 @@ function slugTitle(place: Place): string {
   const street = streetLine(place.address);
   const prefix = closedPrefix(place);
   const short = CATEGORY_SEO_SHORT[place.category];
-  const where = street ? `at ${street}` : "in Tampa";
+  const where = street ? `at ${street}` : `in ${placeCity(place.address)}`;
   const note = ` (${place.slug})`;
   const tail = `${note}: ${short} ${where}`;
   const room = TITLE_MAX - prefix.length - tail.length;
-  return `${prefix}${truncateName(place.name.trim(), Math.max(8, room))}${tail}`;
+  return `${prefix}${truncateName(listingSeoName(place.name), Math.max(8, room))}${tail}`;
 }
 
 function preferredTitle(place: Place): string {
   const prefix = closedPrefix(place);
-  const name = place.name.trim();
+  const name = listingSeoName(place.name);
   const full = CATEGORY_SEO_LABEL[place.category];
   const short = CATEGORY_SEO_SHORT[place.category];
-  const neighborhood = place.neighborhood?.trim();
+  const city = placeCity(place.address);
+  const neighborhood = city === "Tampa" ? place.neighborhood?.trim() : "";
   const candidates = [
-    neighborhood ? `${prefix}${name}: ${full} in ${neighborhood}, Tampa` : "",
-    `${prefix}${name}: ${full} in Tampa`,
-    `${prefix}${name}: ${short} in Tampa`,
+    neighborhood ? `${prefix}${name}: ${full} in ${placeLabel(neighborhood, city)}` : "",
+    `${prefix}${name}: ${full} in ${city}`,
+    `${prefix}${name}: ${short} in ${city}`,
   ].filter(Boolean);
   for (const candidate of candidates) {
     if (candidate.length <= TITLE_MAX) return candidate;
   }
-  const tail = `: ${short} in Tampa`;
+  const tail = `: ${short} in ${city}`;
   const room = TITLE_MAX - prefix.length - tail.length;
   return `${prefix}${truncateName(name, Math.max(8, room))}${tail}`;
 }
 
-function placeLeadOptions(place: Place, withSlug: boolean): string[] {
+function placeLeadOptions(place: Place, withSlug: boolean, fact = ""): string[] {
   const type = typePhrase(place.subcategory || "place");
   const article = /^[aeiou]/i.test(type) ? "an" : "a";
-  const where = wherePhrase(place);
   const category = CATEGORY_SEO_LABEL[place.category];
   const name = namedForDescription(place, withSlug);
-  const detail = descriptionDetail(place);
-  const filed = `Filed under ${category}`;
-  if (isClosedPlace(place)) {
-    const cleaned = place.name.trim().replace(/\.+/g, " ").replace(/\s+/g, " ");
-    const short = truncateName(cleaned, withSlug ? 28 : 42);
-    const subject = withSlug
-      ? `${short} (${place.slug})`
-      : /\bclosed\b/i.test(short)
-        ? short
-        : `${short} is closed`;
-    return [
-      `${subject}. This ${type} is ${where}. ${detail || filed}`,
-      `This closed ${type} is ${where}. ${filed}`,
-      `This closed ${type} is ${streetWhere(place)}. ${filed}`,
-    ];
-  }
-  const base = `${name} is ${article} ${type} ${where}`;
-  const streetOnly = `${name} is ${article} ${type} ${streetWhere(place)}`;
-  const { street, city } = addressParts(place.address || "");
+  const detail = fact.trim() || descriptionDetail(place);
+  const specifics = detail
+    ? [...factOptions(detail), `Filed under ${category}`]
+    : [`Filed under ${category}`];
+  const city = placeCity(place.address);
+  const neighborhood = city === "Tampa" ? place.neighborhood?.trim() : "";
+  const { street } = addressParts(place.address || "");
+  const wheres = [
+    neighborhood && street ? `in ${neighborhood} at ${street}` : "",
+    street ? `at ${street} in ${city}` : "",
+    neighborhood ? `in ${neighborhood}` : "",
+    `in ${city}`,
+  ].filter((where, index, all) => where && all.indexOf(where) === index);
   const compactName = withSlug
-    ? `${truncateName(place.name.trim(), 18)} (${place.slug})`
-    : truncateName(place.name.trim(), 28);
-  const compactWhere = street
-    ? `at ${truncateName(street, 34)} in ${city}`
-    : streetWhere(place);
+    ? `${truncateName(listingSeoName(place.name), 18)} (${place.slug})`
+    : truncateName(listingSeoName(place.name), 28);
+  if (isClosedPlace(place)) {
+    const subject = withSlug ? `${name} (${place.slug})` : `${name} is closed`;
+    return specifics.flatMap((specific) =>
+      wheres.flatMap((where) => [
+        `${subject}. This closed ${type} is ${where}. ${specific}`,
+        `This closed ${type} is ${where}. ${specific}`,
+      ]),
+    );
+  }
+  return specifics.flatMap((specific) => [
+    ...wheres.map((where) => `${name} is ${article} ${type} ${where}. ${specific}`),
+    `${compactName} is ${article} ${type} in ${city}. ${specific}`,
+  ]);
+}
+
+function factOptions(detail: string): string[] {
+  const clean = detail.replace(/[.!?]+$/g, "").replace(/\s+/g, " ").trim();
+  const withoutIntro = clean.replace(/^(?:examples include|including|such as)\s+/i, "");
+  const options = [
+    clean,
+    clean.split(/,\s+which\s+/i)[0] ?? "",
+    clean.split(/,\s+so\s+/i)[0] ?? "",
+    clean.split(/,\s+/)[0] ?? "",
+    clean.split(/\s+with\s+/i)[0] ?? "",
+    clean.split(/\s+so\s+/i)[0] ?? "",
+    (clean.split(/\s+that\s+/i)[1] ?? "").split(/,\s+which\s+/i)[0] ?? "",
+    withoutIntro,
+    withoutIntro.split(/\s+with\s+/i)[0] ?? "",
+  ];
   return [
-    detail ? `${base}. ${detail}` : `${base}. ${filed}`,
-    `${base}. ${filed}`,
-    `${streetOnly}. ${filed}`,
-    `${compactName} is ${article} ${type} ${compactWhere}. ${filed}`,
+    ...new Set(
+      options
+        .map((option) => startSentence(option.replace(/[\s,;:]+$/g, "").trim()))
+        .filter(
+          (option) =>
+            option.length >= 18 &&
+            option.length <= 90 &&
+            !isDangling(option) &&
+            !/^(which|that|before|if|and|but)\b/i.test(option),
+        ),
+    ),
   ];
 }
 
-function streetWhere(place: Place): string {
-  const { street, city } = addressParts(place.address || "");
-  if (street) return `at ${street} in ${city}`;
-  if (place.neighborhood?.trim()) return `in ${place.neighborhood.trim()}, Tampa`;
-  return "in Tampa";
+function startSentence(text: string): string {
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function isDangling(text: string): boolean {
+  const last = text.split(" ").pop() ?? "";
+  return /^(and|or|the|a|an|in|at|of|to|for|with|on|from|by|so|you|can)$/i.test(last);
 }
 
 function namedForDescription(place: Place, withSlug: boolean): string {
-  const name = place.name.trim();
+  const name = listingSeoName(place.name);
   if (!withSlug) return name.length > 52 ? truncateName(name, 52) : name;
   const note = ` (${place.slug})`;
   return `${truncateName(name, Math.max(8, 52 - note.length))}${note}`;
@@ -371,26 +469,11 @@ function neighborhoodDescription(name: string, places: Place[]): string {
   );
 }
 
-function wherePhrase(place: Place): string {
-  const { street, city } = addressParts(place.address || "");
-  const neighborhood = place.neighborhood?.trim();
-  if (neighborhood && street) return `in ${neighborhood} at ${street}`;
-  if (street) return `at ${street} in ${city}`;
-  if (neighborhood) return `in ${neighborhood}, Tampa`;
-  return "in Tampa";
-}
-
 function addressParts(address: string): { street: string; city: string } {
   const parts = address.split(",").map((part) => part.trim()).filter(Boolean);
-  const city =
-    parts
-      .slice(1)
-      .find((part) => !/^#/.test(part) && !/^FL\b/i.test(part) && !/^\d/.test(part))
-      ?.replace(/\s+FL\b.*$/i, "")
-      .trim() || "Tampa";
   return {
     street: parts[0] ?? "",
-    city,
+    city: placeCity(address),
   };
 }
 
@@ -404,9 +487,17 @@ function descriptionDetail(place: Place): string {
 
 function topKinds(places: Place[], count: number): string[] {
   return topCounted(
-    places.map((place) => kindLabel(place.subcategory)),
+    places.map((place) => naturalKind(place.subcategory)),
     count,
   );
+}
+
+function naturalKind(subcategory: string): string {
+  const raw = subcategory.replace(/\s+/g, " ").trim().toLowerCase();
+  if (/fast food|meal takeaway|meal delivery|hamburger/.test(raw)) return "quick bites";
+  if (/coffee|cafe|bakery|donut|ice cream|juice|smoothie/.test(raw)) return "cafes";
+  if (raw.includes("restaurant")) return "restaurants";
+  return kindLabel(subcategory);
 }
 
 function topCategoryLabels(places: Place[], count: number): string[] {
@@ -493,8 +584,9 @@ function truncateName(name: string, max: number): string {
   if (name.length <= max) return name;
   const slice = name.slice(0, Math.max(1, max));
   const space = slice.lastIndexOf(" ");
-  const cut = space >= Math.min(12, max) ? slice.slice(0, space) : slice;
-  return cut.replace(/[\s,.:;&/–-]+$/g, "");
+  let cut = space >= Math.min(12, max) ? slice.slice(0, space) : slice;
+  cut = cut.replace(/\s+(?:by|and|of|the)\s+(?:Dr|Mr|Mrs|Ms|St|Jr|Sr)\.?$/i, "");
+  return cut.replace(/[\s,:;&/–-]+$/g, "").replace(/\s+(?:by|and|of|the)$/i, "");
 }
 
 function fitTitle(title: string, max = TITLE_MAX): string {
@@ -513,56 +605,57 @@ const CTAS = [
   "See the address, photos, and local tips before you go.",
 ];
 
-const BRIDGES = [
-  "Listed in Tampa.",
-  "On Visit In Tampa.",
-  "It is listed in Tampa.",
-  "It is listed on Visit In Tampa.",
-  "The page is part of the Tampa directory.",
-];
-
-function finishDescription(lead: string): string {
-  return finishFromOptions([lead]);
+function bridgesFor(city: string): string[] {
+  return [
+    `Listed in ${city}.`,
+    "On Visit In Tampa.",
+    `It is listed in ${city}.`,
+    "It is listed on Visit In Tampa.",
+    "The page is part of the Tampa directory.",
+  ];
 }
 
-function finishFromOptions(leads: string[]): string {
+function finishDescription(lead: string, city = "Tampa"): string {
+  return finishFromOptions([lead], city);
+}
+
+function finishFromOptions(leads: string[], city = "Tampa"): string {
+  const bridges = bridgesFor(city);
   const heads = leads.flatMap((lead) => sentenceOptions(tidy(lead)));
   for (const head of heads) {
-    const text = fitPair(head);
+    const text = fitPair(head, bridges);
     if (text) return text;
   }
-  const shortest = [...heads].sort((a, b) => a.length - b.length)[0] ?? "This place is listed in Tampa.";
-  return forceFit(shortest);
+  const shortest = [...heads].sort((a, b) => a.length - b.length)[0] ?? `This place is listed in ${city}.`;
+  return forceFit(shortest, bridges);
 }
 
 function sentenceOptions(head: string): string[] {
-  const parts = splitSentences(head);
-  if (parts.length <= 1) return [head];
-  return [head, tidy(parts[0])];
+  return [head];
 }
 
 function splitSentences(head: string): string[] {
   return head.split(/(?<=[A-Za-z]{3}\.)\s+(?=[A-Z])/).filter((part) => part.trim().length > 24);
 }
 
-function fitPair(head: string): string | null {
+function fitPair(head: string, bridges: string[]): string | null {
   const direct = withCta(head);
   if (direct) return direct;
-  for (const bridge of BRIDGES) {
+  for (const bridge of bridges) {
     const text = withCta(tidy(`${head.replace(/\.$/, "")}. ${bridge}`));
     if (text) return text;
   }
   return null;
 }
 
-function forceFit(head: string): string {
+function forceFit(head: string, bridges: string[]): string {
   const cta = CTAS[0];
   const maxHead = DESC_MAX - cta.length - 1;
   const minHead = DESC_MIN - cta.length - 1;
   let value = tidy(head);
   if (value.length > maxHead) value = safeTrim(value, maxHead);
   if (value.length < minHead) {
-    for (const bridge of BRIDGES) {
+    for (const bridge of bridges) {
       const next = tidy(`${value.replace(/\.$/, "")}. ${bridge}`);
       if (next.length >= minHead && next.length <= maxHead) {
         value = next;

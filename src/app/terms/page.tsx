@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_NAME, withSiteName } from "@/config/site";
+import { withSiteName } from "@/config/site";
 
 export const metadata: Metadata = {
   title: withSiteName("Terms & Conditions"),
-  description: `Terms and conditions for ${SITE_NAME}, effective October 22, 2026.`,
+  description:
+    "These terms cover Visit In Tampa, what the travel notes are for, and why you should confirm hours and prices before you go. Effective October 22, 2026.",
 };
 
 const headingClass = "font-display font-700 text-[22px] text-gulf-900 mt-10 mb-3";

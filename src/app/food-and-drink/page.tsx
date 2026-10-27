@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { PillarHub } from "@/components/pillars/PillarHub";
-import { getArticlesByPillar, pillarPageDescription, PILLAR_META } from "@/lib/pillars";
+import { getArticlesByPillar, PILLAR_META } from "@/lib/pillars";
 import { withSiteName } from "@/config/site";
 
 const pillar = PILLAR_META["food-and-drink"];
 
 export const metadata: Metadata = {
   title: withSiteName(pillar.title),
-  description: pillarPageDescription(pillar.title),
+  description:
+    "Food guides: Ulele, The Pearl, both Yummy House spots, Yard House, Texas de Brazil, and Wright's Gourmet House. I wrote what to order and what to skip.",
 };
 
 export default function FoodAndDrinkPage() {
