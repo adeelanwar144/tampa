@@ -74,7 +74,8 @@ export function isClosedPlace(place: Pick<Place, "businessStatus">): boolean {
 
 /** Name for titles and descriptions, without status notes such as "Temporarily closed". */
 export function listingSeoName(name: string): string {
-  let value = name.replace(/\s+/g, " ").trim();
+  const original = name.replace(/\s+/g, " ").trim();
+  let value = original;
   const patterns = [
     /\s+is\s+temporar(?:y|ily)\s+closed\b[\s\S]*$/i,
     /\s*[-–—:,]*\s*temporar(?:y|ily)\s+closed\b[\s\S]*$/i,
@@ -84,8 +85,9 @@ export function listingSeoName(name: string): string {
     /\s*[-–—:]\s*closed\b[\s\S]*$/i,
   ];
   for (const pattern of patterns) value = value.replace(pattern, "");
+  if (value === original) return original;
   value = value.replace(/[.\s,;:–—-]+$/g, "").replace(/\s+/g, " ").trim();
-  return value || name.replace(/\s+/g, " ").trim();
+  return value || original;
 }
 
 /** City written in the address. Unknown or unusable fragments stay Tampa. */
