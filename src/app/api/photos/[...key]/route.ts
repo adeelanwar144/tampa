@@ -255,10 +255,24 @@ export async function GET(
 
   // Prefer a single R2 get. Range requests stream bytes directly — never buffer the whole pmtiles file.
   const rangeHeader = request.headers.get("range");
-  // For ranged gets we still need total size for Content-Range; head only when Range is present.
   let size = 0;
   let contentType: string | undefined;
   let range: { offset: number; length: number } | null = null;
+
+  // Full pmtiles (~65MB) through the Worker times out (504). Map clients always use Range;
+  // refuse unscoped GETs after advertising Accept-Ranges via HEAD.
+  if (isPmtiles(requestKey) && !rangeHeader) {
+    const meta = await bucket.head(objectKey);
+    if (!meta) return new Response("Not found", { status: 404 });
+    return new Response("Range required", {
+      status: 416,
+      headers: {
+        "content-range": `bytes */${meta.size}`,
+        "accept-ranges": "bytes",
+        "cache-control": cacheControlFor(requestKey),
+      },
+    });
+  }
 
   if (rangeHeader) {
     const meta = await bucket.head(objectKey);
