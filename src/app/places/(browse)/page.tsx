@@ -8,6 +8,7 @@ import { PlacesGridSkeleton } from "@/components/places/PlacesGridSkeleton";
 import { PlacesHero } from "@/components/places/PlacesHero";
 import {
   getAllPlaces,
+  getPlacesByCategory,
   getFilteredPlaces,
   isOpenNow,
   CATEGORY_LABELS,
@@ -51,14 +52,10 @@ export async function generateMetadata({
     sp.neighborhood || sp.q || sp.open === "true" || (sp.sort && sp.sort !== "best-overall"),
   );
   const onlyCategory = Boolean(category) && !filtered;
-  const places = await getAllPlaces();
+  const places = category ? await getPlacesByCategory(category) : await getAllPlaces();
 
   if (onlyCategory && category) {
-    const meta = categoryMeta(
-      category,
-      places.filter((place) => place.category === category),
-      page,
-    );
+    const meta = categoryMeta(category, places, page);
     return {
       title: meta.title,
       description: meta.description,

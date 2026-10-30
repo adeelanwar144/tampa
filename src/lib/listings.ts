@@ -6,7 +6,7 @@ import {
   neighborhoodSlug as slugifyNeighborhood,
 } from "@/data/neighborhoods";
 import { getDb } from "@/lib/d1";
-import { getQuarantinedSlugs } from "@/lib/listing-content";
+import { cachedListingData } from "@/lib/listing-cache";
 import {
   Place,
   PlaceReview,
@@ -20,6 +20,7 @@ import {
 // ── Constants ───────────────────────────────────────────────────────
 export const PLACES_PER_PAGE = 12;
 export const TZ = "America/New_York";
+const LIST_CACHE_TTL = 300;
 
 export const CATEGORY_LABELS: Record<CategorySlug, string> = {
   "food-drink": "Food & drink",
@@ -62,7 +63,10 @@ type PlaceRow = {
   tagline: string | null;
   description: string | null;
   status: string | null;
+  listing_quarantined?: number | null;
   imported_at: string | null;
+  first_image?: string | null;
+  photo_count?: number | null;
 };
 
 type ImageRow = {
@@ -140,6 +144,10 @@ const SHOP_TYPES = new Set([
   "supermarket",
 ]);
 
+function sqlStringList(values: Iterable<string>): string {
+  return [...values].map((value) => `'${value.replace(/'/g, "''")}'`).join(", ");
+}
+
 function categoryFromType(primaryType: string | null): CategorySlug {
   if (!primaryType) return "services";
   if (primaryType === "hotel" || primaryType === "hotels-lodging" || primaryType.endsWith("_hotel")) {
@@ -151,6 +159,33 @@ function categoryFromType(primaryType: string | null): CategorySlug {
   if (ATTRACTION_TYPES.has(primaryType) || primaryType === "public_library") return "attractions";
   if (SHOP_TYPES.has(primaryType) || primaryType.endsWith("_store")) return "shopping";
   return "services";
+}
+
+function categoryWhereSql(category: CategorySlug): string {
+  const food = `(primary_type IN (${sqlStringList(FOOD_TYPES)}) OR primary_type LIKE '%_restaurant')`;
+  const bars = `primary_type IN (${sqlStringList(BAR_TYPES)})`;
+  const outdoors = `primary_type IN (${sqlStringList(OUTDOOR_TYPES)})`;
+  const attractions = `(primary_type IN (${sqlStringList(ATTRACTION_TYPES)}) OR primary_type = 'public_library')`;
+  const shopping = `(primary_type IN (${sqlStringList(SHOP_TYPES)}) OR primary_type LIKE '%_store')`;
+  const hotels = `(primary_type = 'hotel' OR primary_type = 'hotels-lodging' OR primary_type LIKE '%_hotel')`;
+  switch (category) {
+    case "food-drink":
+      return food;
+    case "bars-nightlife":
+      return bars;
+    case "beaches-outdoors":
+      return outdoors;
+    case "attractions":
+      return attractions;
+    case "shopping":
+      return shopping;
+    case "hotels-lodging":
+      return hotels;
+    case "services":
+      return `NOT (${food} OR ${bars} OR ${outdoors} OR ${attractions} OR ${shopping} OR ${hotels})`;
+    default:
+      return "1=1";
+  }
 }
 
 function humanizeType(primaryType: string | null) {
@@ -227,6 +262,30 @@ function reviewsFromRows(placeId: string, rows: ReviewRow[]): PlaceReview[] {
     }));
 }
 
+const PLACE_COLUMNS = `
+  id, slug, name, neighborhood_slug, formatted_address, lat, lng, phone, website,
+  google_maps_uri, rating, review_count, price_level, primary_type, business_status,
+  hours_json, utc_offset_minutes, delivery, takeout, dine_in, wheelchair_accessible,
+  tagline, description, status, imported_at
+`.replace(/\s+/g, " ").trim();
+
+const CARD_SELECT = `
+  SELECT ${PLACE_COLUMNS},
+    (
+      SELECT i.r2_key FROM place_images i
+      WHERE i.place_id = places.id AND i.r2_key NOT LIKE 'wm/%'
+      ORDER BY i.sort_order ASC
+      LIMIT 1
+    ) AS first_image,
+    (
+      SELECT COUNT(*) FROM place_images i
+      WHERE i.place_id = places.id AND i.r2_key NOT LIKE 'wm/%'
+    ) AS photo_count
+  FROM places
+`.replace(/\s+/g, " ").trim();
+
+const PUBLISHED_SQL = `status = 'published' AND COALESCE(listing_quarantined, 0) = 0`;
+
 function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): Place {
   const photoKeys = images
     .filter((img) => img.place_id === row.id && !img.r2_key.startsWith("wm/"))
@@ -272,40 +331,152 @@ function placeFromRow(row: PlaceRow, images: ImageRow[], reviews: ReviewRow[]): 
   };
 }
 
-/**
- * App listings read D1 only — never the Places API.
- * Seed data is never merged into production listings or the sitemap.
- * Local preview may use seed only when D1 is missing or empty.
- */
-async function loadPlaces(): Promise<Place[]> {
+function placeFromCardRow(row: PlaceRow): Place {
+  const image =
+    row.first_image && !row.first_image.startsWith("wm/")
+      ? [`/api/photos/${row.first_image}`]
+      : [];
+  const imported = row.imported_at ?? new Date().toISOString();
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline ?? "",
+    description: row.description ?? "",
+    category: categoryFromType(row.primary_type),
+    subcategory: humanizeType(row.primary_type),
+    neighborhood: row.neighborhood_slug
+      ? (NEIGHBORHOOD_BY_SLUG[row.neighborhood_slug] ?? row.neighborhood_slug)
+      : "",
+    neighborhoodSlug: row.neighborhood_slug ?? null,
+    businessStatus: row.business_status,
+    status: row.status === "draft" ? "draft" : "published",
+    address: row.formatted_address ?? "",
+    lat: row.lat ?? 0,
+    lng: row.lng ?? 0,
+    phone: row.phone ?? undefined,
+    website: row.website ?? undefined,
+    googleMapsUri: row.google_maps_uri ?? undefined,
+    priceLevel: clampPrice(row.price_level),
+    rating: row.rating ?? 0,
+    reviewCount: row.review_count ?? 0,
+    photoCount: Number(row.photo_count ?? image.length),
+    images: image,
+    hours: hoursFromJson(row.hours_json),
+    utcOffsetMinutes: row.utc_offset_minutes,
+    delivery: flagFromInt(row.delivery),
+    takeout: flagFromInt(row.takeout),
+    dineIn: flagFromInt(row.dine_in),
+    wheelchairAccessible: flagFromInt(row.wheelchair_accessible),
+    reviews: [],
+    tags: [],
+    featured: false,
+    createdAt: imported,
+    updatedAt: imported,
+  };
+}
+
+function allowDraftPreview() {
+  return process.env.NODE_ENV !== "production";
+}
+
+function seedAsPlaces(): Place[] {
+  return seedPlaces.map((seed) => ({
+    ...seed,
+    status: seed.status ?? "published",
+    neighborhoodSlug:
+      seed.neighborhoodSlug ?? (seed.neighborhood ? slugifyNeighborhood(seed.neighborhood) : null),
+  }));
+}
+
+type ListQuery = {
+  category?: CategorySlug;
+  neighborhood?: string;
+  q?: string;
+  ids?: string[];
+};
+
+function buildListWhere(query: ListQuery): { sql: string; params: Array<string | number> } {
+  const clauses = [PUBLISHED_SQL];
+  const params: Array<string | number> = [];
+  if (query.category) clauses.push(categoryWhereSql(query.category));
+  if (query.neighborhood) {
+    clauses.push("neighborhood_slug = ?");
+    params.push(slugifyNeighborhood(query.neighborhood));
+  }
+  if (query.q) {
+    const like = `%${query.q.replace(/[%_]/g, "")}%`;
+    clauses.push(
+      `(name LIKE ? COLLATE NOCASE OR IFNULL(tagline,'') LIKE ? COLLATE NOCASE OR IFNULL(neighborhood_slug,'') LIKE ? COLLATE NOCASE OR IFNULL(primary_type,'') LIKE ? COLLATE NOCASE)`,
+    );
+    params.push(like, like, like, like);
+  }
+  if (query.ids?.length) {
+    clauses.push(`id IN (${query.ids.map(() => "?").join(", ")})`);
+    params.push(...query.ids);
+  }
+  return { sql: clauses.join(" AND "), params };
+}
+
+function orderBySql(sort: SortOption): string {
+  switch (sort) {
+    case "most-popular":
+      return "(COALESCE(review_count, 0) * COALESCE(rating, 0)) DESC, name COLLATE NOCASE ASC";
+    case "most-reviewed":
+      return "COALESCE(review_count, 0) DESC, name COLLATE NOCASE ASC";
+    case "highest-rated":
+      return "COALESCE(rating, 0) DESC, COALESCE(review_count, 0) DESC, name COLLATE NOCASE ASC";
+    case "most-photos":
+      return "photo_count DESC, name COLLATE NOCASE ASC";
+    case "recently-updated":
+    case "newest":
+      return "IFNULL(imported_at, '') DESC, name COLLATE NOCASE ASC";
+    case "name-az":
+      return "name COLLATE NOCASE ASC";
+    case "best-overall":
+    default:
+      return `((COALESCE(review_count, 0) * 1.0) / (COALESCE(review_count, 0) + 50.0)) * COALESCE(rating, 0) + (50.0 / (COALESCE(review_count, 0) + 50.0)) * COALESCE((SELECT AVG(rating) FROM places WHERE ${PUBLISHED_SQL}), 0) DESC, name COLLATE NOCASE ASC`;
+  }
+}
+
+async function queryPlaceCards(
+  where: { sql: string; params: Array<string | number> },
+  options: { sort?: SortOption; limit?: number; offset?: number } = {},
+): Promise<Place[]> {
   const db = await getDb();
-  if (!db) return allowDraftPreview() ? seedPlaces : [];
+  if (!db) return allowDraftPreview() ? seedAsPlaces() : [];
+  const sort = options.sort ?? "best-overall";
+  let sql = `${CARD_SELECT} WHERE ${where.sql} ORDER BY ${orderBySql(sort)}`;
+  const params = [...where.params];
+  if (options.limit != null) {
+    sql += " LIMIT ?";
+    params.push(options.limit);
+  }
+  if (options.offset != null && options.offset > 0) {
+    sql += " OFFSET ?";
+    params.push(options.offset);
+  }
+  const result = await db
+    .prepare(sql)
+    .bind(...params)
+    .all<PlaceRow>();
+  const rows = (result.results ?? []) as PlaceRow[];
+  if (rows.length === 0 && allowDraftPreview()) return seedAsPlaces();
+  return rows.map(placeFromCardRow);
+}
 
-  const listingSql = allowDraftPreview()
-    ? "SELECT * FROM places"
-    : "SELECT * FROM places WHERE status = 'published'";
-  const [placeResult, imageResult, reviewResult] = await Promise.all([
-    db.prepare(listingSql).all<PlaceRow>(),
-    db.prepare("SELECT place_id, r2_key, sort_order FROM place_images").all<ImageRow>(),
-    db
-      .prepare(
-        "SELECT place_id, rating, review_text, relative_time, author_name, author_uri FROM place_reviews",
-      )
-      .all<ReviewRow>(),
-  ]);
-
-  const fetched = (placeResult.results ?? []) as PlaceRow[];
-  if (fetched.length === 0) return allowDraftPreview() ? seedPlaces : [];
-  const hidden = await getQuarantinedSlugs();
-  const rows = fetched.filter((row) => !hidden.has(row.slug));
-  const images = (imageResult.results ?? []) as ImageRow[];
-  const reviews = (reviewResult.results ?? []) as ReviewRow[];
-  return rows.map((row) => placeFromRow(row, images, reviews));
+async function countPlaceCards(where: { sql: string; params: Array<string | number> }): Promise<number> {
+  const db = await getDb();
+  if (!db) return allowDraftPreview() ? seedAsPlaces().length : 0;
+  const row = await db
+    .prepare(`SELECT COUNT(*) AS total FROM places WHERE ${where.sql}`)
+    .bind(...where.params)
+    .first<{ total: number }>();
+  return Number(row?.total ?? 0);
 }
 
 // ── Hours / status helpers ──────────────────────────────────────────
 
-/** Get the current Tampa time parts */
 function getTampaTimeParts(date: Date = new Date()): {
   dayOfWeek: number;
   hours: number;
@@ -404,7 +575,6 @@ export function getPlaceStatus(place: Place, now: Date = new Date()): PlaceStatu
     }
   }
 
-  // Check if opens tomorrow
   const tomorrow = (dayOfWeek + 1) % 7;
   const tomorrowHours = hours[tomorrow];
   if (tomorrowHours) {
@@ -414,7 +584,6 @@ export function getPlaceStatus(place: Place, now: Date = new Date()): PlaceStatu
     };
   }
 
-  // Find next open day
   for (let i = 2; i <= 7; i++) {
     const nextDay = (dayOfWeek + i) % 7;
     if (hours[nextDay]) {
@@ -449,8 +618,6 @@ export function getTodayHoursLabel(place: Place): string {
   if (!todayHours) return "Closed today";
   return `${formatTime(todayHours.open)} – ${formatTime(todayHours.close)}`;
 }
-
-// ── Sorting ─────────────────────────────────────────────────────────
 
 function bayesianScore(p: Place, meanRating: number): number {
   const v = p.reviewCount;
@@ -498,79 +665,87 @@ export interface ListingsResult {
   end: number;
 }
 
-export async function getFilteredPlaces(params: FilterParams): Promise<ListingsResult> {
-  const now = new Date();
-  let filtered = [...(await loadPlaces())];
-
-  if (params.category) {
-    filtered = filtered.filter((p) => p.category === params.category);
-  }
-
-  if (params.neighborhood) {
-    filtered = filtered.filter(
-      (p) =>
-        Boolean(p.neighborhood) &&
-        p.neighborhood.toLowerCase() === params.neighborhood?.toLowerCase(),
-    );
-  }
-
-  if (params.q) {
-    const q = params.q.toLowerCase();
-    filtered = filtered.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.tagline.toLowerCase().includes(q) ||
-        (p.neighborhood && p.neighborhood.toLowerCase().includes(q)) ||
-        p.subcategory.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }
-
-  if (params.open) {
-    filtered = filtered.filter((p) => isOpenNow(p, now));
-  }
-
-  const sorted = sortPlaces(filtered, params.sort ?? "best-overall");
-
-  const total = sorted.length;
+async function loadFilteredPlaces(params: FilterParams): Promise<ListingsResult> {
+  const sort = params.sort ?? "best-overall";
   const page = Math.max(1, params.page ?? 1);
+  const where = buildListWhere({
+    category: params.category,
+    neighborhood: params.neighborhood,
+    q: params.q,
+  });
+
+  // Open-now needs hours evaluation in JS; load lean candidates then page in SQL by id.
+  if (params.open) {
+    const candidates = await queryPlaceCards(where, { sort, limit: 2000 });
+    const open = candidates.filter((place) => isOpenNow(place));
+    const sorted = sortPlaces(open, sort);
+    const total = sorted.length;
+    const totalPages = Math.max(1, Math.ceil(total / PLACES_PER_PAGE));
+    const safePage = Math.min(page, totalPages);
+    const start = (safePage - 1) * PLACES_PER_PAGE;
+    const pageItems = sorted.slice(start, start + PLACES_PER_PAGE);
+    return {
+      places: pageItems,
+      total,
+      page: safePage,
+      totalPages,
+      start: total === 0 ? 0 : start + 1,
+      end: Math.min(start + PLACES_PER_PAGE, total),
+    };
+  }
+
+  const total = await countPlaceCards(where);
   const totalPages = Math.max(1, Math.ceil(total / PLACES_PER_PAGE));
   const safePage = Math.min(page, totalPages);
-  const start = (safePage - 1) * PLACES_PER_PAGE;
-  const end = Math.min(start + PLACES_PER_PAGE, total);
-  const pageItems = sorted.slice(start, end);
-
+  const offset = (safePage - 1) * PLACES_PER_PAGE;
+  const places = await queryPlaceCards(where, { sort, limit: PLACES_PER_PAGE, offset });
   return {
-    places: pageItems,
+    places,
     total,
     page: safePage,
     totalPages,
-    start: total === 0 ? 0 : start + 1,
-    end,
+    start: total === 0 ? 0 : offset + 1,
+    end: Math.min(offset + PLACES_PER_PAGE, total),
   };
 }
 
-function allowDraftPreview() {
-  return process.env.NODE_ENV !== "production";
+function filterCacheKey(params: FilterParams): string {
+  return JSON.stringify({
+    category: params.category ?? "",
+    neighborhood: params.neighborhood ?? "",
+    q: params.q ?? "",
+    sort: params.sort ?? "best-overall",
+    page: params.page ?? 1,
+  });
+}
+
+export async function getFilteredPlaces(params: FilterParams): Promise<ListingsResult> {
+  if (params.open) return loadFilteredPlaces(params);
+  const key = filterCacheKey(params);
+  return cachedListingData(`places-filtered:${key}`, LIST_CACHE_TTL, () => loadFilteredPlaces(params));
 }
 
 export async function getPlaceBySlug(slug: string): Promise<Place | undefined> {
-  if ((await getQuarantinedSlugs()).has(slug)) return undefined;
   const db = await getDb();
   if (db) {
-    const row = (await db.prepare("SELECT * FROM places WHERE slug = ?").bind(slug).first<PlaceRow>()) as
-      | PlaceRow
-      | null;
+    const row = (await db
+      .prepare(
+        `SELECT ${PLACE_COLUMNS} FROM places WHERE slug = ? AND COALESCE(listing_quarantined, 0) = 0`,
+      )
+      .bind(slug)
+      .first<PlaceRow>()) as PlaceRow | null;
     if (row) {
-      if (row.status === "draft" && !allowDraftPreview()) return undefined;
+      if (row.status !== "published" && !allowDraftPreview()) return undefined;
       const [imageResult, reviewResult] = await Promise.all([
         db
-          .prepare("SELECT place_id, r2_key, sort_order FROM place_images WHERE place_id = ?")
+          .prepare(
+            "SELECT place_id, r2_key, sort_order FROM place_images WHERE place_id = ? AND r2_key NOT LIKE 'wm/%' ORDER BY sort_order ASC",
+          )
           .bind(row.id)
           .all<ImageRow>(),
         db
           .prepare(
-            "SELECT place_id, rating, review_text, relative_time, author_name, author_uri FROM place_reviews WHERE place_id = ?",
+            "SELECT place_id, rating, review_text, relative_time, author_name, author_uri FROM place_reviews WHERE place_id = ? LIMIT 5",
           )
           .bind(row.id)
           .all<ReviewRow>(),
@@ -593,39 +768,116 @@ export async function getPlaceBySlug(slug: string): Promise<Place | undefined> {
   };
 }
 
+/** Other published places with the same name — for title/description disambiguation only. */
+export async function getPlaceNamePeers(place: Place): Promise<Place[]> {
+  const db = await getDb();
+  if (!db) {
+    return seedAsPlaces().filter((peer) => peer.slug !== place.slug && peer.name === place.name);
+  }
+  const result = await db
+    .prepare(
+      `${CARD_SELECT} WHERE name = ? AND slug != ? AND ${PUBLISHED_SQL} LIMIT 12`,
+    )
+    .bind(place.name, place.slug)
+    .all<PlaceRow>();
+  return ((result.results ?? []) as PlaceRow[]).map(placeFromCardRow);
+}
+
 export async function getRelatedPlaces(place: Place, count = 3): Promise<Place[]> {
-  if (!place.neighborhood) return [];
-  const all = await loadPlaces();
-  const mean =
-    all.length === 0 ? 0 : all.reduce((sum, p) => sum + p.rating, 0) / all.length;
-  return all
-    .filter((p) => p.id !== place.id && Boolean(p.neighborhood) && p.neighborhood === place.neighborhood)
-    .sort((a, b) => bayesianScore(b, mean) - bayesianScore(a, mean))
-    .slice(0, count);
+  if (!place.neighborhoodSlug && !place.neighborhood) return [];
+  const db = await getDb();
+  const neighborhoodSlug =
+    place.neighborhoodSlug ?? (place.neighborhood ? slugifyNeighborhood(place.neighborhood) : null);
+  if (!neighborhoodSlug) return [];
+
+  if (!db) {
+    const pool = seedAsPlaces().filter(
+      (peer) => peer.id !== place.id && peer.neighborhoodSlug === neighborhoodSlug,
+    );
+    return sortPlaces(pool, "best-overall").slice(0, count);
+  }
+
+  const result = await db
+    .prepare(
+      `${CARD_SELECT}
+       WHERE neighborhood_slug = ? AND id != ? AND ${PUBLISHED_SQL}
+       ORDER BY ${orderBySql("best-overall")}
+       LIMIT 6`,
+    )
+    .bind(neighborhoodSlug, place.id)
+    .all<PlaceRow>();
+  return ((result.results ?? []) as PlaceRow[]).map(placeFromCardRow).slice(0, count);
 }
 
 export async function getFeaturedPlaces(count = 6): Promise<Place[]> {
-  const all = await loadPlaces();
-  const featured = all.filter((p) => p.featured);
-  const pool = featured.length > 0 ? featured : all;
-  return sortPlaces(pool, "best-overall").slice(0, count);
+  const places = await getAllPlaces();
+  return sortPlaces(places, "best-overall").slice(0, count);
 }
 
+async function loadAllPlaceCards(): Promise<Place[]> {
+  return queryPlaceCards({ sql: PUBLISHED_SQL, params: [] }, { sort: "best-overall", limit: 5000 });
+}
+
+/** Lean card rows only (first image, no reviews). Cached 300s. */
 export async function getAllPlaces(): Promise<Place[]> {
-  return loadPlaces();
+  return cachedListingData("all-place-cards", LIST_CACHE_TTL, loadAllPlaceCards);
+}
+
+export async function getPlacesByCategory(category: CategorySlug): Promise<Place[]> {
+  return cachedListingData(`places-category:${category}`, LIST_CACHE_TTL, () =>
+    queryPlaceCards(buildListWhere({ category }), {
+      sort: "best-overall",
+      limit: 2000,
+    }),
+  );
 }
 
 export async function getPlacesInNeighborhood(neighborhood: string): Promise<Place[]> {
-  return (await loadPlaces()).filter((p) => p.neighborhood === neighborhood);
+  const key = slugifyNeighborhood(neighborhood);
+  return cachedListingData(`places-neighborhood:${key}`, LIST_CACHE_TTL, () =>
+    queryPlaceCards(
+      { sql: `${PUBLISHED_SQL} AND neighborhood_slug = ?`, params: [key] },
+      { sort: "best-overall", limit: 500 },
+    ),
+  );
+}
+
+export async function searchPlaces(q: string, limit = 48): Promise<Place[]> {
+  const trimmed = q.trim();
+  if (!trimmed) return [];
+  return queryPlaceCards(buildListWhere({ q: trimmed }), {
+    sort: "best-overall",
+    limit,
+  });
+}
+
+async function loadNeighborhoodCounts(): Promise<Record<string, number>> {
+  const db = await getDb();
+  const counts: Record<string, number> = {};
+  if (!db) {
+    for (const place of seedAsPlaces()) {
+      if (!place.neighborhood) continue;
+      counts[place.neighborhood] = (counts[place.neighborhood] ?? 0) + 1;
+    }
+    return counts;
+  }
+  const result = await db
+    .prepare(
+      `SELECT neighborhood_slug AS slug, COUNT(*) AS total
+       FROM places
+       WHERE ${PUBLISHED_SQL} AND neighborhood_slug IS NOT NULL AND neighborhood_slug != ''
+       GROUP BY neighborhood_slug`,
+    )
+    .all<{ slug: string; total: number }>();
+  for (const row of result.results ?? []) {
+    const name = NEIGHBORHOOD_BY_SLUG[row.slug] ?? row.slug;
+    counts[name] = Number(row.total);
+  }
+  return counts;
 }
 
 export async function getNeighborhoodCounts(): Promise<Record<string, number>> {
-  const counts: Record<string, number> = {};
-  for (const p of await loadPlaces()) {
-    if (!p.neighborhood) continue;
-    counts[p.neighborhood] = (counts[p.neighborhood] ?? 0) + 1;
-  }
-  return counts;
+  return cachedListingData("neighborhood-counts", LIST_CACHE_TTL, loadNeighborhoodCounts);
 }
 
 export async function getTopNeighborhoods(count = 6): Promise<string[]> {
@@ -634,6 +886,32 @@ export async function getTopNeighborhoods(count = 6): Promise<string[]> {
     .sort(([, a], [, b]) => b - a)
     .slice(0, count)
     .map(([n]) => n);
+}
+
+export type PlaceSitemapEntry = { slug: string; updatedAt: string };
+
+async function loadSitemapPlaces(): Promise<PlaceSitemapEntry[]> {
+  const db = await getDb();
+  if (!db) {
+    return seedAsPlaces().map((place) => ({ slug: place.slug, updatedAt: place.updatedAt }));
+  }
+  const result = await db
+    .prepare(
+      `SELECT slug, IFNULL(imported_at, '') AS imported_at
+       FROM places
+       WHERE ${PUBLISHED_SQL}
+       ORDER BY slug ASC`,
+    )
+    .all<{ slug: string; imported_at: string }>();
+  const rows = (result.results ?? []) as Array<{ slug: string; imported_at: string }>;
+  return rows.map((row) => ({
+    slug: row.slug,
+    updatedAt: row.imported_at || new Date().toISOString(),
+  }));
+}
+
+export async function getSitemapPlaces(): Promise<PlaceSitemapEntry[]> {
+  return cachedListingData("sitemap-places", LIST_CACHE_TTL, loadSitemapPlaces);
 }
 
 // ── Guides ──────────────────────────────────────────────────────────

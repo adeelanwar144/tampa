@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star, MapPin, Phone, Globe, ChevronRight, Accessibility, Navigation } from "lucide-react";
 import {
-  getAllPlaces,
   getPlaceBySlug,
+  getPlaceNamePeers,
   getRelatedPlaces,
   formatTime,
   getPlaceTimeParts,
@@ -35,12 +35,12 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const [place, peers, listing] = await Promise.all([
-    getPlaceBySlug(slug),
-    getAllPlaces(),
+  const place = await getPlaceBySlug(slug);
+  if (!place) return {};
+  const [peers, listing] = await Promise.all([
+    getPlaceNamePeers(place),
     getListingContent(slug),
   ]);
-  if (!place) return {};
 
   const title = placeMetaTitle(place, peers);
   const fact = listing ? extractListingFact(listing.contentHtml, place.name) : "";

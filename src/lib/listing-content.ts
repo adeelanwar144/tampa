@@ -42,44 +42,12 @@ function objectKey(slug: string): string {
   return `listings/${slug}.json`;
 }
 
-function quarantineKey(slug: string): string {
-  return `quarantine/${slug}.json`;
-}
-
-const QUARANTINE_TTL_MS = 60_000;
-let quarantineCache: { at: number; slugs: Set<string> } | null = null;
-
-export async function getQuarantinedSlugs(): Promise<Set<string>> {
-  if (quarantineCache && Date.now() - quarantineCache.at < QUARANTINE_TTL_MS) {
-    return quarantineCache.slugs;
-  }
-  const bucket = await getListingContentBucket();
-  const slugs = new Set<string>();
-  if (!bucket) return slugs;
-  try {
-    let cursor: string | undefined;
-    do {
-      const page = await bucket.list({ prefix: "quarantine/", cursor, limit: 1000 });
-      for (const object of page.objects) {
-        const name = object.key.slice("quarantine/".length);
-        if (name.endsWith(".json")) slugs.add(name.slice(0, -".json".length));
-      }
-      cursor = page.truncated ? page.cursor : undefined;
-    } while (cursor);
-    quarantineCache = { at: Date.now(), slugs };
-  } catch (error) {
-    console.error("Could not read quarantined listings", error);
-  }
-  return slugs;
-}
-
+/** Quarantine is enforced in D1 (`places.listing_quarantined`). Do not list R2 here. */
 export async function getListingContent(slug: string): Promise<ListingSeoContent | null> {
   if (!slug || slug.includes("/") || slug.includes("\\") || slug.includes("..")) return null;
   const bucket = await getListingContentBucket();
   if (!bucket) return null;
   try {
-    const quarantined = await bucket.get(quarantineKey(slug));
-    if (quarantined) return null;
     const object = await bucket.get(objectKey(slug));
     if (!object) return null;
     return parseRecord(await object.text());

@@ -9,6 +9,8 @@ export const dynamic = "force-dynamic";
 
 const ALLOWED_PREFIXES = ["places/", "maps/"];
 const VERSIONED_PMTILES = new Set(Object.keys(PMTILES_ALIASES));
+/** Only cache small map tile range chunks — never the whole archive. */
+const MAP_CACHE_MAX_BYTES = 2_000_000;
 
 type CachedMapBody = {
   status: number;
@@ -136,37 +138,43 @@ async function readMapCache(request: NextRequest) {
   }
 }
 
-async function writeMapCache(request: NextRequest, response: Response) {
-  const body = await response.arrayBuffer();
-  const headers = [...response.headers.entries()].filter(([name]) => name !== "x-map-cache");
-  const tooLarge = body.byteLength > 2_000_000;
-  if (!tooLarge) {
-    memoryCache.set(mapCacheKey(request), {
-      status: response.status,
-      headers,
-      body,
-    });
+async function maybeCacheMapResponse(
+  request: NextRequest,
+  response: Response,
+  range: { offset: number; length: number } | null,
+) {
+  const headers = new Headers(response.headers);
+  if (!range || range.length > MAP_CACHE_MAX_BYTES) {
+    headers.set("x-map-cache", "BYPASS");
+    return new Response(response.body, { status: response.status, headers });
   }
 
+  headers.set("x-map-cache", "MISS");
   try {
     const { ctx } = await getCloudflareContext({ async: true });
     const cache = workerCache();
+    const forCache = response.clone();
+    const forMem = response.clone();
     if (cache) {
-      ctx.waitUntil(
-        cache.put(
-          cacheApiRequest(request),
-          new Response(body, { status: response.status, headers: new Headers(headers) }),
-        ),
-      );
+      ctx.waitUntil(cache.put(cacheApiRequest(request), forCache));
     }
+    ctx.waitUntil(
+      (async () => {
+        const body = await forMem.arrayBuffer();
+        if (body.byteLength <= MAP_CACHE_MAX_BYTES) {
+          memoryCache.set(mapCacheKey(request), {
+            status: response.status,
+            headers: [...response.headers.entries()].filter(([name]) => name !== "x-map-cache"),
+            body,
+          });
+        }
+      })(),
+    );
   } catch {
     // next dev has no Worker Cache API
   }
 
-  return new Response(body, {
-    status: response.status,
-    headers: new Headers([...headers, ["x-map-cache", "MISS"]]),
-  });
+  return new Response(response.body, { status: response.status, headers });
 }
 
 export async function HEAD(
@@ -218,23 +226,18 @@ export async function GET(
   }
 
   const local = localImportPhoto(objectKey);
-  const bucket = local ? null : await getPhotosBucket();
-  const meta = bucket ? await bucket.head(objectKey) : null;
-  if (!meta && !local) return new Response("Not found", { status: 404 });
-  const size = local?.size ?? meta!.size;
-
-  const range = parseByteRange(request.headers.get("range"), size);
-  if (range === "unsatisfiable") {
-    return new Response(null, {
-      status: 416,
-      headers: { "content-range": `bytes */${size}`, "accept-ranges": "bytes" },
-    });
-  }
-
   if (local) {
+    const size = local.size;
+    const range = parseByteRange(request.headers.get("range"), size);
+    if (range === "unsatisfiable") {
+      return new Response(null, {
+        status: 416,
+        headers: { "content-range": `bytes */${size}`, "accept-ranges": "bytes" },
+      });
+    }
     const bytes = readFileSync(local.path);
     const slice = range ? bytes.subarray(range.offset, range.offset + range.length) : bytes;
-    return new Response(slice, {
+    const response = new Response(slice, {
       status: range ? 206 : 200,
       headers: objectHeaders(
         requestKey,
@@ -243,20 +246,57 @@ export async function GET(
         range,
       ),
     });
+    if (isPmtiles(requestKey)) return maybeCacheMapResponse(request, response, range);
+    return response;
+  }
+
+  const bucket = await getPhotosBucket();
+  if (!bucket) return new Response("Not found", { status: 404 });
+
+  // Prefer a single R2 get. Range requests stream bytes directly — never buffer the whole pmtiles file.
+  const rangeHeader = request.headers.get("range");
+  // For ranged gets we still need total size for Content-Range; head only when Range is present.
+  let size = 0;
+  let contentType: string | undefined;
+  let range: { offset: number; length: number } | null = null;
+
+  if (rangeHeader) {
+    const meta = await bucket.head(objectKey);
+    if (!meta) return new Response("Not found", { status: 404 });
+    size = meta.size;
+    contentType = meta.httpMetadata?.contentType;
+    const parsed = parseByteRange(rangeHeader, size);
+    if (parsed === "unsatisfiable") {
+      return new Response(null, {
+        status: 416,
+        headers: { "content-range": `bytes */${size}`, "accept-ranges": "bytes" },
+      });
+    }
+    range = parsed;
   }
 
   const object = range
-    ? await bucket!.get(objectKey, { range: { offset: range.offset, length: range.length } })
-    : await bucket!.get(objectKey);
+    ? await bucket.get(objectKey, { range: { offset: range.offset, length: range.length } })
+    : await bucket.get(objectKey);
   if (!object) return new Response("Not found", { status: 404 });
+
+  if (!range) {
+    size = object.size;
+    contentType = object.httpMetadata?.contentType;
+  }
 
   const response = new Response(object.body, {
     status: range ? 206 : 200,
-    headers: objectHeaders(requestKey, objectKey, meta!, range),
+    headers: objectHeaders(
+      requestKey,
+      objectKey,
+      { size, httpMetadata: { contentType } },
+      range,
+    ),
   });
 
   if (isPmtiles(requestKey)) {
-    return writeMapCache(request, response);
+    return maybeCacheMapResponse(request, response, range);
   }
 
   return response;

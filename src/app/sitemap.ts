@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPlaces, NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
+import { getSitemapPlaces, NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
 import { neighborhoodSlug } from "@/data/neighborhoods";
 import { sectionIsListed } from "@/lib/menu";
 import { articleHref, getPublishedArticles } from "@/lib/pillars";
@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const places = (await getAllPlaces()).map((p) => ({
+  const places = (await getSitemapPlaces()).map((p) => ({
     url: `${base}/places/${p.slug}`,
     lastModified: new Date(p.updatedAt),
     changeFrequency: "weekly" as const,

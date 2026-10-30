@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS places (
   tagline TEXT,
   description TEXT,
   status TEXT DEFAULT 'draft',
+  listing_quarantined INTEGER NOT NULL DEFAULT 0,
   imported_at TEXT
 );
 
@@ -91,6 +92,7 @@ CREATE TABLE IF NOT EXISTS place_address_components (
 
 CREATE INDEX IF NOT EXISTS idx_places_neighborhood ON places(neighborhood_slug);
 CREATE INDEX IF NOT EXISTS idx_places_status ON places(status);
+CREATE INDEX IF NOT EXISTS idx_places_listing_quarantined ON places(listing_quarantined);
 CREATE INDEX IF NOT EXISTS idx_place_images_place ON place_images(place_id);
 CREATE INDEX IF NOT EXISTS idx_place_reviews_place ON place_reviews(place_id);
 CREATE INDEX IF NOT EXISTS idx_place_address_components_place ON place_address_components(place_id);

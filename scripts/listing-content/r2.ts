@@ -203,11 +203,28 @@ export async function putRecord(record: ListingContentRecord): Promise<void> {
   await putJson(objectKey(record.slug), record);
 }
 
+async function setListingQuarantined(slug: string, value: 0 | 1): Promise<void> {
+  const safe = slug.replace(/'/g, "''");
+  try {
+    await runWrangler([
+      "d1",
+      "execute",
+      "tampa-bay-guide",
+      "--remote",
+      "--command",
+      `UPDATE places SET listing_quarantined = ${value} WHERE slug = '${safe}'`,
+    ]);
+  } catch (error) {
+    console.warn(`D1 listing_quarantined=${value} ${slug}: ${error instanceof Error ? error.message : error}`);
+  }
+}
+
 export async function quarantineRecord(record: ListingContentRecord): Promise<void> {
   const dir = join(LOCAL_CACHE, "quarantine");
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, `${record.slug}.json`), `${JSON.stringify(record, null, 2)}\n`, "utf8");
   await putJson(`quarantine/${record.slug}.json`, record);
+  await setListingQuarantined(record.slug, 1);
 }
 
 function removeLocal(slug: string): void {
@@ -237,11 +254,12 @@ export async function deleteRecord(slug: string): Promise<void> {
 
 export async function deleteQuarantine(slug: string): Promise<void> {
   const path = join(LOCAL_CACHE, "quarantine", `${slug}.json`);
-  if (!existsSync(path)) return;
-  try {
-    unlinkSync(path);
-  } catch {
-    /* already removed */
+  if (existsSync(path)) {
+    try {
+      unlinkSync(path);
+    } catch {
+      /* already removed */
+    }
   }
   const key = `quarantine/${slug}.json`;
   try {
@@ -251,6 +269,7 @@ export async function deleteQuarantine(slug: string): Promise<void> {
   } catch {
     /* no remote quarantine object */
   }
+  await setListingQuarantined(slug, 0);
 }
 
 export function readLocalRecords(): ListingContentRecord[] {

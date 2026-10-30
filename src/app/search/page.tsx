@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PlaceCard } from "@/components/places/PlaceCard";
-import { getAllPlaces, getAllGuides } from "@/lib/listings";
+import { searchPlaces, getAllGuides } from "@/lib/listings";
 import Link from "next/link";
 import Image from "next/image";
 import { SearchForm } from "./SearchForm";
@@ -27,16 +27,7 @@ export default async function SearchPage({
   const sp = await searchParams;
   const q = (sp.q ?? "").trim().toLowerCase();
 
-  const places = q
-    ? (await getAllPlaces()).filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.tagline.toLowerCase().includes(q) ||
-          (p.neighborhood && p.neighborhood.toLowerCase().includes(q)) ||
-          p.subcategory.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-      )
-    : [];
+  const places = q ? await searchPlaces(q) : [];
 
   const guides = q
     ? getAllGuides().filter(

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DirectoryBrowse, type DirectorySearchParams } from "@/components/directory/DirectoryBrowse";
-import { CATEGORY_LABELS, getAllPlaces, isOpenNow } from "@/lib/listings";
+import { CATEGORY_LABELS, getPlacesByCategory, isOpenNow } from "@/lib/listings";
 import { SITE_URL } from "@/config/site";
 import {
   CATEGORY_SEO_LABEL,
@@ -34,7 +34,7 @@ export async function generateMetadata({
   const cat = category as CategorySlug;
   const sp = await searchParams;
   const page = parsePage(sp.page);
-  const places = (await getAllPlaces()).filter((place) => place.category === cat);
+  const places = await getPlacesByCategory(cat);
   const filtered = Boolean(
     sp.neighborhood || sp.q || sp.open === "true" || (sp.sort && sp.sort !== "best-overall"),
   );
