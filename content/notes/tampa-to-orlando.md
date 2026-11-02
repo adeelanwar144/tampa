@@ -20,7 +20,7 @@ Per FDOT, I-4 is 132.30 miles, maintained by FDOT, signed east-west even though 
 
 Going down the exit list using FDOT mileposts and the [I-4 exit number table](https://www.fdot.gov/traffic/trafficservices/exitnumb/i-4.shtm): World Drive, signed Disney World, is exit 62. Sand Lake Road, exit 74A, is mile 73.732, signed toward International Drive and Orlando International Airport. Orange Blossom Trail, exit 80, is mile 80.474. Colonial Drive, exit 84A, is mile 83.792, toward downtown Orlando. About 62 miles of interstate to the Disney World exit. About 74 to Sand Lake and International Drive. About 84 to Colonial Drive. If you start at Tampa International or in Clearwater, those miles are not the whole trip—add your own first leg.
 
-East of the junction the road passes north of Ybor, then Brandon, Plant City, north of Lakeland, and the Polk Parkway. Weigh stations sit at mile 12. Rest areas are near Polk City and near Longwood, with restrooms, water, and vending.
+East of the junction the road passes north of Ybor, then Brandon, Plant City, north of Lakeland, and the Polk Parkway. Weigh stations sit at mile 12. The Polk City rest area sits on the Tampa–Orlando stretch. The Longwood rest area is east of Orlando—useful only if you are continuing past the metro, not for a Disney/Universal/downtown Orlando arrival.
 
 For a shorter Gulf-side hop instead, see [Tampa to Clearwater](/guides/tampa-to-clearwater). For Naples south, use my [Tampa to Naples](/guides/tampa-to-naples) guide. Flying into Tampa first? [TPA](/getting-around/tampa-international-airport).
 

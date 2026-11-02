@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getSitemapPlaces, NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
+import { NEIGHBORHOODS, CATEGORY_LABELS } from "@/lib/listings";
 import { neighborhoodSlug } from "@/data/neighborhoods";
 import { sectionIsListed } from "@/lib/menu";
 import { articleHref, getPublishedArticles } from "@/lib/pillars";
@@ -47,11 +47,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const places = (await getSitemapPlaces()).map((p) => ({
-    url: `${base}/places/${p.slug}`,
-    lastModified: new Date(p.updatedAt),
+  // Keep this Worker-light: full places listing was timing out the sitemap response.
+  const articles = getPublishedArticles().map((article) => ({
+    url: `${base}${articleHref(article)}`,
+    lastModified: new Date(article.updatedAt || article.publishedAt),
     changeFrequency: "weekly" as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   const neighborhoods = NEIGHBORHOODS.map((n) => ({
@@ -61,12 +62,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  const articles = getPublishedArticles().map((article) => ({
-    url: `${base}${articleHref(article)}`,
-    lastModified: new Date(article.updatedAt || article.publishedAt),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
-
-  return [...staticRoutes, ...directoryCategories, ...places, ...neighborhoods, ...articles];
+  return [...staticRoutes, ...directoryCategories, ...articles, ...neighborhoods];
 }
