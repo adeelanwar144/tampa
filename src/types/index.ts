@@ -4,7 +4,8 @@ export type PillarSlug =
   | "events"
   | "outdoors-beaches"
   | "shopping"
-  | "guides";
+  | "guides"
+  | "getting-around";
 
 export type ArticleType =
   | "things-to-do"

@@ -18,8 +18,8 @@ export const CATEGORY_TO_SECTION: Record<string, PillarSlug> = {
   "neighborhoods & areas": "guides",
   "practical planning & facts": "guides",
   "day trips & nearby cities": "guides",
-  "airport & flights": "guides",
-  "transportation & getting around": "guides",
+  "airport & flights": "getting-around",
+  "transportation & getting around": "getting-around",
   "weather & climate": "guides",
   "tampa general / hub": "guides",
 };

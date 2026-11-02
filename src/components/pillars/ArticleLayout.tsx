@@ -38,7 +38,7 @@ export function ArticleLayout({
     mainEntityOfPage: `${SITE_URL}${articleHref(article)}`,
     author: {
       "@type": "Person",
-      name: "Ben",
+      name: "Ben Hayes",
       url: `${SITE_URL}/about`,
     },
     publisher: {

@@ -25,7 +25,7 @@ export async function articleMetadata(
     title,
     description,
     keywords: article.keywords,
-    authors: [{ name: "Ben", url: `${SITE_URL}/about` }],
+    authors: [{ name: "Ben Hayes", url: `${SITE_URL}/about` }],
     alternates: { canonical: url },
     openGraph: {
       type: "article",
@@ -34,7 +34,7 @@ export async function articleMetadata(
       url,
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt || article.publishedAt,
-      authors: ["Ben"],
+      authors: ["Ben Hayes"],
       images: article.coverImage
         ? [{ url: article.coverImage, alt: article.coverAlt || article.title }]
         : undefined,

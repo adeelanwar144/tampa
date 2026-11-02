@@ -25,6 +25,7 @@ const HOME_PILLARS = [
   "outdoors-beaches",
   "shopping",
   "guides",
+  "getting-around",
 ] as const;
 
 export default function HomePage() {

@@ -37,6 +37,11 @@ export const PILLAR_META: Record<
     dek: "Practical notes for getting around Tampa.",
     href: "/guides",
   },
+  "getting-around": {
+    title: "Getting around",
+    dek: "The airport, the map, and how I move through Tampa.",
+    href: "/getting-around",
+  },
 };
 
 export const PILLAR_SLUGS = Object.keys(PILLAR_META) as PillarSlug[];

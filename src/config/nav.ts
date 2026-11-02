@@ -13,11 +13,12 @@ export const primaryNav: NavItem[] = [
   { label: "Outdoors & beaches", href: "/outdoors-beaches" },
   { label: "Shopping", href: "/shopping" },
   { label: "Guides", href: "/guides" },
+  { label: "Getting around", href: "/getting-around" },
 ];
 
 export const directoryCta = { label: "Directory", href: "/directory" };
 
-export const MORE_NAV_LABELS = ["Outdoors & beaches", "Shopping", "Guides"] as const;
+export const MORE_NAV_LABELS = ["Outdoors & beaches", "Shopping", "Guides", "Getting around"] as const;
 
 export function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
