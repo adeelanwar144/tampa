@@ -23,4 +23,12 @@ Check these on or before the date shown. Remove or rewrite the claim if the offi
 | international-plaza-tampa | Mall hours; valet rates; Bay Street redevelopment timeline | **2027-02-01** | https://www.simon.com/mall/international-plaza |
 | tampa-international-airport | Parking max rates; $5 rideshare fee; airline airside map | **2027-01-15** | https://www.tampaairport.com/ |
 
+| marriott-water-street-tampa | Destination fee listed **$20**/night excl. tax on Marriott rooms page (confirm at booking) | **2027-01-15** | https://www.marriott.com/en-us/hotels/tpamc-tampa-marriott-water-street/rooms/ |
+| marriott-water-street-tampa | Valet **$55**/day; daytime valet **$35**; Pam Iorio garage **$3**/hr **$18** daily max | **2027-01-15** | Marriott overview; https://www.tampa.gov/parking/info/parking-hourly-and-daily-rates |
+| marriott-water-street-tampa | On-site restaurant hours (Riverwalk Terrace, Anchor and Brine, Lona, Pool Bar) | **2027-01-15** | https://www.marriott.com/en-us/hotels/tpamc-tampa-marriott-water-street/dining/ |
+| tampa-riverwalk-hotels | Hotel Tampa Riverwalk renovation through **Nov 30, 2026** (pool + F&B closed; fitness open) | **2026-11-28** | https://www.hoteltampariverwalk.com/faq |
+| tampa-rv-show | Florida RV SuperShow + Fall RV Show dates, hours, admission, parking (**review every year**) | **Every Nov 1** (and after each show’s official page updates) | https://www.frvta.org/shows/ |
+| tampa-rv-show | Next SuperShow public dates (currently Jan 13–17, 2027) | **2026-12-15** (pre-sale / mid-December ticket note) | https://www.frvta.org/show/florida-rv-supershow/ |
+| trampoline-parks-tampa | Altitude / Sky Zone / Urban Air hours and ticket pages | **2027-01-15** | Official location pages linked in article |
+
 Sports / later batches (placeholder for upcoming articles): Bucs 2026 season schedule, Lightning 2026–27, Rays 2027 Tropicana return—add rows when those articles are drafted.

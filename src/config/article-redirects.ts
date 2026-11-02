@@ -15,8 +15,44 @@ export const SKIP_GENERATE_SLUGS = new Set<string>([
 ]);
 
 /**
- * Empty before launch. Dropped slugs stay out of generation and the sitemap
- * via DROPPED_SLUGS and SKIP_GENERATE_SLUGS. The removed 301s are listed in
- * scripts/date-audit-log.json if they need to come back after launch.
+ * Permanent redirects for wrong pillar paths / legacy URLs.
+ * Dropped-slug merges stay out of generation via DROPPED_SLUGS; add their
+ * 301s here when those old URLs need to keep resolving.
  */
-export const ARTICLE_REDIRECTS: { source: string; destination: string; statusCode: 301 }[] = [];
+export const ARTICLE_REDIRECTS: { source: string; destination: string; statusCode: 301 }[] = [
+  {
+    source: "/guides/tampa-rv-show",
+    destination: "/events/tampa-rv-show",
+    statusCode: 301,
+  },
+  {
+    source: "/things-to-do/trampoline-park-tampa-hillsborough",
+    destination: "/events/trampoline-park-tampa-hillsborough",
+    statusCode: 301,
+  },
+  {
+    source: "/things-to-do/topgolf-tampa",
+    destination: "/events/topgolf-tampa",
+    statusCode: 301,
+  },
+  {
+    source: "/guides/tampa-map",
+    destination: "/getting-around/tampa-map",
+    statusCode: 301,
+  },
+  {
+    source: "/things-to-do/tampa-map",
+    destination: "/getting-around/tampa-map",
+    statusCode: 301,
+  },
+  {
+    source: "/things-to-do/ybor-city-tampa",
+    destination: "/guides/ybor-city-tampa-fl-33605",
+    statusCode: 301,
+  },
+  {
+    source: "/guides/riverwalk-hotels",
+    destination: "/guides/tampa-riverwalk-hotels",
+    statusCode: 301,
+  },
+];
