@@ -24,9 +24,14 @@ import type { ClaudeUsage, ModelChoice } from "./types";
 
 const NOTES_ROOT =
   process.env.TAMPA_NOTES_DIR?.trim() ||
-  "C:\\Users\\adeel\\Downloads\\tampa-notes-rewritten-all-191\\high-priority";
+  "C:\\Users\\adeel\\Downloads\\tampa\\content\\notes\\batch-3";
+const NOTES_FALLBACKS = [
+  "C:\\Users\\adeel\\Downloads\\tampa-notes-rewritten-all-191\\high-priority",
+  "C:\\Users\\adeel\\Downloads\\tampa-notes-rewritten-all-191\\high-priority\\Done",
+  "C:\\Users\\adeel\\Downloads\\tampa\\content\\notes",
+];
 
-type BatchId = "a" | "b" | "c";
+type BatchId = "a" | "b" | "c" | "3" | "3b";
 
 const BATCH: Record<BatchId, string[]> = {
   a: [
@@ -65,6 +70,32 @@ const BATCH: Record<BatchId, string[]> = {
     "ybor-city-tampa-fl-33605",
     "zip-code-hillsborough-tampa-fl",
   ],
+  /** Batch 3 publish wave 1 (10) */
+  "3": [
+    "tampa-beaches",
+    "tampa-riverwalk",
+    "shopping-centers-tampa",
+    "oxford-exchange-tampa",
+    "sarasota-to-tampa",
+    "straz-center-tampa",
+    "midflorida-amphitheatre-tampa",
+    "orpheum-tampa",
+    "music-shows-in-tampa",
+    "tampa-bay-downs",
+  ],
+  /** Batch 3 publish wave 2 (10) */
+  "3b": [
+    "side-splitters-tampa",
+    "monster-jam-tampa",
+    "sheraton-tampa-brandon",
+    "renaissance-tampa-international-plaza",
+    "steakhouse-tampa",
+    "portillos-tampa",
+    "olivia-tampa",
+    "ocean-prime-tampa",
+    "rocca-tampa",
+    "nueva-cantina-downtown-tampa",
+  ],
 };
 
 const NOTE_FILES: Record<string, string[]> = {
@@ -90,7 +121,7 @@ const NOTE_FILES: Record<string, string[]> = {
   "tampa-hotels": ["tampa-hotels.txt", "downtown-tampa-hotels.txt", "hotels-in-tampa-usa.txt"],
   "tampa-events": ["tampa-events.txt", "events-in-tampa-this-weekend.txt"],
   "tampa-attractions": ["tampa-attractions.txt"],
-  "tampa-restaurants": ["restaurants-tampa.txt", "downtown-tampa-restaurants.txt"],
+  "tampa-restaurants": ["restaurants-tampa.txt"],
   "tampa-to-st-petersburg": ["tampa-to-st-petersburg.txt"],
   "tampa-tarpons": ["tampa-tarpons.txt"],
   "tampa-bay-rays": [
@@ -106,9 +137,49 @@ const NOTE_FILES: Record<string, string[]> = {
   "tropicana-field": ["tampa-rays-stadium.txt"],
   "tampa-bay-lightning": ["tampa-lightning.txt"],
   "tampa-lightning-tickets": ["tampa-lightning-tickets.txt", "tampa-lightning.txt"],
-  "tampa-buccaneers": ["tampa-bucs.txt", "tampa-stadium.txt", "james-stadium-tampa.txt"],
-  "seminole-hard-rock-tampa": ["seminole-hard-rock-tampa.txt"],
+  "tampa-buccaneers": [
+    "tampa-bucs.txt",
+    "tampa-bucs-schedule.txt",
+    "tampa-stadium.txt",
+    "james-stadium-tampa.txt",
+  ],
+  "seminole-hard-rock-tampa": [
+    "seminole-hard-rock-tampa.txt",
+    "seminole-hard-rock-hotel-casino-tampa.txt",
+    "tampa-casino.txt",
+  ],
   "tampa-map": ["tampa-map.txt"],
+  "music-shows-in-tampa": ["music-shows-in-tampa.txt"],
+  "tampa-bay-downs": ["tampa-downs-racetrack.txt"],
+  "tampa-beaches": ["tampa-beaches.txt"],
+  "straz-center-tampa": [
+    "straz-center-tampa.txt",
+    "straz-performing-arts-center-tampa-florida.txt",
+    "tbpac-tampa-published-extract.txt",
+  ],
+  "steakhouse-tampa": ["steakhouse-tampa.txt"],
+  "shopping-centers-tampa": ["shopping-centers-in-tampa-florida.txt"],
+  "side-splitters-tampa": ["side-splitters-tampa.txt"],
+  "sheraton-tampa-brandon": [
+    "sheraton-tampa-brandon-hotel.txt",
+    "sheraton-east-hotel-tampa-florida.txt",
+  ],
+  "sarasota-to-tampa": ["sarasota-to-tampa.txt"],
+  "midflorida-amphitheatre-tampa": ["mid-florida-credit-union-amphitheater-tampa.txt"],
+  "monster-jam-tampa": ["monster-jam-tampa.txt"],
+  "orpheum-tampa": ["orpheum-tampa.txt"],
+  "rocca-tampa": ["rocca-tampa.txt"],
+  "tampa-riverwalk": ["riverwalk.txt"],
+  "renaissance-tampa-international-plaza": ["renaissance-tampa-international-plaza-hotel.txt"],
+  "portillos-tampa": ["portillos-tampa-fl.txt"],
+  "oxford-exchange-tampa": [
+    "oxford-exchange-tampa.txt",
+    "oxford-exchange-tampa-restaurant.txt",
+  ],
+  "olivia-tampa": ["olivia-tampa.txt"],
+  "ocean-prime-tampa": ["ocean-prime-tampa.txt"],
+  "nueva-cantina-downtown-tampa": ["nueva-cantina-downtown-tampa.txt"],
+  "tampa-zoo": ["lory-park-zoo-tampa.txt"],
 };
 
 const HUB_SLUGS = new Set([
@@ -128,6 +199,10 @@ const LONG_SLUGS = new Set([
   "tampa-rays-schedule",
   "tampa-lightning-tickets",
   "tropicana-field",
+  "music-shows-in-tampa",
+  "shopping-centers-tampa",
+  "steakhouse-tampa",
+  "straz-center-tampa",
 ]);
 
 function pillarPath(pillar: string, slug: string): string {
@@ -142,6 +217,8 @@ function pillarPath(pillar: string, slug: string): string {
       return `/getting-around/${slug}`;
     case "shopping":
       return `/shopping/${slug}`;
+    case "outdoors-beaches":
+      return `/outdoors-beaches/${slug}`;
     default:
       return `/guides/${slug}`;
   }
@@ -294,10 +371,149 @@ const INTERNAL_LINKS: Record<string, string[]> = {
     "/guides/tampa-population — Tampa population",
     "/guides/tampa-usa-zip-code — Tampa USA ZIP code",
   ],
+  "music-shows-in-tampa": [
+    "/events/tampa-events — Tampa events",
+    "/things-to-do/straz-center-tampa — Straz Center Tampa",
+    "/events/midflorida-amphitheatre-tampa — MidFlorida Amphitheatre",
+    "/events/orpheum-tampa — Orpheum Tampa",
+    "/guides/seminole-hard-rock-tampa — Seminole Hard Rock Tampa",
+  ],
+  "tampa-bay-downs": [
+    "/events/tampa-events — Tampa events",
+    "/getting-around/tampa-map — Tampa map",
+    "/guides/tampa-florida-overview — Tampa Florida overview",
+    "/getting-around/tampa-international-airport — Tampa International Airport",
+  ],
+  "tampa-beaches": [
+    "/guides/tampa-to-clearwater — Tampa to Clearwater",
+    "/outdoors-beaches/tampa-riverwalk — Tampa Riverwalk",
+    "/getting-around/tampa-map — Tampa map",
+    "/guides/tampa-florida-overview — Tampa Florida overview",
+  ],
+  "straz-center-tampa": [
+    "/things-to-do/tampa-theatre — Tampa Theatre",
+    "/things-to-do/tampa-attractions — Tampa attractions",
+    "/events/tampa-events — Tampa events",
+    "/guides/barrymore-hotel-tampa — Barrymore Hotel",
+    "/events/music-shows-in-tampa — Music shows in Tampa",
+  ],
+  "steakhouse-tampa": [
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/food-and-drink/terra-gaucha-tampa — Terra Gaucha",
+    "/food-and-drink/texas-de-brazil-tampa — Texas de Brazil",
+    "/food-and-drink/ocean-prime-tampa — Ocean Prime Tampa",
+  ],
+  "shopping-centers-tampa": [
+    "/shopping/international-plaza-tampa — International Plaza",
+    "/shopping/tampa-flea-market — Tampa flea market",
+    "/shopping/oxford-exchange-tampa — Oxford Exchange",
+    "/guides/tampa-florida-overview — Tampa Florida overview",
+  ],
+  "side-splitters-tampa": [
+    "/events/tampa-events — Tampa events",
+    "/events/music-shows-in-tampa — Music shows in Tampa",
+    "/getting-around/tampa-map — Tampa map",
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+  ],
+  "sheraton-tampa-brandon": [
+    "/guides/tampa-hotels — Tampa hotels",
+    "/guides/seminole-hard-rock-tampa — Seminole Hard Rock Tampa",
+    "/events/midflorida-amphitheatre-tampa — MidFlorida Amphitheatre",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "sarasota-to-tampa": [
+    "/guides/tampa-to-st-petersburg — Tampa to St. Petersburg",
+    "/guides/tampa-to-fort-myers — Tampa to Fort Myers",
+    "/getting-around/tampa-map — Tampa map",
+    "/guides/tampa-florida-overview — Tampa Florida overview",
+  ],
+  "midflorida-amphitheatre-tampa": [
+    "/events/tampa-events — Tampa events",
+    "/events/music-shows-in-tampa — Music shows in Tampa",
+    "/guides/seminole-hard-rock-tampa — Seminole Hard Rock Tampa",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "monster-jam-tampa": [
+    "/events/tampa-stadium-guide — Stadium guide",
+    "/events/tampa-events — Tampa events",
+    "/events/tampa-buccaneers — Tampa Buccaneers",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "orpheum-tampa": [
+    "/events/music-shows-in-tampa — Music shows in Tampa",
+    "/events/tampa-events — Tampa events",
+    "/guides/ybor-city-tampa-fl-33605 — Ybor City",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "rocca-tampa": [
+    "/food-and-drink/the-pearl-tampa — The Pearl Tampa",
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/food-and-drink/armature-works-tampa — Armature Works",
+    "/outdoors-beaches/tampa-riverwalk — Tampa Riverwalk",
+  ],
+  "tampa-riverwalk": [
+    "/guides/tampa-riverwalk-hotels — Riverwalk hotels",
+    "/food-and-drink/ulele-tampa — Ulele",
+    "/food-and-drink/armature-works-tampa — Armature Works",
+    "/things-to-do/florida-aquarium-tampa — Florida Aquarium",
+    "/guides/tampa-convention-center — Convention Center",
+  ],
+  "renaissance-tampa-international-plaza": [
+    "/guides/tampa-hotels — Tampa hotels",
+    "/shopping/international-plaza-tampa — International Plaza",
+    "/getting-around/tampa-international-airport — Tampa International Airport",
+    "/guides/westshore-marriott-hotel-tampa — Westshore Marriott",
+  ],
+  "portillos-tampa": [
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/things-to-do/tampa-zoo — Tampa Zoo",
+    "/things-to-do/adventure-island-tampa — Adventure Island",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "oxford-exchange-tampa": [
+    "/shopping/shopping-centers-tampa — Shopping centers in Tampa",
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/things-to-do/tampa-museum-of-art — Tampa Museum of Art",
+    "/guides/tampa-florida-overview — Tampa Florida overview",
+  ],
+  "olivia-tampa": [
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/food-and-drink/steakhouse-tampa — Steakhouse Tampa",
+    "/guides/tampa-to-st-petersburg — Tampa to St. Petersburg",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "ocean-prime-tampa": [
+    "/food-and-drink/steakhouse-tampa — Steakhouse Tampa",
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/shopping/international-plaza-tampa — International Plaza",
+    "/guides/renaissance-tampa-international-plaza — Renaissance hotel",
+  ],
+  "nueva-cantina-downtown-tampa": [
+    "/food-and-drink/tampa-restaurants — Tampa restaurants",
+    "/outdoors-beaches/tampa-riverwalk — Tampa Riverwalk",
+    "/guides/tampa-convention-center — Convention Center",
+    "/getting-around/tampa-map — Tampa map",
+  ],
+  "tampa-zoo": [
+    "/things-to-do/tampa-attractions — Tampa attractions",
+    "/things-to-do/florida-aquarium-tampa — Florida Aquarium",
+    "/things-to-do/adventure-island-tampa — Adventure Island",
+    "/getting-around/tampa-map — Tampa map",
+  ],
 };
 
 function emptyUsage(): ClaudeUsage {
   return { inputTokens: 0, outputTokens: 0, cacheCreationTokens: 0, cacheReadTokens: 0 };
+}
+
+function resolveNotePath(name: string): string {
+  const primary = join(NOTES_ROOT, name);
+  if (existsSync(primary)) return primary;
+  for (const root of NOTES_FALLBACKS) {
+    const fallback = join(root, name);
+    if (existsSync(fallback)) return fallback;
+  }
+  throw new Error(`Missing note ${name} under ${NOTES_ROOT} or fallbacks`);
 }
 
 function readNotes(slug: string): string {
@@ -306,18 +522,15 @@ function readNotes(slug: string): string {
     // heuristic: slug.txt or common variants
     const candidates = [`${slug}.txt`, `${slug.replace(/-tampa$/, "")}.txt`];
     for (const name of candidates) {
-      const path = join(NOTES_ROOT, name);
-      if (existsSync(path)) return readFileSync(path, "utf8");
+      try {
+        return readFileSync(resolveNotePath(name), "utf8");
+      } catch {
+        /* try next */
+      }
     }
     throw new Error(`No note mapping for ${slug}. Add NOTE_FILES entry.`);
   }
-  return files
-    .map((name) => {
-      const path = join(NOTES_ROOT, name);
-      if (!existsSync(path)) throw new Error(`Missing note ${path}`);
-      return readFileSync(path, "utf8");
-    })
-    .join("\n\n---\n\n");
+  return files.map((name) => readFileSync(resolveNotePath(name), "utf8")).join("\n\n---\n\n");
 }
 
 function outDir(slug: string): string {
@@ -359,6 +572,30 @@ async function generateSlug(
     "tampa-restaurants": "food-and-drink",
     "tampa-hotels": "guides",
     "tampa-florida-overview": "guides",
+    "music-shows-in-tampa": "events",
+    "tampa-bay-downs": "events",
+    "tampa-beaches": "outdoors-beaches",
+    "straz-center-tampa": "things-to-do",
+    "steakhouse-tampa": "food-and-drink",
+    "shopping-centers-tampa": "shopping",
+    "side-splitters-tampa": "events",
+    "sheraton-tampa-brandon": "guides",
+    "sarasota-to-tampa": "getting-around",
+    "midflorida-amphitheatre-tampa": "events",
+    "monster-jam-tampa": "events",
+    "orpheum-tampa": "events",
+    "rocca-tampa": "food-and-drink",
+    "tampa-riverwalk": "outdoors-beaches",
+    "renaissance-tampa-international-plaza": "guides",
+    "portillos-tampa": "food-and-drink",
+    "oxford-exchange-tampa": "shopping",
+    "olivia-tampa": "food-and-drink",
+    "ocean-prime-tampa": "food-and-drink",
+    "nueva-cantina-downtown-tampa": "food-and-drink",
+    "tampa-zoo": "things-to-do",
+    "trampoline-parks-tampa": "events",
+    "seminole-hard-rock-tampa": "guides",
+    "tampa-buccaneers": "events",
   };
   const meta = {
     keyword: pack.keyword,
@@ -383,7 +620,7 @@ async function generateSlug(
         HUB_SLUGS.has(slug) && HUB_INVENTORY_KEY[slug]
           ? hubLinksFromInventory(HUB_INVENTORY_KEY[slug])
           : (INTERNAL_LINKS[slug] ?? []),
-      todayLabel: "November 2, 2026",
+      todayLabel: "November 4, 2026",
       priorFailure,
       isHub: HUB_SLUGS.has(slug),
     });
@@ -407,7 +644,7 @@ async function generateSlug(
       pack,
       lastSeo.meta_description,
       lastSeo.meta_title,
-      "November 2, 2026\n2026-11-02\nLast updated: November 2, 2026\nNovember 2025\nMay 2026\n2025\n2026\nsix-month Tampa stay Nov 2025–May 2026",
+      "November 4, 2026\n2026-11-04\nLast updated: November 4, 2026\nNovember 2, 2026\n2026-11-02\nNovember 2025\nMay 2026\n2025\n2026\n2027\nsix-month Tampa stay Nov 2025–May 2026",
     );
     const metaLen = [...lastSeo.meta_description].length;
     const titleLen = [...lastSeo.meta_title].length;
@@ -476,7 +713,7 @@ async function main(): Promise<void> {
   let slugs = (values.slug as string[]) ?? [];
   if (values.batch) {
     const id = values.batch as BatchId;
-    if (!BATCH[id]) throw new Error("--batch must be a|b|c");
+    if (!BATCH[id]) throw new Error("--batch must be a|b|c|3|3b");
     slugs = [...BATCH[id]];
   }
   if (values.limit) slugs = slugs.slice(0, Number(values.limit));

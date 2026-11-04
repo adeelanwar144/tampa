@@ -1,0 +1,37 @@
+Notes on sarasota to tampa, and the reverse
+
+People ask it as sarasota to tampa, tampa to sarasota, sarasota fl to tampa fl, tampa fl to sarasota fl, tampa florida to sarasota, tampa florida to sarasota florida, sarasota florida to tampa florida, and tampa to sarasota fl. Same road, too many endpoints. Downtown Sarasota, the airport that carries both cities' names, the beaches west of US 41, and Tampa International are not one pin.
+
+The two 52s that are not the same trip
+
+FDOT's intercity mileage, last updated 9/14/2026, is what I am using for the cities. FDOT calls those figures the shortest distance between many city pairs, used for mileage reimbursements. Sarasota to Tampa is 52 miles and Tampa to Sarasota is 52 miles. That pair happens to match in both directions. Plenty of nearby pairs do not. I am not smoothing the ones that disagree just because this one agrees.
+
+City to city, I was also given 61 miles from Sarasota, Florida to Tampa, Florida. I am keeping that figure in its own column. I am not averaging 52 and 61, and I am not calling 61 a correction of FDOT.
+
+Then there is a second 52: airport to airport, SRQ to TPA, I was given 52 miles, from Sarasota-Bradenton International Airport to Tampa International Airport. The numeral matches the FDOT city pair. The endpoints do not. I noticed that coincidence and I am leaving it as a coincidence. Quoting "52 miles" without saying which 52 is how this question goes wrong.
+
+Where SRQ actually sits
+
+By the FAA's airport figures, SRQ is 3 miles north of downtown Sarasota and 6 miles south of Bradenton. It sits in three jurisdictions at once: Sarasota County, the city limits of Sarasota, and Manatee County. The name on the terminal is not a clue about which city you are in. If I start at the terminal, I have already left downtown Sarasota, and I am not yet in Bradenton.
+
+FDOT's own figures for the city in between: Sarasota to Bradenton is 12 both ways. Tampa to Bradenton is 41. Bradenton to Tampa is 40. I am not adding 12 and 40, or 12 and 41, and calling the sum the Sarasota trip. FDOT already has a Sarasota-Tampa pair. The one-mile split on the Bradenton-Tampa figures is the same kind of thing I saw on other pairs. I do not know why, and I am not averaging it.
+
+Among the FDOT cities I counted, there is no Siesta Key, no Lido Key, no Longboat Key, and no Sarasota-Bradenton airport. Venice is a city: 18 miles from Sarasota both ways, and 71 from Tampa both ways. Someone who says "Sarasota" and means a key, or means Venice, is not on the 52-mile pair.
+
+The road I would actually be on
+
+I-75 is the inland freeway. North of Naples the interstate is toll-free, passes near Bonita Springs, Fort Myers, Punta Gorda, Port Charlotte, Venice, Sarasota, and Bradenton, and then reaches the Tampa Bay metro. North of Ellenton, I-275 splits from I-75 to serve St. Petersburg and Pinellas via the Sunshine Skyway and Tampa via the Howard Frankland. I-75 itself parallels the east shore as a bypass, past Brandon, Temple Terrace, and New Tampa. Downtown is reached from that bypass by the Selmon, SR 618, exit 256 near Brandon, or by I-4, exit 261.
+
+I-275 is its own road, 60.237 miles, auxiliary to I-75. It begins at exit 228 of I-75 near Palmetto, heads west, and the Sunshine Skyway is a 4.1-mile bridge over Tampa Bay. After St. Petersburg it crosses the bay again on the Howard Frankland and meets I-4 in downtown Tampa, then runs north to I-75 near Wesley Chapel. That is the Pinellas loop. It is not the Sarasota-to-Tampa freeway.
+
+Tampa International is specific about the approach from the south. From Sarasota, Venice, Sun City Center, and the south, the airport's directions are Interstate 75 North to Interstate 4, west on I-4 toward Tampa, then Interstate 275 south to exit 39. The airport also describes itself as just five miles west of downtown, at 4100 George J. Bean Parkway. So the airport's instruction uses I-4 and then a short jog south on I-275. It does not tell you to take the split at Ellenton onto the Skyway. I thought people were struggling with exactly that fork. The shield says I-275, the sign says St. Petersburg, and St. Petersburg is a real FDOT pair from Sarasota: 37 miles both ways. Tampa is 52. Those are not interchangeable, and the Skyway is a toll.
+
+The Skyway toll, if you take that fork anyway, comes from Florida's Turnpike Enterprise rates for West Central Florida, FDOT toll rates effective April 12, 2026. Southbound traffic pays the North Plaza. Northbound traffic pays the South Plaza. Two axles are $1.16 with SunPass and $1.62 toll-by-plate at the plaza for that direction. I am not adding the two plazas together. The Turnpike treats them as one plaza per direction. I also have no official mileage for the Sarasota-to-Tampa trip via the Skyway, so I am not inventing one. Sarasota to Clearwater, if that is what the person actually wanted, is 54 miles both ways by FDOT. Clearwater is not Tampa either.
+
+US 41 is the other confusion. I-75 runs closest to US 41 except between Tampa and High Springs, and runs closer to US 301 between Ellenton and Temple Terrace. South of Tampa, the old road and the interstate are near each other, and US 41 is the one that goes through the cities and out toward the keys. I do not have an FDOT figure that says "via Tamiami Trail only." The same people who gave me 61 miles also bunch Siesta Key Beach, Longboat Key, Lido Key, Clearwater Beach, and Caladesi Island into one line and say they are all within an hour to two hours from anywhere in Sarasota and Tampa. I noted that sentence because it is the mixup in one place. I am not using that hour range as a drive time. FDOT does not publish hours, and I am not dividing 52 by a speed limit.
+
+A longer gulf drive is a different pair. Sarasota to Fort Myers is 74 both ways. I am not stacking that on the Tampa trip. Jacksonville is another question that rides along with this one. Sarasota to Jacksonville is 241, and Jacksonville to Sarasota is 242. That one-mile split is FDOT being FDOT. It is not this drive.
+
+What I would actually do
+
+If the pin is the city, I would use 52 and I would stay on I-75 north until I-4 if I want downtown or the airport, the way TPA describes the south approach. I would not take I-275 at Ellenton unless I mean St. Petersburg, and if I do, I would expect the Skyway plaza at the April 12, 2026 rate, not a free bridge. If the pin is SRQ, I would use the airport-to-airport 52 only with the airport names attached, and I would remember the 3 miles and 6 miles: the terminal is north of downtown Sarasota and south of Bradenton. If the pin is a beach, FDOT does not have that pair. I kept hearing suites and inn alongside this question. I did not look into a hotel, so I have nothing to say about a room in Sarasota, Bradenton, or Brandon.

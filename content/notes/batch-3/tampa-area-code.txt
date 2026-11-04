@@ -1,0 +1,35 @@
+Notes on the Tampa area code
+
+People ask tampa area code, and the same question stretched out: tampa florida area code, tampa fl area code, area code tampa, area code florida tampa, area code of tampa, area code for tampa, area code tampa florida, and florida tampa area code. I wanted the digits in front of a local number. I did not want one offhand sentence that quietly means the whole bay.
+
+What I went by
+
+I went by NANPA planning letter PL-552, dated December 4, 2020, on the 813 and 656 all-services overlay in Florida. That letter says it supersedes PL-541. I went through PL-541 as well, dated June 8, 2020, because the later letter exists to revise the calendar, and because the earlier letter is the one that still carried the rate-center map. I went through Florida Public Service Commission order PSC-2020-0479-PAA-TP, issued the same December 4, in the docket about extending permissive dialing in the 850 and 813 area codes. And I went through the commission's February 2020 fact sheet on the 813 area code, docket 20190196-TP, which is still in the "we are reviewing plans" tense. The fact sheet is the question. The order and PL-552 are the dates that were actually set. I am not using the June 2020 calendar as if it stuck.
+
+813 is the code. 656 is the same ground.
+
+PL-552 says that on March 31, 2020, in docket 20190196-TP, the Florida PSC approved an all-services distributed overlay as relief for the 813 numbering plan area. The letter says the 813 NPA serves the greater metropolitan area of Tampa and also includes Oldsmar, Temple Terrace, Plant City, and Zephyrhills. It says 813 serves mainly Hillsborough and Pasco counties. The new 656 NPA serves the same geographic area as 813. Central office codes in 656 may be assigned only when all assignable prefixes in 813 have been assigned.
+
+That last line is the one I would have gotten wrong if I had only half-read it. 656 is not a suburb that outgrew 813. It is not a code I dial instead of 813 to reach a different town. People who already have 813 keep 813. A new number can come out of 656 after 813's assignable prefixes are used up. Both codes share the geography.
+
+The February 2020 fact sheet describes the 813 region as Hillsborough County and parts of Pasco and Pinellas counties, including the cities of Tampa and Plant City. It says an all-services overlay puts a new area code on the same region, that new customers would get the new code, and that existing customers keep their numbers. It says ten-digit local dialing would be required. The fact sheet's "parts of Pinellas" and the planning letter's naming of Oldsmar are the same caution said two ways. Oldsmar is the Pinellas city the letter puts in 813. The fact sheet does not name St. Petersburg or Clearwater as 813 cities. I am not adding them.
+
+The map attached to PL-541 labels rate centers Tampa North, Tampa West, Tampa Central, Tampa East, Tampa South, Zephyrhills, and Plant City, with 813 and 656 named across that area. Neighboring NPA labels on that map are 727 to the west, 352 to the north, 863 to the east, and 941 to the south. Those are boundaries, not extra Tampa codes. I am not telling someone in Tampa to try 941 because it appears under the overlay.
+
+The date that moved
+
+PL-541 had mandatory ten-digit dialing starting October 16, 2021, and the earliest 656 activation on November 16, 2021. PL-552 says the December 4, 2020 order extended the permissive period and revises the intervals. Permissive ten-digit dialing still starts at 12:01 a.m. Eastern on April 17, 2021. Mandatory ten-digit dialing moves to 12:01 a.m. Eastern on January 22, 2022. The earliest date 656 codes may be ordered through NANPA moves to December 18, 2021. The commission's schedule in the order, and the letter's in-service language, put the earliest new 656 central office code activation on February 22, 2022. The October 16, 2021 date is the old column, labeled the current date before the revision. I am using the revised column.
+
+During the permissive window the letter says people may dial seven or ten digits inside the overlay and are encouraged to dial ten. After January 22, 2022, calls need ten digits. The dialing plan in the letter: a local call, home NPA or foreign NPA, is ten digits, and a footnote says 1 plus ten digits is allowed if the provider permits it. A toll call is 1 plus ten digits. Operator services, and credit-card, collect, and third-party calls, are 0 plus ten digits. The fact sheet's plainer line says ten digits for local calls and 1 plus ten for long distance and operator-assisted calls. I am not squashing the letter's 0-plus operator line into that slogan.
+
+The order says the date moved because alarm companies could not reprogram every device from a desk. Fire alarms, emergency elevator phones, and some medical alert monitors needed a person on site. The Alarm Association of Florida told the commission about 40 of its contractor members were in the 813 area. The commission extended 813 permissive dialing from October 16, 2021 to January 22, 2022, and it said implementation of the national suicide-prevention number limited how far that window could slide. The same order extended 850 on a different calendar, from February 20, 2021 to May 22, 2021. I am writing that down so I do not treat Florida as one phone code. 850 is in the order and it is not Tampa.
+
+A test number is not a place
+
+PL-552 tells carriers to have 656 activated in their networks before February 22, 2022. The test number was 656-656-1656, in service from November 22, 2021 through March 22, 2022, with a recording if the call completed. That is a routing test. I am not saving it as a restaurant, a hotel, or city hall.
+
+What I will actually say
+
+If a number already starts with 813, the letters say it stays. A new line in that same geography can still be 813, or 656 once assignable 813 prefixes are exhausted. I did not go through a live prefix inventory, and the letter tells carriers that those lists change and to check the routing guides. I am not declaring 656 empty, and I am not declaring it the code everyone has now.
+
+The short answer to tampa area code is 813, with 656 over the same ground, ten-digit dialing since the revised mandatory date, and a boundary on the map at 727 to the west. A zip code will not tell me which side of that line a house sits on. I did not use a zip for this. I used the two planning letters, the order, the fact sheet, and the map.

@@ -32,8 +32,10 @@ SEO:
 - HUB pages (tampa hotels / events / attractions / restaurants / florida overview): link EVERY internal path listed in the user message at least once (hubs may exceed 6 links). Organize by neighborhood or theme so the page works as a directory into related guides and place pages. Still 1,800–2,500 words with real substance—not a bare link dump.
 
 SPECIAL:
-- Seminole Hard Rock: hotel, dining, concerts only—no gambling how-tos.
+- Seminole Hard Rock / Tampa casino: hotel, dining, concerts, what the name means—no gambling how-tos, no how-to-play, no odds.
+- Tampa Bay Downs: visit logistics and racing-season calendar only—no betting how-tos, no poker how-tos, no handicapping advice.
 - Rays: 2026 season home is Tropicana Field (St. Petersburg) when the pack/note say so.
+- Straz Center: same campus as former TBPAC; use Straz as the primary name.
 `.trim();
 
 export function remainingSystemPrompt(): string {

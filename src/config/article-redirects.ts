@@ -5,6 +5,7 @@ export const SLUG_MERGES = [
   { keep: "trampoline-park-tampa-hillsborough", drop: "trampoline-tampa-hillsborough-ave" },
   { keep: "what-time-zone-is-tampa-florida", drop: "what-is-time-in-tampa-florida" },
   { keep: "things-to-do-in-tampa-this-weekend", drop: "things-going-on-this-weekend-in-tampa" },
+  { keep: "straz-center-tampa", drop: "tbpac-tampa" },
 ] as const;
 
 export const DROPPED_SLUGS = new Set<string>(SLUG_MERGES.map((pair) => pair.drop));
@@ -19,7 +20,13 @@ export const SKIP_GENERATE_SLUGS = new Set<string>([
  * Dropped-slug merges stay out of generation via DROPPED_SLUGS; add their
  * 301s here when those old URLs need to keep resolving.
  */
+// tbpac → straz merge added in Batch 3
 export const ARTICLE_REDIRECTS: { source: string; destination: string; statusCode: 301 }[] = [
+  {
+    source: "/things-to-do/tbpac-tampa",
+    destination: "/things-to-do/straz-center-tampa",
+    statusCode: 301,
+  },
   {
     source: "/guides/tampa-rv-show",
     destination: "/events/tampa-rv-show",
