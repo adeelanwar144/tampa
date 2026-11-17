@@ -54,6 +54,11 @@ function byNewest(a: PillarArticle, b: PillarArticle) {
   return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
 }
 
+/** Schema.org dateModified: the last edit, or the publish time when the guide was never revised. */
+export function articleDateModified(article: Pick<PillarArticle, "updatedAt" | "publishedAt">) {
+  return article.updatedAt || article.publishedAt;
+}
+
 /** Published articles, including ones whose event end date has passed. */
 export function getAllPublishedArticles(): PillarArticle[] {
   return articles

@@ -4,7 +4,7 @@ import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { ArticleCard } from "@/components/pillars/ArticleCard";
 import { faqJsonLd } from "@/components/pillars/ArticleMarkdown";
 import { eventJsonLd } from "@/lib/event-dates";
-import { articleHref, getArticlesByPillar, PILLAR_META } from "@/lib/pillars";
+import { articleDateModified, articleHref, getArticlesByPillar, PILLAR_META } from "@/lib/pillars";
 import type { PillarArticle } from "@/types";
 import { SITE_NAME, SITE_URL } from "@/config/site";
 
@@ -20,7 +20,8 @@ export function ArticleLayout({
     .filter((item) => item.slug !== article.slug)
     .slice(0, 3);
 
-  const published = new Date(article.updatedAt || article.publishedAt).toLocaleDateString("en-US", {
+  const modifiedAt = articleDateModified(article);
+  const published = new Date(modifiedAt).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -33,7 +34,7 @@ export function ArticleLayout({
     headline: article.metaTitle || article.title,
     description: article.metaDescription || article.dek,
     datePublished: article.publishedAt,
-    dateModified: article.updatedAt || article.publishedAt,
+    dateModified: modifiedAt,
     image: article.coverImage ? [article.coverImage] : undefined,
     mainEntityOfPage: `${SITE_URL}${articleHref(article)}`,
     author: {

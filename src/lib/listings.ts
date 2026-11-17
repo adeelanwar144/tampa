@@ -888,25 +888,54 @@ export async function getTopNeighborhoods(count = 6): Promise<string[]> {
     .map(([n]) => n);
 }
 
-export type PlaceSitemapEntry = { slug: string; updatedAt: string };
+export type PlaceSitemapEntry = {
+  slug: string;
+  /** `places.imported_at`. Empty when the row has no stored time. */
+  updatedAt: string;
+  category: CategorySlug;
+  neighborhoodSlug: string | null;
+};
 
 async function loadSitemapPlaces(): Promise<PlaceSitemapEntry[]> {
   const db = await getDb();
   if (!db) {
-    return seedAsPlaces().map((place) => ({ slug: place.slug, updatedAt: place.updatedAt }));
+    return seedAsPlaces()
+      .filter((place) => place.status !== "draft")
+      .map((place) => ({
+        slug: place.slug,
+        updatedAt: place.updatedAt,
+        category: place.category,
+        neighborhoodSlug:
+          place.neighborhoodSlug ??
+          (place.neighborhood ? slugifyNeighborhood(place.neighborhood) : null),
+      }));
   }
+  // Slug plus the stored timestamp only. The full place record is what timed the sitemap out.
   const result = await db
     .prepare(
-      `SELECT slug, IFNULL(imported_at, '') AS imported_at
+      `SELECT slug, IFNULL(imported_at, '') AS imported_at,
+              IFNULL(neighborhood_slug, '') AS neighborhood_slug, primary_type
        FROM places
        WHERE ${PUBLISHED_SQL}
        ORDER BY slug ASC`,
     )
-    .all<{ slug: string; imported_at: string }>();
-  const rows = (result.results ?? []) as Array<{ slug: string; imported_at: string }>;
+    .all<{
+      slug: string;
+      imported_at: string;
+      neighborhood_slug: string;
+      primary_type: string | null;
+    }>();
+  const rows = (result.results ?? []) as Array<{
+    slug: string;
+    imported_at: string;
+    neighborhood_slug: string;
+    primary_type: string | null;
+  }>;
   return rows.map((row) => ({
     slug: row.slug,
-    updatedAt: row.imported_at || new Date().toISOString(),
+    updatedAt: row.imported_at,
+    category: categoryFromType(row.primary_type),
+    neighborhoodSlug: row.neighborhood_slug || null,
   }));
 }
 

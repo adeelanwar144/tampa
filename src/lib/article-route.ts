@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/config/site";
-import { articleHref, getAllPublishedArticles, getArticleBySlug } from "@/lib/pillars";
+import { articleDateModified, articleHref, getAllPublishedArticles, getArticleBySlug } from "@/lib/pillars";
 import type { PillarSlug } from "@/types";
 
 export function articleStaticParams(pillar: PillarSlug) {
@@ -33,7 +33,7 @@ export async function articleMetadata(
       description,
       url,
       publishedTime: article.publishedAt,
-      modifiedTime: article.updatedAt || article.publishedAt,
+      modifiedTime: articleDateModified(article),
       authors: ["Ben Hayes"],
       images: article.coverImage
         ? [{ url: article.coverImage, alt: article.coverAlt || article.title }]
