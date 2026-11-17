@@ -1,0 +1,40 @@
+{
+  "slug": "medicruz",
+  "name": "MediCruz Medical Clinic",
+  "category": "Medical clinic",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "MediCruz: Medical clinic in Tampa",
+  "metaDescription": "MediCruz Medical Clinic on W Dr Martin Luther King Jr Blvd lists weekday hours of 8:30 AM to 5:30 PM. The basic membership plan on the site is $50 a month.",
+  "publish": {
+    "schemaType": "MedicalClinic",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from medicruztampa.com. Saturday and Sunday are closed. Call (813) 348-3946 to confirm the suite before you go.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "08:30", "close": "17:30" },
+      "2": { "open": "08:30", "close": "17:30" },
+      "3": { "open": "08:30", "close": "17:30" },
+      "4": { "open": "08:30", "close": "17:30" },
+      "5": { "open": "08:30", "close": "17:30" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://medicruztampa.com/",
+    "places:medicruz"
+  ],
+  "facts": [
+    "MediCruz Medical Clinic, Tampa. The homepage says the clinic is on W Dr Martin Luther King Jr Blvd. Our listing address is 2309 W Dr Martin Luther King Jr Blvd Ste 2, Tampa, FL 33607. Phone (813) 348-3946. Website https://medicruztampa.com/.",
+    "Hours Monday through Friday 08:30 AM to 05:30 PM. Saturday and Sunday closed. The site says insurance is accepted and also offers a Basic Plan at $50/month with unlimited primary care visits, same-day or next-day appointments, direct provider access, and bilingual English and Spanish care.",
+    "Services named: primary care, allergy testing, preventive care, wellness exams, EKG, lab testing, GLP-1, women's health, minor illness, men's health, hormone consultations, skin care and aesthetic treatments, wart removal, walk-in clinic, immunizations, IV therapy, pre-employment physicals, annual physicals, chronic care, and weight management. Lead clinician named: APRN Orlando Cruz, described as having over 30 years of experience.",
+    "Stored database hours match the weekday clocks and the weekend closure.",
+    "Nearby from our coordinates: St. Joseph's Hospital 0.46 miles at 3001 W Dr Martin Luther King Jr Blvd, slug saint-josephs-hospital. Blind Tiger at St. Joseph's Women's Hospital 0.52 miles at 3030 W Dr Martin Luther King Jr Blvd, slug blind-tiger-5."
+  ],
+  "faq": [
+    {"q": "Does MediCruz take insurance?", "a": "The homepage says insurance is accepted. It also lists a $50/month basic plan for people without insurance or with a high deductible. Ask which one applies to your visit."},
+    {"q": "Is MediCruz open on Saturday?", "a": "The site lists Saturday and Sunday as closed. Weekdays are 8:30 AM to 5:30 PM."},
+    {"q": "Which suite is the clinic?", "a": "Our listing says Ste 2 at 2309 W Dr Martin Luther King Jr Blvd. The homepage names the boulevard and the phone, (813) 348-3946. Confirm the suite when you call."}
+  ]
+}

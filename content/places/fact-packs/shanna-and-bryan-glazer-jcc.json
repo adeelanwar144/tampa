@@ -1,0 +1,30 @@
+{
+  "slug": "shanna-and-bryan-glazer-jcc",
+  "name": "Shanna & Bryan Glazer JCC",
+  "category": "Community center",
+  "neighborhood": "West Tampa",
+  "neighborhoodSlug": "west-tampa",
+  "city": "Tampa",
+  "metaTitle": "Glazer JCC: Community center in West Tampa",
+  "metaDescription": "The Shanna and Bryan Glazer JCC at 522 N. Howard Ave includes fitness, the Mezrah Family Aquatic Center, and a preschool. Call (813) 575-5900 for hours.",
+  "publish": {
+    "schemaType": "SportsActivityLocation",
+    "hoursMode": "call",
+    "hoursNote": "The homepage names programs and a membership phone. It does not print a weekly open-and-close chart."
+  },
+  "sources": [
+    "https://www.shannaandbryanglazerjcc.com/",
+    "places:shanna-and-bryan-glazer-jcc"
+  ],
+  "facts": [
+    "Shanna and Bryan Glazer JCC, West Tampa. Address 522 N. Howard Ave, Tampa, FL 33606, matching our listing. Phone 813.575.5900 and (813) 575-5900. Email info@ShannaandBryanGlazerJCC.com. Website https://www.shannaandbryanglazerjcc.com/. Neighborhood /neighborhoods/west-tampa.",
+    "The homepage says members get a fitness center, aquatics, a gymnasium, and an indoor track, plus fitness and mind/body programs and educational, recreational, and cultural activities. It says all faiths and backgrounds are welcome. Named spaces include the Mezrah Family Aquatic Center, the Roberta M. Golding Visual Arts Center, and an event venue.",
+    "Program headings include group fitness, a multi-sports court, personal training, Parkinson's fitness, a sauna, swim team, swim lessons, lifeguarding, active adults, the men's club, the women's club, school-break camps, birthday parties, J Care, Camp J, Club J after school, preschool, a preschool art program, tweens and teens, BBYO, PJ Our Way, a Jewish book festival, and the Tampa Bay Jewish Film Festival. Event headings include weddings and bar and bat mitzvahs. A membership specialist is the contact for joining.",
+    "The homepage does not print weekly hours. Nearby from our coordinates: Tampa General family care 0.28 miles at 2501 W Kennedy Blvd, slug tampa-general-hospital-family-care-center-kennedy. Caffeine Roasters 0.3 miles at 2420 W Kennedy Blvd, slug caffeine-roasters. Sunset & Spice 0.4 miles at 204 S Howard Ave, slug sunset-and-spice."
+  ],
+  "faq": [
+    {"q": "Does the homepage list hours?", "a": "It does not. Call (813) 575-5900 or email info@ShannaandBryanGlazerJCC.com and ask for the building schedule."},
+    {"q": "What does membership include, according to the page?", "a": "Fitness and aquatics facilities, a gymnasium, an indoor track, and educational, recreational, and cultural programs. The page says all faiths and backgrounds are welcome."},
+    {"q": "Where is the building?", "a": "522 N. Howard Ave, Tampa, FL 33606. Our neighborhood label for this listing is West Tampa."}
+  ]
+}

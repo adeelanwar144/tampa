@@ -1,0 +1,40 @@
+{
+  "slug": "remington-feed",
+  "name": "Remington Specialty Feed",
+  "category": "Feed and pet supply",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Riverview",
+  "metaTitle": "Remington Feed: Pet supply in Riverview",
+  "metaDescription": "Remington Feed at 8808 US-301 S in Riverview sells hay, horse feed, and pet supplies. Online orders are pickup only, and the page lists Sunday as closed.",
+  "publish": {
+    "schemaType": "Store",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from remingtonfeed.com. Online orders are pickup only. Sunday is closed.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "08:30", "close": "17:00" },
+      "2": { "open": "08:30", "close": "17:00" },
+      "3": { "open": "08:30", "close": "17:00" },
+      "4": { "open": "08:30", "close": "17:00" },
+      "5": { "open": "08:30", "close": "17:00" },
+      "6": { "open": "08:30", "close": "16:00" }
+    }
+  },
+  "sources": [
+    "https://www.remingtonfeed.com/",
+    "places:remington-feed"
+  ],
+  "facts": [
+    "Remington Feed, also styled Remington Specialty Feed, Riverview. Address 8808 US-301 S, Riverview, FL 33578. Phone (813) 672-1244. Website https://www.remingtonfeed.com/. Online orders are pickup only.",
+    "Hours Monday through Friday 8:30 AM to 5 PM, Saturday 8:30 AM to 4 PM, Sunday closed.",
+    "Departments named: cat food and flea care, dog food including Bully, Performance, Diamond, Fromm, Next Level, Taste of the Wild, Valu Pak, and Victor, dog toys and treats, horse feed, hay, wormer, poultry, propane, bird seed, goat, honey, pig, rabbit, pest control, and gift cards. Example prices: coastal hay bale $13.00, 3 tie alfalfa hay $44.00, T/A bale $19.00 marked sold out, horse roll $115.00, Taste of the Wild dog food from $16.99.",
+    "Stored database hours only include Wednesday. The website lists the full week.",
+    "Nearby from our coordinates: ALDI 0.09 miles at 8613 US-301, slug aldi. Peck's Flame Broiled Chicken 0.42 miles at 8203 US-301, slug pecks-flame-broiled-chicken. Hunter's Brunch Shack 0.49 miles at 8001 US-301, slug hunters-brunch-shack."
+  ],
+  "faq": [
+    {"q": "Can Remington Feed ship an online order?", "a": "The site says online orders are pickup only at 8808 US-301 S."},
+    {"q": "Is the store open Sunday?", "a": "The page lists Sunday as closed. Saturday is 8:30 AM to 4 PM. Weekdays are 8:30 AM to 5 PM."},
+    {"q": "What hay prices are on the page?", "a": "A coastal hay bale is listed at $13.00 and a 3 tie alfalfa bale at $44.00. Ask the counter if the bale you want is in stock."}
+  ]
+}

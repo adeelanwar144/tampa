@@ -1,0 +1,39 @@
+{
+  "slug": "the-tejas-pradip-patel-tennis-center",
+  "name": "Tejas Pradip Patel Tennis Center",
+  "category": "Tennis center",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Tejas Patel Tennis Center: Tennis in Tampa",
+  "metaDescription": "Hillsborough College lists the Tejas Pradip Patel Tennis Center at 813.348.1173. Weekdays run 8 a.m. to 9 p.m., and weekend days end at 2 p.m.",
+  "publish": {
+    "schemaType": "SportsActivityLocation",
+    "hoursMode": "verified",
+    "hoursNote": "The college page says its tennis website is under construction. Our listing street, 3901 W Tampa Bay Blvd, is not printed on that page.",
+    "openingHours": {
+      "0": { "open": "08:00", "close": "14:00" },
+      "1": { "open": "08:00", "close": "21:00" },
+      "2": { "open": "08:00", "close": "21:00" },
+      "3": { "open": "08:00", "close": "21:00" },
+      "4": { "open": "08:00", "close": "21:00" },
+      "5": { "open": "08:00", "close": "21:00" },
+      "6": { "open": "08:00", "close": "14:00" }
+    }
+  },
+  "sources": [
+    "https://www.hcfl.edu/tennis-center",
+    "places:the-tejas-pradip-patel-tennis-center"
+  ],
+  "facts": [
+    "The Tejas Pradip Patel HCC Tennis Center, Hillsborough College. The college page says to call 813.348.1173 for court reservations, programming, membership, class registration, and other tennis inquiries. Email hcctenniscenter@gmail.com. That phone matches our listing (813) 348-1173. The college switchboard on the same page is 813.253.7000. The page says the new website is currently under construction. Website https://www.hcfl.edu/tennis-center.",
+    "Day hours: Monday 8 a.m. – 9 p.m. Tuesday 8 a.m. – 9 p.m. Wednesday 8 a.m. – 9 p.m. Thursday 8 a.m. – 9 p.m. Friday 8 a.m. – 9 p.m. Saturday 8 a.m. – 2 p.m. Sunday 8 a.m. – 2 p.m.",
+    "Our listing address is 3901 W Tampa Bay Blvd, Tampa, FL 33614. That street line is not printed on the college page we saved.",
+    "Nearby from our coordinates: EchoPark Automotive 0.6 miles at 4636 N Dale Mabry Hwy, slug echopark-automotive-tampa. Exxon 0.85 miles at 4800 N Dale Mabry Hwy, slug exxon-2. Cooper's Hawk 0.86 miles at 4110 W Boy Scout Blvd, slug coopers-hawk."
+  ],
+  "faq": [
+    {"q": "What hours does the college page list?", "a": "Monday through Friday, 8 a.m. to 9 p.m. Saturday and Sunday, 8 a.m. to 2 p.m."},
+    {"q": "Which phone is for the tennis center?", "a": "813.348.1173, and the email is hcctenniscenter@gmail.com. 813.253.7000 is the college switchboard on the same footer."},
+    {"q": "Does the college page print the street?", "a": "The page we saved names the center and the phone. It does not print 3901 W Tampa Bay Blvd. That street is our listing address."}
+  ]
+}

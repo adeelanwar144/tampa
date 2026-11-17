@@ -1,0 +1,30 @@
+{
+  "slug": "mike-g-law",
+  "name": "Mike G Law",
+  "category": "Criminal defense attorney",
+  "neighborhood": "Downtown Tampa",
+  "neighborhoodSlug": "downtown-tampa",
+  "city": "Tampa",
+  "metaTitle": "Mike G Law: Criminal defense in Downtown",
+  "metaDescription": "Mike G Law lists cell number 813-468-3081 and says that line is available 24/7. Our Downtown Tampa listing address is 1005 N Marion St #118.",
+  "publish": {
+    "schemaType": "Attorney",
+    "hoursMode": "call",
+    "hoursNote": "The homepage says the cell line is available 24/7. It does not print office lobby hours. A second number on the page is 813-221-4303."
+  },
+  "sources": [
+    "https://mikeglaw.com/",
+    "places:mike-g-law"
+  ],
+  "facts": [
+    "Mike G Law, criminal defense, Downtown Tampa. Listing address 1005 N Marion St #118, Tampa, FL 33602. Listing and cell phone 813-468-3081. The homepage also prints 813-221-4303 and says available 24/7. Website https://mikeglaw.com/. The page says En Español and describes him as a former prosecutor with 25 years of experience.",
+    "Practice headings on the page include sex crimes, arson, bond and sentencing, burglary and theft, campus sex crimes, child pornography, contracting without a license, cybercrimes, domestic violence, drug court, drug crimes, DUI, expungement and sealing, federal crimes, gun crimes, hit and run, juvenile crimes, probation violation, restraining orders, veterans court, violent crimes, and white-collar crimes. Counties named: Hernando, Hillsborough, Pasco, Pinellas, and Polk.",
+    "The saved homepage did not print the Marion Street suite. Case-result stories were not used.",
+    "Nearby from our coordinates: Greco & Wozniak P.A. 0.29 miles at 501 N Morgan St #200, slug greco-and-wozniak-p-a. Eddie And Sam's N.Y Pizza 0.31 miles at 203 E Twiggs St, slug eddie-and-sams. Neighborhood page /neighborhoods/downtown-tampa."
+  ],
+  "faq": [
+    {"q": "How do I reach Mike G Law?", "a": "The homepage says to call or text 813-468-3081 and also prints 813-221-4303. It says the line is available 24/7. Confirm you have the Downtown office."},
+    {"q": "Does the site print office hours?", "a": "The page we read did not print a Monday-to-Friday lobby schedule. It advertised 24/7 availability on the phone."},
+    {"q": "Which counties does the page name?", "a": "Hernando, Hillsborough, Pasco, Pinellas, and Polk."}
+  ]
+}

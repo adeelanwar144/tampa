@@ -1,0 +1,39 @@
+{
+  "slug": "mikes-auto-glass-tampa",
+  "name": "Mike's Auto Glass",
+  "category": "Auto glass shop",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Mike's Auto Glass: Auto glass in Tampa",
+  "metaDescription": "Mike's Auto Glass lists 4901 North Armenia Avenue with store hours Monday to Friday, 8 AM to 5 PM. The page phone is 888-929-7087. Insurance is accepted.",
+  "publish": {
+    "schemaType": "AutoRepair",
+    "hoursMode": "verified",
+    "hoursNote": "Store hours only. The same page lists longer customer-service hours: Monday to Friday 8 AM to 7 PM, and Saturday and Sunday 8 AM to 5 PM.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "08:00", "close": "17:00" },
+      "2": { "open": "08:00", "close": "17:00" },
+      "3": { "open": "08:00", "close": "17:00" },
+      "4": { "open": "08:00", "close": "17:00" },
+      "5": { "open": "08:00", "close": "17:00" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://nationsautoglass.com/locations/south-tampa-fl/",
+    "places:mikes-auto-glass-tampa"
+  ],
+  "facts": [
+    "Mike's Auto Glass, Tampa. Listing address 4901 N Armenia Ave Ste 2, Tampa, FL 33603. The Nations Auto Glass page prints 4901 North Armenia Avenue, Tampa, FL 33603 and calls the page South Tampa. Listing phone (813) 876-4115. Page phone 888-929-7087. Website https://nationsautoglass.com/locations/south-tampa-fl/.",
+    "Store hours: Mon to Fri 8 AM to 5 PM, Sat-Sun Closed. Customer service hours: Mon-Fri 8 AM to 7 PM, Sat-Sun 8 AM to 5 PM. Mobile service is listed as available. The page says same day service, next day service, and mobile service.",
+    "The page says licensed, bonded, and insured, and that insurance is accepted. It describes windshield replacement and windshield repair, OEM-equivalent glass, and certified technicians. It says three decades and over 30 years of service. It says 100% satisfaction guaranteed.",
+    "Our stored hours only include a Wednesday fragment. Nearby from our coordinates: Lorenzo & Lorenzo 0.22 miles at 4701 N Armenia Ave, slug lorenzo-and-lorenzo. MediCruz 0.63 miles at 2309 W Dr Martin Luther King Jr Blvd Ste 2, slug medicruz. ABC Pizza House 0.68 miles at 1242 W Hillsborough Ave, slug abc-pizza."
+  ],
+  "faq": [
+    {"q": "Is the shop open on Saturday?", "a": "The page says store hours are Monday to Friday, 8 AM to 5 PM, and Saturday and Sunday are closed. Customer service hours are longer and include the weekend."},
+    {"q": "Which phone is on the location page?", "a": "The page prints 888-929-7087. Our listing phone is (813) 876-4115. The suite number Ste 2 is in our listing and is not in the street line we saved."},
+    {"q": "Does the page offer mobile glass service?", "a": "Yes. It says mobile service is available, along with same-day and next-day service."}
+  ]
+}

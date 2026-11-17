@@ -1,0 +1,40 @@
+{
+  "slug": "pia-esthetics-day-spa",
+  "name": "Pia Esthetics Day Spa",
+  "category": "Day spa",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Pia Esthetics: Day spa in South Tampa",
+  "metaDescription": "Pia Esthetics Day Spa at 3210 W Bay to Bay Blvd lists waxing, facials, and massage. Monday ends at 3:00pm, and the massage license on the page is MM 17550.",
+  "publish": {
+    "schemaType": "DaySpa",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from the South Tampa location page. Monday is a short day. The page says to check schedule details and book online.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "10:00", "close": "15:00" },
+      "2": { "open": "09:30", "close": "17:00" },
+      "3": { "open": "09:30", "close": "19:00" },
+      "4": { "open": "09:30", "close": "19:00" },
+      "5": { "open": "09:30", "close": "19:00" },
+      "6": { "open": "09:00", "close": "17:00" }
+    }
+  },
+  "sources": [
+    "https://www.bypia.com/locations/south-tampa/tampa-fl.php",
+    "places:pia-esthetics-day-spa"
+  ],
+  "facts": [
+    "Pia Esthetics Day Spa, South Tampa. Address 3210 W Bay to Bay Blvd, Tampa, FL 33629. Phone (813) 831-2418. Website https://www.bypia.com/locations/south-tampa/tampa-fl.php. The page says the spa is half a block left off Crosstown Expressway exit 3.",
+    "Store hours: Monday 10:00am to 3:00pm, Tuesday 9:30am to 5:00pm, Wednesday through Friday 9:30am to 7:00pm, Saturday 9:00am to 5:00pm, Sunday closed. Massage establishment MM 17550. The page says professional esthetics since 2004 and shows a copyright line 2000-2026.",
+    "Menu headings: spa packages, microdermabrasion, dermaplaning, nano infusion, brow and lash care, waxing, waxing for men, tween waxing, massage, body treatments, microblading, manicure, pedicure, injectables. Booking is online or by phone. The site has an English and Spanish toggle. Pia Trujillo is named owner and esthetician, with a 22+ label on the team line.",
+    "Our stored database hours only include Wednesday 9:30 to 19:00.",
+    "Nearby from our coordinates: Cappys Pizzeria 0.05 miles at 3200 W Bay to Bay Blvd, slug cappys-pizza. Byblos 0.18 miles at 2832 S MacDill Ave, slug byblos. Starbucks 0.18 miles at 3409 Bay to Bay Boulevard, slug starbucks."
+  ],
+  "faq": [
+    {"q": "Is Pia Esthetics open on Monday?", "a": "The South Tampa page lists Monday as 10:00am to 3:00pm. Sunday is closed. Book online or call (813) 831-2418 because the page also says to check schedule details."},
+    {"q": "Where is the spa relative to the expressway?", "a": "The page says 3210 W Bay to Bay Blvd is half a block left off Crosstown Expressway exit 3."},
+    {"q": "What is the massage license number on the page?", "a": "The location page prints Massage Establishment MM 17550."}
+  ]
+}

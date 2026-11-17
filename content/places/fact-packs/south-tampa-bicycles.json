@@ -1,0 +1,40 @@
+{
+  "slug": "south-tampa-bicycles",
+  "name": "South Tampa Bicycle Co",
+  "category": "Bicycle shop",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "South Tampa Bicycle Co: Bikes in Tampa",
+  "metaDescription": "South Tampa Bicycle Co at 3431 S Westshore Blvd sells inspected pre-owned bikes and custom builds. Weekdays run 10am to 6pm, and Sunday is closed to ride.",
+  "publish": {
+    "schemaType": "BicycleStore",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from southtampabicycleco.com. Sunday is marked closed to ride.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "10:00", "close": "18:00" },
+      "2": { "open": "10:00", "close": "18:00" },
+      "3": { "open": "10:00", "close": "18:00" },
+      "4": { "open": "10:00", "close": "18:00" },
+      "5": { "open": "10:00", "close": "18:00" },
+      "6": { "open": "10:00", "close": "15:00" }
+    }
+  },
+  "sources": [
+    "https://southtampabicycleco.com/",
+    "places:south-tampa-bicycles"
+  ],
+  "facts": [
+    "South Tampa Bicycle Co, bicycle shop, Tampa. Address 3431 S. Westshore Blvd, Tampa, FL 33629. Phone (813) 319-3735. Email SouthTampaBicycleCo@gmail.com. Website https://southtampabicycleco.com/.",
+    "The site says it is a small locally owned shop specializing in pre-owned bikes and custom builds, that inventory changes, that bikes are professionally inspected and serviced, and that nationwide shipping is available. It also invites people to sell a bike.",
+    "Hours Monday through Friday 10am to 6pm, Saturday 10am to 3pm, Sunday closed to ride. Example prices on the page include a 2015 Pinarello at $3,250.00, a 2022 Pinarello at $3,395.00, and a Fuji ACE kids road bike at $400.00.",
+    "Stored database hours match the weekday and Saturday clocks and mark Sunday closed.",
+    "Nearby from our coordinates: Gogos Greek Grill 0.15 miles at 3343 S Westshore Blvd, slug gogos-greek-grill. Life Essentials Refillery 0.61 miles at 4317 W El Prado Blvd, slug life-essentials-refillery. Spotless Car Wash South 0.61 miles at 4325 W Euclid Ave, slug spotless-car-wash."
+  ],
+  "faq": [
+    {"q": "Is South Tampa Bicycle Co open on Sunday?", "a": "The site says Sunday is closed to ride. Weekdays are 10am to 6pm and Saturday is 10am to 3pm."},
+    {"q": "Does the shop ship bikes?", "a": "The homepage says nationwide shipping is available. Ask (813) 319-3735 which bike can ship before you pay."},
+    {"q": "Can I sell them a bike?", "a": "The site has a sell-your-bike path. The page does not print a payout formula, so ask by email at SouthTampaBicycleCo@gmail.com."}
+  ]
+}

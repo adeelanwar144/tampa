@@ -1,0 +1,39 @@
+{
+  "slug": "james-a-haley-veterans-hospital",
+  "name": "James A. Haley Veterans' Hospital",
+  "category": "Veterans hospital",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "James A. Haley VA: Hospital in Tampa",
+  "metaDescription": "James A. Haley Veterans' Hospital is at 13000 Bruce B. Downs Blvd. The VA page lists the campus as 24/7 and the main phone as 813-972-2000. Clinics vary.",
+  "publish": {
+    "schemaType": "Hospital",
+    "hoursMode": "verified",
+    "hoursNote": "The page says hours may vary by service even though every day is marked 24/7. Mental health phone 813-631-7100 is separate from the main line.",
+    "openingHours": {
+      "0": { "label": "24/7" },
+      "1": { "label": "24/7" },
+      "2": { "label": "24/7" },
+      "3": { "label": "24/7" },
+      "4": { "label": "24/7" },
+      "5": { "label": "24/7" },
+      "6": { "label": "24/7" }
+    }
+  },
+  "sources": [
+    "https://www.va.gov/tampa-health-care/locations/james-a-haley-veterans-hospital/",
+    "places:james-a-haley-veterans-hospital"
+  ],
+  "facts": [
+    "James A. Haley Veterans' Hospital, Tampa. Address 13000 Bruce B. Downs Boulevard, Tampa, FL 33612-4745, matching our listing 13000 Bruce B Downs Blvd. Main phone 813-972-2000, matching our listing (813) 972-2000. Mental health phone 813-631-7100. Website https://www.va.gov/tampa-health-care/locations/james-a-haley-veterans-hospital/.",
+    "The page says the main campus provides 24/7 emergency room care, primary care, and specialty health services, including cardiology, foot care, mental health care, spinal cord injuries, and prosthetics. Facility hours are listed Mon through Sun as 24/7, with the note that hours may vary for different services.",
+    "The page says wheelchairs are available on arrival. DAV van schedules vary. A weekday shuttle is mentioned. Some clinics say visit with or without an appointment, and some say by appointment only or that a referral is required.",
+    "Nearby from our coordinates: Cano Health 0.38 miles at 13510 University Plaza St, slug cano-health. Aldi 0.4 miles at 13514 University Plaza St, slug aldi-2."
+  ],
+  "faq": [
+    {"q": "Is the whole campus open all night?", "a": "The location page marks every day 24/7 and says the main campus provides 24/7 emergency room care. It also says hours may vary for different services, so check the clinic you need."},
+    {"q": "What is the main phone?", "a": "813-972-2000. Mental health is listed separately at 813-631-7100."},
+    {"q": "How do van rides work?", "a": "The page says DAV van schedules vary and that the hospital works with Disabled American Veterans and county Veterans Affairs directors for rides to scheduled appointments."}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "slug": "tampa-sports-and-wellness-chiropractic",
+  "name": "Tampa Sports & Wellness Chiropractic",
+  "category": "Chiropractor",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Tampa Sports & Wellness: Chiropractor",
+  "metaDescription": "Tampa Sports & Wellness Chiropractic at 3902 Henderson Blvd posts a split day: mornings until 12p and some afternoons from 2p to 6p. Phone (813) 600-5391.",
+  "publish": {
+    "schemaType": "Chiropractor",
+    "hoursMode": "verified",
+    "hoursNote": "Several days have a midday gap. The table shows the printed label instead of one continuous span.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "label": "8a–12p and 2p–6p" },
+      "2": { "label": "8a–12p" },
+      "3": { "label": "8a–12p and 2p–6p" },
+      "4": { "label": "8a–12p" },
+      "5": { "label": "2p–6p" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://www.tampasportsandwellness.com/",
+    "places:tampa-sports-and-wellness-chiropractic"
+  ],
+  "facts": [
+    "Tampa Sports & Wellness Chiropractic, Beach Park / MacDill. Address 3902 Henderson Blvd, Tampa, Florida 33629. Listing adds suite #203. Phone (813) 600-5391 matches the page. Website https://www.tampasportsandwellness.com/. Neighborhood /neighborhoods/beach-park-macdill.",
+    "Opening hours on the page: Monday 8a - 12p and 2p - 6p. Tuesday 8a - 12p. Wednesday 8 a - 12 p and 2p - 6p. Thursday 8a - 12p. Friday 2p - 6p. Saturday Closed. Sunday Closed.",
+    "The page says the chiropractor treats athletes and active people, offers spinal adjustments and school physicals, and accepts all major auto insurance plans. It says Florida patients have 14 days from the date of an accident to seek medical care and still be covered by that policy. A form says SMS text messages may be sent if the box is checked.",
+    "Our stored hours are only a Wednesday fragment and do not show the afternoon gap. Nearby from our coordinates: Kahwa Coffee 0.07 miles at 3928 Henderson Boulevard, slug kahwa-coffee. OPT-ISM 0.13 miles at 3825 Henderson Blvd, slug opt-ism. Little Greek 0.16 miles at 1155 S Dale Mabry Hwy, slug little-greek."
+  ],
+  "faq": [
+    {"q": "Is the office open straight through the afternoon?", "a": "Monday and Wednesday list a morning block and a separate 2p to 6p block. Tuesday and Thursday list the morning only. Friday lists 2p to 6p."},
+    {"q": "What does the page say about auto accidents?", "a": "It says all major auto insurance plans are accepted, and that Florida patients have 14 days from the accident to seek care and still be covered."},
+    {"q": "Which suite is this?", "a": "Our listing says 3902 Henderson Blvd #203. The homepage line we saved prints 3902 Henderson Blvd without the suite."}
+  ]
+}

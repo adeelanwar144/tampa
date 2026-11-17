@@ -1,0 +1,31 @@
+{
+  "slug": "shooting-sports-inc",
+  "name": "Shooting Sports Of Tampa Bay",
+  "category": "Indoor shooting range",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Shooting Sports: Indoor range in Tampa",
+  "metaDescription": "Shooting Sports of Tampa Bay says to call 813-933-3000 before you rely on the site. The page describes three ranges and 17 shooting stations.",
+  "publish": {
+    "schemaType": "SportsActivityLocation",
+    "hoursMode": "call",
+    "hoursNote": "The homepage says it is under construction and that posted details may not be current. Call (813) 933-3000. Do not treat the printed clocks as confirmed."
+  },
+  "sources": [
+    "https://shootingsportstampa.com/",
+    "places:shooting-sports-inc"
+  ],
+  "facts": [
+    "Shooting Sports Of Tampa Bay, indoor range, Tampa. Listing address 7811 N Dale Mabry Hwy, Tampa, FL 33614. Phone (813) 933-3000. Website https://shootingsportstampa.com/. The saved homepage did not print that street number.",
+    "The page says the business is open, that the Google listing should be disregarded, that the page is under construction, and that you should call 813-933-3000 because information may not be current. Printed clocks, which the same page says to verify: Sunday 10:00 AM to 7:00 PM, Monday to Wednesday 10:00 AM to 7:00 PM, Thursday and Friday 10:00 AM to 8:00 PM, Saturday 9:00 AM to 8:00 PM. Range admittance closes one hour before the store closes.",
+    "The page says no membership is required to shoot, that membership packages exist, that three ranges run 25-50 yards with 17 stations for handguns, shotguns, and rifles, and that the shop sells new, used, and consignment firearms, offers rentals, and can process an FFL transfer. Casino text later on the page was ignored.",
+    "Stored database hours only include Wednesday and were not used.",
+    "Nearby from our coordinates: Golden Phoenix 0.28 miles at 8199 N Dale Mabry Hwy, slug golden-phoenix. AdventHealth Carrollwood 0.33 miles at 7171 N Dale Mabry Hwy, slug adventhealth-carrollwood."
+  ],
+  "faq": [
+    {"q": "Should I trust the hours on the shooting range website?", "a": "The same page tells you to call 813-933-3000 because the information may not be current. Treat the printed clocks as unverified."},
+    {"q": "Do I need a membership to shoot?", "a": "The page says no membership is required to come in and shoot, and that membership packages are also offered."},
+    {"q": "How many lanes does the page describe?", "a": "It says three ranges, 25 to 50 yards, with 17 stations for handguns, shotguns, and rifles."}
+  ]
+}

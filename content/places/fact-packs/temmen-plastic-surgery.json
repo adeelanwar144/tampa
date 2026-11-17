@@ -1,0 +1,38 @@
+{
+  "slug": "temmen-plastic-surgery",
+  "name": "Temmen Plastic Surgery",
+  "category": "Plastic surgery practice",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Temmen Plastic Surgery: Beach Park",
+  "metaDescription": "Temmen Plastic Surgery lists 3314 Henderson Blvd, #201, and (813) 771-6393. Thursday ends at 4 pm, Friday ends at 1 pm, and the fax is (813) 771-6394.",
+  "publish": {
+    "schemaType": "Physician",
+    "hoursMode": "verified",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "16:00" },
+      "2": { "open": "09:00", "close": "16:00" },
+      "3": { "open": "09:00", "close": "16:00" },
+      "4": { "open": "09:00", "close": "16:00" },
+      "5": { "open": "09:00", "close": "13:00" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://www.tracitemmenmd.com/",
+    "places:temmen-plastic-surgery"
+  ],
+  "facts": [
+    "Temmen Plastic Surgery, Beach Park / MacDill, Tampa. Address 3314 Henderson Blvd., #201, Tampa, FL 33609, matching our listing. Phone (813) 771-6393. Fax (813) 771-6394. Website https://www.tracitemmenmd.com/. The page names Dr. Traci Temmen. Neighborhood /neighborhoods/beach-park-macdill.",
+    "Hours: Mon - Thur 9 am - 4 pm. Fri 9 am - 1 pm. The page does not print Saturday or Sunday hours in that footer line.",
+    "A special offer says 20% off your first med spa service with injector Caroline, PA-C. Procedure headings include breast augmentation, breast lift, breast reduction, implant removal, brow lift, Brazilian butt lift, butt implants, and liposuction-style body work described as moving fat from the abdomen, flanks, or thighs. The page mentions a certified operating suite, financing, virtual consultation, and out-of-town patients from England, New Jersey, California, and New York.",
+    "Nearby from our coordinates: Dosunco Ramen 0.25 miles at 3310 W Kennedy Blvd, slug dosunco-ramen. Edwards Pipe and Tobacco 0.27 miles at 3235 Henderson Blvd, slug edwards-pipe-and-tobacco. Bliss Wellness Market 0.31 miles at 3418 W Swann Ave, slug bliss-wellness-market."
+  ],
+  "faq": [
+    {"q": "What time does Friday end?", "a": "The footer says Friday is 9 am to 1 pm. Monday through Thursday are 9 am to 4 pm."},
+    {"q": "What is the fax number?", "a": "The page prints fax (813) 771-6394 next to phone (813) 771-6393."},
+    {"q": "Is the 20% offer permanent?", "a": "The page presents it as a special for a first med spa service with injector Caroline, PA-C. Ask whether that offer is still posted before you book."}
+  ]
+}

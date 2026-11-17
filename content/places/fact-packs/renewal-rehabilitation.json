@@ -1,0 +1,37 @@
+{
+  "slug": "renewal-rehabilitation",
+  "name": "Renewal Rehabilitation",
+  "category": "Physical therapy clinic",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Renewal Rehabilitation: Therapy in Beach Park",
+  "metaDescription": "Renewal Rehabilitation is at 4100 West Kennedy Blvd, Suite 302. Wednesday ends at 12PM. The other listed weekdays run from 8AM, and Friday ends at 4PM.",
+  "publish": {
+    "schemaType": "PhysicalTherapy",
+    "hoursMode": "verified",
+    "hoursNote": "Wednesday is a morning-only day on the page. Saturday and Sunday are not listed as open.",
+    "openingHours": {
+      "1": { "open": "08:00", "close": "19:00" },
+      "2": { "open": "08:00", "close": "19:00" },
+      "3": { "open": "08:00", "close": "12:00" },
+      "4": { "open": "08:00", "close": "19:00" },
+      "5": { "open": "08:00", "close": "16:00" }
+    }
+  },
+  "sources": [
+    "https://physicaltherapist.pro/",
+    "places:renewal-rehabilitation"
+  ],
+  "facts": [
+    "Renewal Rehabilitation, Beach Park / MacDill, Tampa. Address 4100 West Kennedy Blvd., Suite 302, Tampa, FL 33609. Phone 813-254-9475, matching our listing (813) 254-9475. Website https://physicaltherapist.pro/. Neighborhood /neighborhoods/beach-park-macdill.",
+    "Hours of operation: Mon, Tue, and Thu 8AM – 7PM. Wednesday 8AM – 12PM. Friday 8AM – 4PM. The page does not list Saturday or Sunday hours.",
+    "The page describes hands-on manual therapy, sports therapy, and pain relief. Menu headings include The Renewal Method, Conditions Treated, Patient Forms, and Insurance & Coverage. It says the office is on West Kennedy Blvd.",
+    "Our stored hours are only a Wednesday fragment and should not replace this week. Nearby from our coordinates: Jimbo's Pit Bar-B-Q 0.05 miles at 4103 W Kennedy Blvd, slug jimbos-pit-bar-b-q. AlphaGraphics 0.14 miles at 4209 W Kennedy Blvd, slug alphagraphics. Alterations 0.16 miles at 4235 West Kennedy Boulevard, slug alterations."
+  ],
+  "faq": [
+    {"q": "What time does Wednesday end?", "a": "The page lists Wednesday as 8AM to 12PM. Monday, Tuesday, and Thursday run until 7PM, and Friday ends at 4PM."},
+    {"q": "Is Saturday posted?", "a": "The hours block we saved does not list Saturday or Sunday."},
+    {"q": "Does the phone match the listing?", "a": "Yes. The site and our listing both use 813-254-9475 at Suite 302."}
+  ]
+}

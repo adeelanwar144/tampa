@@ -1,0 +1,41 @@
+{
+  "slug": "little-red-wagon-native-nursery",
+  "name": "Little Red Wagon Native Nursery",
+  "category": "Native nursery",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Little Red Wagon: Nursery in Beach Park",
+  "metaDescription": "Little Red Wagon at 4113 Henderson Blvd sells native plants and opens a butterfly garden. Last admission is 4:00pm, and the shop does not ship.",
+  "publish": {
+    "schemaType": "GardenStore",
+    "hoursMode": "verified",
+    "hoursNote": "Schema hours are the plant and gift shop. Living exhibits and the butterfly garden open 30 minutes later and stop admission at 4:00pm. No shipping or delivery.",
+    "openingHours": {
+      "0": { "open": "11:00", "close": "17:00" },
+      "1": { "open": "11:00", "close": "17:00" },
+      "2": { "open": "11:00", "close": "17:00" },
+      "3": { "open": "11:00", "close": "17:00" },
+      "4": { "open": "11:00", "close": "17:00" },
+      "5": { "open": "11:00", "close": "17:00" },
+      "6": { "open": "09:00", "close": "17:00" }
+    }
+  },
+  "sources": [
+    "https://littleredwagonnativenursery.com/",
+    "places:little-red-wagon-native-nursery"
+  ],
+  "facts": [
+    "Little Red Wagon Native Nursery, garden centre, Beach Park / MacDill, Tampa. Address 4113 Henderson Blvd, Tampa, FL 33629. Listing phone +1-813-755-9579. Website https://littleredwagonnativenursery.com/.",
+    "Plant and gift shop: Monday through Friday 11:00am to 5:00pm, Saturday 9:00am to 5:00pm, Sunday 11:00am to 5:00pm. Living exhibits and butterfly garden: weekdays and Sunday 11:30am to 5:00pm, Saturday 9:30am to 5:00pm. Last admission at 4:00pm.",
+    "Purchase single day tickets at the registers. The site says it does not offer shipping or delivery. Online orders are for pickup on a date you choose. A custom order form is in the plant shop menu. Example plant prices on the page include from $7.00 and from $18.00.",
+    "Departments named: plants, collections, bug zoo and garden, gift shop, books and stationery, children's corner, garden and outdoor, home, personal care and apparel, newsletter, foundation. Mission: nurture native landscapes. Purpose: promote beneficial native plants. Proceeds benefit the Tampa Bay Butterfly Foundation.",
+    "No weekly hours were stored in our database.",
+    "Nearby from our coordinates: Stop-N-Go Market 0.08 miles at 4155 Henderson Boulevard, slug stop-n-go-market. Invitation Consultants 0.11 miles at 4062 Henderson Boulevard, slug invitation-consultants. Kahwa Coffee 0.29 miles at 3928 Henderson Boulevard, slug kahwa-coffee. Neighborhood page /neighborhoods/beach-park-macdill."
+  ],
+  "faq": [
+    {"q": "Does Little Red Wagon ship plants?", "a": "The site says it does not offer shipping or delivery. Online purchases are held for pickup at 4113 Henderson Blvd."},
+    {"q": "When is last admission to the butterfly garden?", "a": "The hours block says last admission is 4:00pm, while the plant and gift shop stays open until 5:00pm."},
+    {"q": "Who receives the proceeds?", "a": "The site says proceeds benefit the Tampa Bay Butterfly Foundation's conservation, education, and research work."}
+  ]
+}

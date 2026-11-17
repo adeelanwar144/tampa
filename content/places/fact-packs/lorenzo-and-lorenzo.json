@@ -1,0 +1,39 @@
+{
+  "slug": "lorenzo-and-lorenzo",
+  "name": "Lorenzo & Lorenzo",
+  "category": "Law firm",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Lorenzo & Lorenzo: Law firm in Tampa",
+  "metaDescription": "Lorenzo & Lorenzo at 4701 N Armenia Ave lists weekday hours of 8:30 am to 5:30 pm. The site also says accident consultations are available 24/7.",
+  "publish": {
+    "schemaType": "Attorney",
+    "hoursMode": "verified",
+    "hoursNote": "Lobby hours are weekdays only. The page separately says the team is available 24/7 for accident consultations.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "08:30", "close": "17:30" },
+      "2": { "open": "08:30", "close": "17:30" },
+      "3": { "open": "08:30", "close": "17:30" },
+      "4": { "open": "08:30", "close": "17:30" },
+      "5": { "open": "08:30", "close": "17:30" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://www.lorenzoandlorenzo.com/",
+    "places:lorenzo-and-lorenzo"
+  ],
+  "facts": [
+    "Lorenzo & Lorenzo, Tampa. Address 4701 N Armenia Ave, Tampa, FL 33603. Phone (813) 998-9529, matching our listing. Website https://www.lorenzoandlorenzo.com/.",
+    "Hours: Mon – Fri 8:30 am – 5:30 pm. Sat – Sun Closed. The page also says the team is available 24 hours a day, 7 days a week, 365 days a year for accident consultations, and that a lawyer will speak with you personally after an accident. A button says schedule a free* consultation.",
+    "Named attorneys: George Lorenzo, Lex Lorenzo, Carl DiCampli, Carlos Ramirez, Samantha Ward. Practice headings include personal injury, brain injury, back and neck injury, work injury, catastrophic accidents, wrongful death, loss of limbs, car accidents, hit and run, DUI accidents, pedestrian accidents, motorcycle accidents, bicycle accidents, truck accidents, family law, divorce, child custody, premises liability, slip and fall, dog bite, Social Security and veterans disability, immigration, and criminal defense.",
+    "Nearby from our coordinates: Mike's Auto Glass 0.22 miles at 4901 N Armenia Ave, slug mikes-auto-glass-tampa. MediCruz 0.41 miles at 2309 W Dr Martin Luther King Jr Blvd, slug medicruz. St. Joseph's Hospital 0.54 miles at 3001 W Dr Martin Luther King Jr Blvd, slug saint-josephs-hospital."
+  ],
+  "faq": [
+    {"q": "What are the office hours?", "a": "Monday through Friday, 8:30 am to 5:30 pm. Saturday and Sunday are closed."},
+    {"q": "What does 24/7 mean on this site?", "a": "The page says the team is available 24/7 for accident consultations. That line is separate from the weekday lobby hours."},
+    {"q": "Is the consult automatically free?", "a": "The button says free with an asterisk. The homepage text we saved does not print the footnote, so ask what the asterisk covers."}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "slug": "metro-inclusive-pharmacy",
+  "name": "Metro Inclusive Pharmacy",
+  "category": "Pharmacy",
+  "neighborhood": "Seminole Heights",
+  "neighborhoodSlug": "seminole-heights",
+  "city": "Tampa",
+  "metaTitle": "Metro Pharmacy: Pharmacy in Seminole Heights",
+  "metaDescription": "Metro Inclusive Pharmacy at 5138 N. Florida Ave is open weekdays, with Tuesday until 6:00pm. The page describes Copay It Forward and 340B services.",
+  "publish": {
+    "schemaType": "Pharmacy",
+    "hoursMode": "verified",
+    "hoursNote": "These are the Tampa counter hours printed on the pharmacy locations page. Tuesday stays open later than the other weekdays.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "08:00", "close": "16:30" },
+      "2": { "open": "08:00", "close": "18:00" },
+      "3": { "open": "08:00", "close": "16:30" },
+      "4": { "open": "08:00", "close": "16:30" },
+      "5": { "open": "08:00", "close": "16:30" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://metrotampabay.org/about/locations/metro-inclusive-pharmacy/",
+    "places:metro-inclusive-pharmacy"
+  ],
+  "facts": [
+    "Metro Inclusive Pharmacy, Seminole Heights, Tampa. The locations page lists Tampa at 5138 N. Florida Ave, Tampa, FL 33603, phone (813) 443-4854. That matches our listing. Website https://metrotampabay.org/about/locations/metro-inclusive-pharmacy/. Neighborhood /neighborhoods/seminole-heights.",
+    "Tampa hours on that page: Sunday CLOSED, Monday 8:00am – 4:30pm, Tuesday 8:00am – 6:00pm, Wednesday 8:00am – 4:30pm, Thursday 8:00am – 4:30pm, Friday 8:00am – 4:30pm, Saturday CLOSED.",
+    "The page describes Copay It Forward and 340B pharmacy services. It says $4M+ in free services for uninsured and underinsured patients since 2018. It lists free prescription delivery, same-day pickup, and up to $100 per month in copay support for eligible patients. It says these benefits are for patients receiving medical care from a METRO provider. It also says there are 60+ partner pharmacies, including CVS, Walgreens, and Publix.",
+    "METRO says it uses HIPAA-compliant dial-in translation, including Spanish, French, and Creole, plus ASL interpreting. It describes itself as a 501(c)3 nonprofit, Metropolitan Charities, inc. DBA Metro Healthy Communities, with 100+ programs. Email info@metrotampabay.org.",
+    "The same page also lists a St. Petersburg pharmacy at 2235 Central Avenue Ste. A and a New Port Richey pharmacy opening 1/1/27. Those clocks are a different door. Nearby from our coordinates: Ichiban Sushi 0.02 miles at 5127 N Florida Ave, slug ichiban-sushi-and-ramen. Seriously Strong Training 0.03 miles at 5120 N Florida Ave B, slug seriously-strong-training-tampa. Health Mutt 0.09 miles at 5023 N Florida Ave, slug health-mutt."
+  ],
+  "faq": [
+    {"q": "Which day stays open later?", "a": "The Tampa block says Tuesday runs until 6:00pm. Monday, Wednesday, Thursday, and Friday end at 4:30pm. Sunday and Saturday are marked closed."},
+    {"q": "Who gets the copay support described on the page?", "a": "The page says the Copay It Forward benefits are for patients receiving medical care from a METRO provider, and that eligible patients can receive up to $100 per month in copay support."},
+    {"q": "Is this the St. Petersburg counter?", "a": "No. This listing is 5138 N. Florida Ave in Tampa. The page also prints 2235 Central Avenue in St. Petersburg as a separate pharmacy."}
+  ]
+}

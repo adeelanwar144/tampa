@@ -1,0 +1,38 @@
+{
+  "slug": "tgh-urgent-care",
+  "name": "TGH Urgent Care",
+  "category": "Urgent care clinic",
+  "neighborhood": "Channel District",
+  "neighborhoodSlug": "channel-district",
+  "city": "Tampa",
+  "metaTitle": "TGH Urgent Care: Channel District",
+  "metaDescription": "TGH Urgent Care at 564 Channelside Drive is open 7 days, 8:00 a.m. to 8:00 p.m. Phone 813-925-1903. No appointment is required at this clinic.",
+  "publish": {
+    "schemaType": "UrgentCare",
+    "hoursMode": "verified",
+    "openingHours": {
+      "0": { "open": "08:00", "close": "20:00" },
+      "1": { "open": "08:00", "close": "20:00" },
+      "2": { "open": "08:00", "close": "20:00" },
+      "3": { "open": "08:00", "close": "20:00" },
+      "4": { "open": "08:00", "close": "20:00" },
+      "5": { "open": "08:00", "close": "20:00" },
+      "6": { "open": "08:00", "close": "20:00" }
+    }
+  },
+  "sources": [
+    "https://www.fasttrackurgentcare.com/locations-and-hours/downtown-on-water-street-tampa/",
+    "places:tgh-urgent-care"
+  ],
+  "facts": [
+    "TGH Urgent Care powered by Fast Track, Downtown Channelside, Channel District, Tampa. Address 564 Channelside Drive, Tampa FL 33602, matching our listing 564 Channelside Dr. Phone 813-925-1903, matching our listing (813) 925-1903. The location block says open 7 days a week, 8:00 a.m. to 8:00 p.m. Website https://www.fasttrackurgentcare.com/locations-and-hours/downtown-on-water-street-tampa/. Neighborhood /neighborhoods/channel-district.",
+    "The page says this is a walk-in clinic and that patients can be seen without an appointment. It names Save My Spot and MyChart. It says for symptoms that may be life-threatening, call 911 or visit the nearest emergency room. It says employer services include walk-in DOT and non-DOT physicals, with most employees seen within one hour.",
+    "Services named for the Water Street walk-in clinic include abscess drainage, allergies, breathing treatment, bronchitis, burns, Covid 19 testing, eye infections, flu testing, fractures, glucose, hemoglobin, lab draws, strep testing, mono testing, nausea, physicals, pneumonia treatment, rapid RSV, sore throat treatment, sprain treatment, stool guaiac, and urine pregnancy test.",
+    "Nearby from our coordinates: Naked Farmer 0.04 miles at 1001 Water St, slug naked-farmer. Cava 0.06 miles at 1001 Water St Ste 110, slug cava-2. 3 Corners 0.09 miles at 813 Water St, slug 3-corners."
+  ],
+  "faq": [
+    {"q": "Do I need an appointment?", "a": "The page says the Water Street clinic allows patients to receive care without an appointment, and it also offers Save My Spot to reduce the wait."},
+    {"q": "What are the hours for this address?", "a": "The Channelside block says open 7 days a week, 8:00 a.m. to 8:00 p.m."},
+    {"q": "Is this an emergency room?", "a": "The page says to call 911 or go to an emergency room for symptoms that may be life-threatening, and that a walk-in clinic may not have those resources."}
+  ]
+}

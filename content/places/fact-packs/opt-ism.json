@@ -1,0 +1,30 @@
+{
+  "slug": "opt-ism",
+  "name": "OPT-ISM",
+  "category": "Optometrist",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "OPT-ISM: Eye care in Beach Park",
+  "metaDescription": "OPT-ISM at 3825 Henderson Blvd, Suite 103, lists comprehensive eye exams, glasses, and contact lens fittings. New patients are accepted. Book online.",
+  "publish": {
+    "schemaType": "Optician",
+    "hoursMode": "call",
+    "hoursNote": "The homepage we read did not print a weekly hour list. Listing phone (813) 843-2653. Book on myoptism.com."
+  },
+  "sources": [
+    "https://www.myoptism.com/",
+    "places:opt-ism"
+  ],
+  "facts": [
+    "OPT-ISM, optometrist, Beach Park / MacDill, Tampa. Address 3825 Henderson Blvd, Suite 103, Tampa, FL 33629. Listing phone (813) 843-2653. Website https://www.myoptism.com/.",
+    "Services named on the page: comprehensive eye exams, prescription glasses, contact lens fittings including soft, multifocal, toric, and specialty lenses, pediatric eye exams, diabetic eye evaluations, glaucoma screenings, retinal imaging, dry eye evaluations, and medical eye care related to diabetes, blood pressure, and cholesterol. The page says no air puff and undilated eye exams, insurance accepted, self-pay pricing, new patients accepted, and online booking described as 24/7.",
+    "The saved homepage did not print a Monday-to-Sunday hour chart. Stored database hours were not used for that reason.",
+    "Nearby from our coordinates: Little Greek Fresh Grill 0.08 miles at 1155 S Dale Mabry Hwy Ste 3, slug little-greek. Tampa Sports and Wellness Chiropractic 0.13 miles at 3902 Henderson Blvd #203, slug tampa-sports-and-wellness-chiropractic. Kahwa Coffee 0.19 miles at 3928 Henderson Boulevard, slug kahwa-coffee. Neighborhood page /neighborhoods/beach-park-macdill."
+  ],
+  "faq": [
+    {"q": "Does OPT-ISM print weekly hours?", "a": "The homepage we read did not. Call (813) 843-2653 or use the online booking link on myoptism.com."},
+    {"q": "What exams does the page list?", "a": "Comprehensive eye exams, contact lens exams, diabetic eye evaluations, glaucoma screenings, dry eye evaluations, and retinal imaging are all named."},
+    {"q": "Where is the office?", "a": "3825 Henderson Blvd, Suite 103, Tampa, FL 33629, in Beach Park / MacDill."}
+  ]
+}

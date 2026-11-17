@@ -5546,8 +5546,8 @@
     "businessStatus": "",
     "words": 0,
     "hasEssay": false,
-    "operating": "open",
-    "reason": "website loaded 200",
+    "operating": "likely closed",
+    "reason": "Scrubs & Beyond location page says Store Closed",
     "finalUrl": "https://locations.scrubsandbeyond.com/fl/tampa/tampa?utm_source=google&utm_medium=local&utm_campaign=google-local-702-tampa",
     "ms": 6657
   },

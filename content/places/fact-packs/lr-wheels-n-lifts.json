@@ -1,0 +1,40 @@
+{
+  "slug": "lr-wheels-n-lifts",
+  "name": "LR Wheels N Lifts",
+  "category": "Truck wheel and lift shop",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "LR Wheels N Lifts: Truck shop in Tampa",
+  "metaDescription": "LR Wheels N Lifts at 6923 W Hillsborough Ave lists Mon-Fri 9AM-6PM and Sat 9AM-3PM. Sunday is by appointment. The page also lists $0-down financing.",
+  "publish": {
+    "schemaType": "AutoPartsStore",
+    "hoursMode": "verified",
+    "hoursNote": "Sunday is listed as by appointment, not as a posted open-to-close span.",
+    "openingHours": {
+      "0": { "label": "By appointment" },
+      "1": { "open": "09:00", "close": "18:00" },
+      "2": { "open": "09:00", "close": "18:00" },
+      "3": { "open": "09:00", "close": "18:00" },
+      "4": { "open": "09:00", "close": "18:00" },
+      "5": { "open": "09:00", "close": "18:00" },
+      "6": { "open": "09:00", "close": "15:00" }
+    }
+  },
+  "sources": [
+    "https://lrwheelsnlifts.com/",
+    "places:lr-wheels-n-lifts"
+  ],
+  "facts": [
+    "LR Wheels N Lifts, Tampa. Address on the page and in our listing: 6923 W Hillsborough Ave, Tampa, FL 33634. Phone (813) 464-9023. Website https://lrwheelsnlifts.com/.",
+    "The FAQ says hours are Mon-Fri 9AM-6PM, Sat 9AM-3PM, Sun by appointment. Book online any time or call. The shop says it installs lift kits and leveling kits in-house, and that $0-down financing is available. The footer says lift kits, custom wheels, tires, and heavy-duty alignment, installed in-house since 2013.",
+    "Example wheel prices printed on the page include Cali Off-Road Vertex 20x10 $500, American Force AFW ATOM SS 20 inch by 9 inch $886, and KMC KM556 CRUX 18 inch by 9 inch $420. The page also names Toyo, Fuel, XD, Black Rhino, Rough Country, BDS, and Milestar.",
+    "Service area named on the page: Tampa, Brandon, Clearwater, and St. Petersburg. Our stored hours are only a Wednesday fragment, not this full week.",
+    "Nearby from our coordinates: Pep Boys 0.5 miles at 7655 W Hillsborough Ave, slug pep-boys-auto-service-and-tires. Ice Cold Air 0.72 miles at 7901 W Hillsborough Ave, slug ice-cold-air. Whiskey Willie's 0.87 miles at 8020 W Hillsborough Ave, slug whiskey-willies."
+  ],
+  "faq": [
+    {"q": "What hours does LR Wheels N Lifts post?", "a": "The site says Monday through Friday 9AM-6PM, Saturday 9AM-3PM, and Sunday by appointment."},
+    {"q": "Do they install the parts?", "a": "The page says yes, lift kits and leveling kits are installed in-house, and it mentions heavy-duty alignment."},
+    {"q": "Is financing mentioned?", "a": "The page says $0-down financing is available. Ask which purchases qualify."}
+  ]
+}

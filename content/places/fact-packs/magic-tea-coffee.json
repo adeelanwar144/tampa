@@ -1,0 +1,31 @@
+{
+  "slug": "magic-tea-coffee",
+  "name": "Magic Tea & Coffee",
+  "category": "Bubble tea shop",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Town 'N' Country",
+  "metaTitle": "Magic Tea: Bubble tea in Town 'N' Country",
+  "metaDescription": "Magic Tea & Coffee at 10069 W Hillsborough Ave serves boba, matcha, and coffee. Magic House Milk Tea is listed at 5.95, with DoorDash ordering.",
+  "publish": {
+    "schemaType": "CafeOrCoffeeShop",
+    "hoursMode": "call",
+    "hoursNote": "The locations page did not print weekly hours for Town 'N' Country. Call (813) 290-0298. Stored hours only list Wednesday and were not used."
+  },
+  "sources": [
+    "https://www.magicteacoffee.com/",
+    "places:magic-tea-coffee"
+  ],
+  "facts": [
+    "Magic Tea & Coffee, bubble tea, Town 'N' Country. This listing is 10069 W Hillsborough Ave, Tampa, FL 33615, phone (813) 290-0298. The site also lists Dunedin at 1507 Main St, Dunedin, FL 34698, phone (727) 315-4131, and Dale Mabry at 11642 N Dale Mabry Hwy, Tampa, FL 33618, phone (813) 373-5757. Website https://www.magicteacoffee.com/.",
+    "The site says drinks are made fresh to order: classic milk teas, fruit teas, ceremonial-grade matcha, cheese foam, smoothies, protein options, and coffee, with dairy-free choices available. DoorDash is offered for pickup and delivery. Gift certificates are mentioned.",
+    "Menu prices on the page include Magic House Milk Tea 5.95, Tiger Boba or Strawberry 6.95, Taro or Magic Ube 6.95, Thai or Matcha Thai 6.95, Pumpkin Spice Latte 7.25, and Pumpkin Spice Iced Tea 7.25.",
+    "No weekly hours were printed for the Town 'N' Country door. Stored hours only include Wednesday 11:30 to 20:00 and were not used.",
+    "Nearby from our coordinates: Modern Nails 0.01 miles at 10067 W Hillsborough Ave, slug modern-nails. Rachel's Place 0.02 miles at 10061 W Hillsborough Ave, slug rachels-place. Pinch-A-Penny 0.03 miles at 10057 West Hillsborough Avenue, slug pinch-a-penny."
+  ],
+  "faq": [
+    {"q": "Which Magic Tea shop is this listing?", "a": "This pin is 10069 W Hillsborough Ave, phone (813) 290-0298. The same site also lists a Dunedin shop and a Dale Mabry shop."},
+    {"q": "What does a milk tea cost on the page?", "a": "Magic House Milk Tea is listed at 5.95. Other drinks on the same menu are listed at 6.95 and 7.25. Check the menu before you order."},
+    {"q": "Are hours posted?", "a": "The locations text we read did not include a weekly clock. Call (813) 290-0298 or check magicteacoffee.com."}
+  ]
+}

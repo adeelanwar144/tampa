@@ -1,0 +1,41 @@
+{
+  "slug": "ikea",
+  "name": "IKEA",
+  "category": "Furniture store",
+  "neighborhood": "Ybor City",
+  "neighborhoodSlug": "ybor-city",
+  "city": "Tampa",
+  "metaTitle": "IKEA: Furniture store in Ybor City",
+  "metaDescription": "IKEA Tampa at 1103 N 22nd St is open daily 11:00 AM to 8:00 PM. Click and collect starts at 10:00 AM, and Thanksgiving and Christmas are closed.",
+  "publish": {
+    "schemaType": "FurnitureStore",
+    "hoursMode": "verified",
+    "hoursNote": "Store hours from the IKEA Tampa page. Click and collect is 10:00 AM to 8:00 PM. The Swedish Restaurant closes at 7:00 PM. Småland hours vary. Closed 11/26/2026 and 12/25/2026.",
+    "openingHours": {
+      "0": { "open": "11:00", "close": "20:00" },
+      "1": { "open": "11:00", "close": "20:00" },
+      "2": { "open": "11:00", "close": "20:00" },
+      "3": { "open": "11:00", "close": "20:00" },
+      "4": { "open": "11:00", "close": "20:00" },
+      "5": { "open": "11:00", "close": "20:00" },
+      "6": { "open": "11:00", "close": "20:00" }
+    }
+  },
+  "sources": [
+    "https://www.ikea.com/us/en/stores/tampa/",
+    "places:ikea"
+  ],
+  "facts": [
+    "IKEA, furniture store, Ybor City, Tampa. Address IKEA Tampa 1103 N 22nd Street, Tampa, FL 33605. Listing phone (888) 888-4532. Website https://www.ikea.com/us/en/stores/tampa/.",
+    "Store hours Monday through Sunday 11:00 AM to 8:00 PM. Click and collect Monday through Sunday 10:00 AM to 8:00 PM. Curbside opens 1 hour before the store. Småland hours may vary, see the store. Swedish Restaurant 11:00 AM to 7:00 PM. Swedish Bistro 11:00 AM to 8:00 PM.",
+    "Closed 11/26/2026 Thanksgiving and 12/25/2026 Christmas Day. Special store hours 12/24/2026 11:00 AM to 5:00 PM Christmas Eve and 12/31/2026 11:00 AM to 6:00 PM New Year's Eve.",
+    "Standard delivery starting at $19 for IKEA Family members. Click and collect is free for IKEA Family members and $2 if you are not a member. The store holds an order for 24 hours. Curbside pickup: enter on Adamo Dr or N 26th St and have the last 4 digits ready.",
+    "Our stored database hours only include Wednesday. The store page lists every day.",
+    "Nearby from our coordinates: Citgo 0.35 miles at 1901 E Adamo Dr, slug citgo. Casa Santo Stefano 0.42 miles at 1607 N 22nd St, slug casa-santo-stefano. Blind Tiger Coffee Roasters Ybor City Cafe 0.59 miles at 1823 E 7th Ave, slug blind-tiger. Neighborhood page /neighborhoods/ybor-city."
+  ],
+  "faq": [
+    {"q": "What time does IKEA Tampa open?", "a": "The store page lists 11:00 AM to 8:00 PM every day. Click and collect is listed from 10:00 AM. Call (888) 888-4532 or check the store page before a holiday."},
+    {"q": "Is the IKEA restaurant on the same clock as the store?", "a": "The Swedish Restaurant is listed until 7:00 PM. The Swedish Bistro is listed until 8:00 PM, the same close as the store. Småland hours may vary."},
+    {"q": "How does click and collect work?", "a": "The page says click and collect is free for IKEA Family members and $2 otherwise, and that the store holds the order for 24 hours. Curbside entry is from Adamo Drive or N 26th Street."}
+  ]
+}

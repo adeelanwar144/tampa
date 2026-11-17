@@ -29,7 +29,42 @@ const published = {
     "la-faraona-cigars",
     "lafrance-family-law",
   ],
+  "2": [
+    "hancock-whitney-2",
+    "ikea",
+    "law-office-of-brendan-conley",
+    "little-red-wagon-native-nursery",
+    "logos-pharmacy",
+    "magic-tea-coffee",
+    "medicruz",
+    "mike-g-law",
+    "modern-nails",
+    "opt-ism",
+    "palm-yoga",
+    "pia-esthetics-day-spa",
+    "remington-feed",
+    "shooting-sports-inc",
+    "south-tampa-bicycles",
+  ],
+  "3": [
+    "james-a-haley-veterans-hospital",
+    "kfb-law-car-accident-and-personal-injury-lawyers",
+    "long-home-products",
+    "lorenzo-and-lorenzo",
+    "lr-wheels-n-lifts",
+    "metro-inclusive-pharmacy",
+    "mikes-auto-glass-tampa",
+    "removery-tattoo-removal-fading",
+    "renewal-rehabilitation",
+    "shanna-and-bryan-glazer-jcc",
+    "tampa-bay-plastic-surgery-inc",
+    "tampa-sports-and-wellness-chiropractic",
+    "temmen-plastic-surgery",
+    "tgh-urgent-care",
+    "the-tejas-pradip-patel-tennis-center",
+  ],
 };
+const closedNow = new Set(["uniform-city"]);
 const publishedBatch = new Map();
 for (const [batch, slugs] of Object.entries(published)) {
   for (const slug of slugs) publishedBatch.set(slug, batch);
@@ -48,7 +83,7 @@ for (const row of thin) {
   let status = "pending";
   let words = row.words;
   let batch = "";
-  if (mark === "likely closed") status = "likely-closed";
+  if (mark === "likely closed" || closedNow.has(row.slug)) status = "likely-closed";
   else if (mark === "unclear") status = "unclear";
   if (publishedBatch.has(row.slug)) {
     status = "published";

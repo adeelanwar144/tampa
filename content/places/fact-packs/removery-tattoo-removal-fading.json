@@ -1,0 +1,39 @@
+{
+  "slug": "removery-tattoo-removal-fading",
+  "name": "Removery",
+  "category": "Tattoo removal studio",
+  "neighborhood": "Westshore",
+  "neighborhoodSlug": "westshore",
+  "city": "Tampa",
+  "metaTitle": "Removery: Tattoo removal in Westshore",
+  "metaDescription": "Removery's Westshore studio is at 130 S. West Shore Blvd, Suite 2B. Tuesday and Wednesday run to 06:00 pm. The studio phone is 813-430-3076.",
+  "publish": {
+    "schemaType": "HealthAndBeautyBusiness",
+    "hoursMode": "verified",
+    "hoursNote": "Monday and Sunday are closed. Listing phone +1-866-465-0090 is not the studio number printed on this page.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "closed": true },
+      "2": { "open": "10:00", "close": "18:00" },
+      "3": { "open": "10:00", "close": "18:00" },
+      "4": { "open": "11:00", "close": "19:00" },
+      "5": { "open": "09:00", "close": "17:00" },
+      "6": { "open": "09:00", "close": "16:00" }
+    }
+  },
+  "sources": [
+    "https://removery.com/tattoo-removal/locations/fl/tampa/westshore/",
+    "places:removery-tattoo-removal-fading"
+  ],
+  "facts": [
+    "Removery Westshore, Tampa. Page address 130 S. West Shore Blvd. Suite 2B, Tampa, FL 33609. Listing address matches that street and suite. Studio phone 813-430-3076. Listing phone +1-866-465-0090. The page says the studio is in Town Square Center, near Petco. Neighborhood /neighborhoods/westshore. Website https://removery.com/tattoo-removal/locations/fl/tampa/westshore/.",
+    "Hours: Monday Closed. Tuesday 10:00 am - 06:00 pm. Wednesday 10:00 am - 06:00 pm. Thursday 11:00 am - 07:00 pm. Friday 09:00 am - 05:00 pm. Saturday 09:00 am - 04:00 pm. Sunday Closed.",
+    "The page offers a free estimate. Package lines include complete removal under 1 sq in as low as $69/month on a 24 mo plan, and pay as you go cosmetic eyebrow tattoos and scalp micropigmentation starting at $400/session. It says some tattoos average 8 and 12 treatments. It names Soler as medical director. It says the brand has performed over 1.6 million treatments.",
+    "Nearby from our coordinates: Jos. A. Bank 0.03 miles at 144 South West Shore Boulevard, slug jos-a-bank. FedEx Office 0.07 miles at 4618 W Kennedy Blvd, slug fedex-office. Lueken's Liquors 0.11 miles at 4643 W Kennedy Blvd, slug luekens-liquors."
+  ],
+  "faq": [
+    {"q": "Which days is the Westshore studio closed?", "a": "The page lists Monday and Sunday as closed."},
+    {"q": "What phone is printed for this studio?", "a": "The location page prints 813-430-3076. Our listing phone is +1-866-465-0090."},
+    {"q": "Does the page quote a monthly price?", "a": "It says an extra-small complete-removal package is as low as $69/month based on 24 months. Larger sizes are listed separately, and a session price starts at $400 for some cosmetic work."}
+  ]
+}

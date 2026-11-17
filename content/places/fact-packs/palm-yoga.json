@@ -1,0 +1,31 @@
+{
+  "slug": "palm-yoga",
+  "name": "Palm Yoga",
+  "category": "Yoga studio",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Palm Yoga: Yoga studio in Carrollwood",
+  "metaDescription": "Palm Yoga at 11732 N Dale Mabry Hwy in Carrollwood offers a free first class and a yoga wall. The site dates the studio to 2008 and names Rebecca Wood.",
+  "publish": {
+    "schemaType": "ExerciseGym",
+    "hoursMode": "call",
+    "hoursNote": "The homepage lists sample class times, not a full open-and-close week. Call 813-951-3450 or use the schedule page before you go."
+  },
+  "sources": [
+    "https://palmyoga.com/",
+    "places:palm-yoga"
+  ],
+  "facts": [
+    "Palm Yoga, yoga studio, Carrollwood, Tampa. Address 11732 N Dale Mabry Hwy, Main Street Plaza, Tampa, FL 33618. Phone 813-951-3450. Email becky@palmyoga.com. Website https://palmyoga.com/. Copyright line: Palm Yoga Inc. DBA Tampa Jiu Jitsu.",
+    "The site says the studio was established in 2008, that owner Rebecca Wood has practiced and taught for over 17 years, and that it has the first yoga wall in Carrollwood. The first class is free for Tampa Bay area residents and no membership is required for that first class.",
+    "Sample class times on the contact form: All Levels Yoga Tuesday and Thursday 9:00 a.m. All Levels Mobility Monday 6:20 p.m. Stretch and Strengthen Tuesday 6:30 p.m. Yoga Wall Thursday 6:30 p.m. The page also says Mondays at 6:20. Programs named: beginners, all levels, yoga flow, stretch and strengthen, mindfulness meditation, mobility, workshops, online courses, and private sessions. The page says 6 ways to practice.",
+    "Stored database hours only include Wednesday 9:00 to 21:00 and do not match the class list, so they are not used as the schedule.",
+    "Nearby from our coordinates: 1UP Entertainment + Social 0.06 miles at 11778 N Dale Mabry Hwy, slug 1up-entertainment-social. Culver's 0.49 miles at 10902 N Dale Mabry Hwy, slug culvers-2. Lowe's 0.64 miles at 12901 N Dale Mabry Hwy, slug lowes-2."
+  ],
+  "faq": [
+    {"q": "Is the first Palm Yoga class free?", "a": "The site says the first class is free for Tampa Bay area residents and that no membership is required for that first class. Call 813-951-3450 to claim it."},
+    {"q": "Does the homepage list a full weekly schedule?", "a": "It lists sample times, including Tuesday and Thursday at 9:00 a.m. and Monday at 6:20 p.m. It does not print an open and close for every day."},
+    {"q": "Who teaches at Palm Yoga?", "a": "The site names owner Rebecca Wood and says she has practiced and taught for over 17 years."}
+  ]
+}

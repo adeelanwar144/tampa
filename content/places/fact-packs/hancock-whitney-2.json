@@ -1,0 +1,41 @@
+{
+  "slug": "hancock-whitney-2",
+  "name": "Hancock Whitney Bank",
+  "category": "Bank",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Hancock Whitney: Bank in South Tampa",
+  "metaDescription": "Hancock Whitney's South Tampa center is at 2101 S Dale Mabry Hwy. Lobby hours are weekdays 9:00am to 4:00pm, and Friday drive-thru hours run until 5:30pm.",
+  "publish": {
+    "schemaType": "BankOrCreditUnion",
+    "hoursMode": "verified",
+    "hoursNote": "Lobby hours only. Drive-thru is Monday through Thursday 9:00am to 4:00pm and Friday 9:00am to 5:30pm. The ATM is listed as open 24 hours. Weekends are closed for lobby and drive-thru.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "16:00" },
+      "2": { "open": "09:00", "close": "16:00" },
+      "3": { "open": "09:00", "close": "16:00" },
+      "4": { "open": "09:00", "close": "16:00" },
+      "5": { "open": "09:00", "close": "16:00" },
+      "6": { "closed": true }
+    }
+  },
+  "sources": [
+    "https://locations.hancockwhitney.com/fl/tampa/financial-center-south-tampa.html",
+    "places:hancock-whitney-2"
+  ],
+  "facts": [
+    "Hancock Whitney Bank, South Tampa Financial Center. Address 2101 South Dale Mabry Highway, Tampa, FL 33629. Phone (813) 868-7830. Website https://locations.hancockwhitney.com/fl/tampa/financial-center-south-tampa.html. The page says Member FDIC and Equal Housing Lender.",
+    "Lobby hours Monday through Friday 9:00am to 4:00pm, Saturday and Sunday closed. Drive-thru Monday through Thursday 9:00am to 4:00pm, Friday 9:00am to 5:30pm, Saturday and Sunday closed. ATM open 24 hours. A deposit line on the nearby ATM card is (800) 448-8812.",
+    "Services named for this center: checking, savings, ATMs, mobile and online banking, credit cards, loans, mortgages, wealth management, and private banking, for personal, small business, or commercial customers.",
+    "The same locator lists a Westshore financial center 2.6 miles away at 2202 North Westshore Blvd, phone (813) 998-2888. That is our other listing, slug hancock-whitney.",
+    "Stored database hours match the weekday lobby and the weekend closure. They do not include the Friday drive-thru extension.",
+    "Nearby from our coordinates: Calico 0.05 miles at 2124 S Dale Mabry Hwy Ste 100, slug calico-corners. Kahwa Coffee 0.34 miles at 3928 Henderson Boulevard, slug kahwa-coffee."
+  ],
+  "faq": [
+    {"q": "Is the South Tampa lobby open on Friday afternoon?", "a": "Lobby hours end at 4:00pm. The drive-thru on Friday is listed until 5:30pm. The ATM is listed as 24 hours."},
+    {"q": "Is this the Westshore Hancock Whitney?", "a": "No. This page is 2101 South Dale Mabry Highway, phone (813) 868-7830. The locator also shows Westshore at 2202 North Westshore Blvd, 2.6 miles away."},
+    {"q": "Are weekends open?", "a": "The location page closes both the lobby and the drive-thru on Saturday and Sunday."}
+  ]
+}

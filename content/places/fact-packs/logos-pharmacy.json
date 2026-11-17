@@ -1,0 +1,38 @@
+{
+  "slug": "logos-pharmacy",
+  "name": "Logos RX",
+  "category": "Compounding pharmacy",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Logos RX: Compounding pharmacy in Tampa",
+  "metaDescription": "Logos RX at 7543 W Waters Ave is a 503A compounding pharmacy. Retail hours are weekdays 9:00am to 5:00pm, and the site phone is 855-564-6779.",
+  "publish": {
+    "schemaType": "Pharmacy",
+    "hoursMode": "verified",
+    "hoursNote": "Retail counter hours only. Online hours are Monday through Saturday 8:00am to 7:00pm EST, and chat support is listed as 24/7. Weekend retail was not marked closed or open.",
+    "openingHours": {
+      "1": { "open": "09:00", "close": "17:00" },
+      "2": { "open": "09:00", "close": "17:00" },
+      "3": { "open": "09:00", "close": "17:00" },
+      "4": { "open": "09:00", "close": "17:00" },
+      "5": { "open": "09:00", "close": "17:00" }
+    }
+  },
+  "sources": [
+    "https://www.logosrx.com/",
+    "places:logos-pharmacy"
+  ],
+  "facts": [
+    "Logos RX, compounding pharmacy, Tampa. Headquarters 7543 W. Waters Ave, Tampa, FL 33615. Site phone 855-564-6779. Fax 813-886-2822. Email support@logosrx.com. Listing phone (813) 886-2800. Website https://www.logosrx.com/.",
+    "The site calls Logos RX a multi-state licensed 503A compounding pharmacy with sterile and non-sterile compounding labs, serving Tampa Bay and shipping to patients across multiple U.S. states. Service areas named include Tampa, St. Petersburg, Clearwater, Brandon, Riverview, Wesley Chapel, Lutz, Palm Harbor, and Largo.",
+    "Retail hours Monday through Friday 9:00am to 5:00pm. Online hours Monday through Saturday 8:00am to 7:00pm EST. Chat support 24/7. Provider accounts are reviewed before catalog access. The page has a link to report an adverse reaction.",
+    "Our stored database hours only include Wednesday 9:00 to 17:00. The website retail line covers Monday through Friday.",
+    "Nearby from our coordinates: Dollar Tree 0.22 miles at 7089 W Waters Ave, slug dollar-tree-3. Origami Sushi 0.66 miles at 6507 W Waters Ave, slug origami-sushi. Lowe's 1.06 miles at 6275 W Waters Ave, slug lowes-6."
+  ],
+  "faq": [
+    {"q": "Which phone should I use for Logos RX?", "a": "The website prints 855-564-6779 and fax 813-886-2822. Our listing phone is (813) 886-2800. Ask which line the retail counter answers."},
+    {"q": "What are the retail hours?", "a": "The site lists retail Monday through Friday, 9:00am to 5:00pm. Online hours run later and include Saturday. Weekend retail is not spelled out."},
+    {"q": "Is this a compounding pharmacy?", "a": "The homepage says Logos RX is a 503A compounding pharmacy with sterile and non-sterile labs and that it ships to patients in multiple states."}
+  ]
+}

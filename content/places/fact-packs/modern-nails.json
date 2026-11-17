@@ -1,0 +1,40 @@
+{
+  "slug": "modern-nails",
+  "name": "Modern Nails",
+  "category": "Nail salon",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Modern Nails: Nail salon in Tampa",
+  "metaDescription": "Modern Nails at 10067 W Hillsborough Ave lists manicures, pedicures, and waxing. Posted hours are 9AM to 7PM Monday through Saturday, and Sunday is open.",
+  "publish": {
+    "schemaType": "NailSalon",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from modernnailstampa.com. Email on the page is mai_keeble@yahoo.com.",
+    "openingHours": {
+      "0": { "open": "11:00", "close": "17:00" },
+      "1": { "open": "09:00", "close": "19:00" },
+      "2": { "open": "09:00", "close": "19:00" },
+      "3": { "open": "09:00", "close": "19:00" },
+      "4": { "open": "09:00", "close": "19:00" },
+      "5": { "open": "09:00", "close": "19:00" },
+      "6": { "open": "09:00", "close": "19:00" }
+    }
+  },
+  "sources": [
+    "https://modernnailstampa.com/",
+    "places:modern-nails"
+  ],
+  "facts": [
+    "Modern Nails, nail salon, Tampa. Address 10067 W Hillsborough Ave, Tampa, FL 33615. Phone (813) 882-3202. Email mai_keeble@yahoo.com. Website https://modernnailstampa.com/.",
+    "Business hours Monday through Saturday 9AM to 7PM. Sunday 11AM to 5PM.",
+    "Services named: manicure, pedicure, waxing, regular polish, dip powder, and deluxe spa packages with hot stones, bath bombs, reflexology, aromatherapy, and spa products. The site says the room has natural stone flooring, wooden furnishings, and antique wall lamps. Customer reviews on the page were not used.",
+    "Stored database hours match this weekly clock.",
+    "Nearby from our coordinates: Magic Tea & Coffee 0.01 miles at 10069 W Hillsborough Ave, slug magic-tea-coffee. Rachel's Place 0.01 miles at 10061 W Hillsborough Ave, slug rachels-place. Pinch-A-Penny 0.02 miles at 10057 West Hillsborough Avenue, slug pinch-a-penny."
+  ],
+  "faq": [
+    {"q": "Is Modern Nails open on Sunday?", "a": "The site lists Sunday as 11AM to 5PM. Monday through Saturday are 9AM to 7PM. Call (813) 882-3202 to confirm."},
+    {"q": "What services are named?", "a": "Manicures, pedicures, waxing, polish, dip powder, and spa packages that mention hot stones, bath bombs, reflexology, and aromatherapy."},
+    {"q": "What is the email on the page?", "a": "mai_keeble@yahoo.com, next to 10067 W Hillsborough Ave."}
+  ]
+}

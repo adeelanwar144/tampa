@@ -1,0 +1,31 @@
+{
+  "slug": "long-home-products",
+  "name": "Long Home",
+  "category": "Bathroom remodeler",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Riverview",
+  "metaTitle": "Long Home: Bath remodeler in Riverview",
+  "metaDescription": "Long Home lists 4035 Crescent Park Dr, Suite 4035, Riverview. The footer phone there is (813) 579-6585. Our listing phone is (813) 536-5069.",
+  "publish": {
+    "schemaType": "GeneralContractor",
+    "hoursMode": "call",
+    "hoursNote": "The Florida location page does not print weekly office hours. It offers a free estimate and an in-home consultation."
+  },
+  "sources": [
+    "https://longhome.com/locations/florida/",
+    "places:long-home-products"
+  ],
+  "facts": [
+    "Long Home, bathroom remodeling, Riverview. Listing address 4035 Crescent Park Dr Ste 4035, Riverview, FL 33578. The page prints 4035 Crescent Park Dr. Suite 4035, Riverview, FL 33578. Listing phone (813) 536-5069. Footer phone for that Riverview address (813) 579-6585. A body block places (904) 789-4289 beside the same Riverview street. Toll-free (800) 417-5664 and 1.800.417.5664. Website https://longhome.com/locations/florida/.",
+    "The page says Long Home has spent eight decades and has been trusted for 80 years, family owned, since 1945. It names bathroom, roofing, and siding work. Bath items include bathtub replacement, bathtub to shower conversion, shower replacement, accessible remodeling, grab bars, low-threshold showers, handheld showerheads, walk-in tubs, and bench seating.",
+    "The FAQ says most bathroom remodels are completed in as little as one day, and walk-in tub installations or larger conversions may take two days. It says the company is licensed in Florida as CRC1334142. The footer also prints FL# CBC1270644. Financing is offered, and the page asks readers to schedule a free in-home consultation. A banner says a Black Friday sale ends Nov 28.",
+    "The Tampa-area blurb says Long Home serves Tampa, Riverview, Brandon, Gibsonton, and surrounding Hillsborough County. A separate Jacksonville office is 4110 Southpoint Blvd., Ste 215, Jacksonville, 32216.",
+    "No weekly open and close hours were printed. Nearby from our coordinates: Smile 360 0.55 miles at 3140 S Falkenburg Rd Ste 204, slug smile-360-implant-and-family-dentistry. Circle K 0.63 miles at 2820 US-301, slug circle-k-4. Kiwami Ramen 0.73 miles at 10262 Causeway Blvd, slug kiwami-ramen-sushi."
+  ],
+  "faq": [
+    {"q": "Which phone goes with the Riverview office?", "a": "The footer prints (813) 579-6585 at 4035 Crescent Park Dr. Another block on the same page puts (904) 789-4289 beside that street. Our listing phone is (813) 536-5069. Confirm before you call."},
+    {"q": "Does the page list office hours?", "a": "It does not print a weekly schedule. It offers a free in-home consultation and a free estimate form."},
+    {"q": "How long does the page say a bath remodel takes?", "a": "The FAQ says most remodels are completed in as little as one day, and some walk-in tub or larger conversions may take two days."}
+  ]
+}
