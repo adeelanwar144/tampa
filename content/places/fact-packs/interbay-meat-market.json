@@ -1,0 +1,36 @@
+{
+  "slug": "interbay-meat-market",
+  "name": "Interbay Meat Market",
+  "category": "Market",
+  "neighborhood": "Bayshore / Ballast Point",
+  "neighborhoodSlug": "bayshore-ballast-point",
+  "city": "Tampa",
+  "metaTitle": "Interbay Meat Market: Market in Ballast Point",
+  "metaDescription": "Interbay Meat Market at 6110 Interbay Blvd is a South Tampa deli and grocery. The site dates the current 10,000-square-foot building to a 1998 rebuild.",
+  "publish": {
+    "schemaType": "GroceryStore",
+    "hoursMode": "verified",
+    "hoursNote": "Store hours are on the site. Deli hours end earlier: Monday–Friday 5:30am–8pm, Saturday 6am–5pm, Sunday closed.",
+    "openingHours": {
+      "0": { "open": "08:00", "close": "16:00" },
+      "1": { "open": "05:30", "close": "21:00" },
+      "2": { "open": "05:30", "close": "21:00" },
+      "3": { "open": "05:30", "close": "21:00" },
+      "4": { "open": "05:30", "close": "21:00" },
+      "5": { "open": "05:30", "close": "21:00" },
+      "6": { "open": "06:00", "close": "18:00" }
+    }
+  },
+  "facts": [
+    "Interbay Meat Market, Bayshore / Ballast Point, Tampa. Address 6110 Interbay Blvd, Tampa, FL 33611. Phone (813) 839-7542 and 813-839-7542. Website http://www.interbaymarket.com/.",
+    "Store hours on the site: Mon-Fri 5:30am-9pm, Sat 6am-6pm, Sun 8am-4pm. Deli hours: Mon-Fri 5:30am-8pm, Sat 6am-5pm, Sun Closed.",
+    "The site says family owned and operated since 1985, and that locals call it the Green Store. It says the original building was 2,000 sqft, built in 1942. Hani and Maria Shoubaki bought it in 1985. In 1998 the old store was demolished and the current 10,000-square-foot building was built. Maria is described as originally from Havana, Cuba. The page says Cuban/American cuisine, steaks, sausages made in-house, produce delivered fresh daily, and a grocery section.",
+    "A block of unrelated casino text appears later on the same page and is not treated as a fact about the market.",
+    "Nearby from our coordinates: SOG Cafe 0.06 miles at 6102 South Macdill Avenue, slug sog-cafe. Speedway 0.76 miles at 5602 South Dale Mabry Highway, slug speedway. Taste of China 0.78 miles at 5827 S Dale Mabry Hwy, slug taste-of-china. Neighborhood /neighborhoods/bayshore-ballast-point."
+  ],
+  "faq": [
+    {"q": "What time does the Interbay deli close?", "a": "The site lists deli hours of Monday–Friday 5:30am to 8pm, Saturday 6am to 5pm, and Sunday closed. The store stays open later."},
+    {"q": "When does the site say the current building went up?", "a": "It says the old store was demolished in 1998 and replaced by a 10,000-square-foot building. The purchase year on the page is 1985."},
+    {"q": "What food does the market describe?", "a": "Cuban and American deli food, steaks, in-house sausages, daily produce, and grocery basics. Call (813) 839-7542 to confirm."}
+  ]
+}

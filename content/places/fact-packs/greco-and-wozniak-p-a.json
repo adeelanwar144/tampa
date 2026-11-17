@@ -1,0 +1,37 @@
+{
+  "slug": "greco-and-wozniak-p-a",
+  "name": "Greco & Wozniak P.A.",
+  "category": "Law firm",
+  "neighborhood": "Downtown Tampa",
+  "neighborhoodSlug": "downtown-tampa",
+  "city": "Tampa",
+  "metaTitle": "Greco & Wozniak P.A.: Law firm in Downtown",
+  "metaDescription": "Greco & Wozniak P.A. is a Tampa law office at 501 N Morgan St, Suite 200. The site lists weekday hours of 9:00am to 5:00pm and Saturday until 12:00pm.",
+  "publish": {
+    "schemaType": "Attorney",
+    "hoursMode": "verified",
+    "hoursNote": "Office hours from the firm website. Call 813-223-7849 to confirm a consultation.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "17:00" },
+      "2": { "open": "09:00", "close": "17:00" },
+      "3": { "open": "09:00", "close": "17:00" },
+      "4": { "open": "09:00", "close": "17:00" },
+      "5": { "open": "09:00", "close": "17:00" },
+      "6": { "open": "09:00", "close": "12:00" }
+    }
+  },
+  "facts": [
+    "Database name Greco & Wozniak P.A. The website name is Greco, Wozniak & Ruiz-Carus, P.A. Downtown Tampa. Address 501 North Morgan Street Suite #200, Tampa, FL 33602. Phone 813-223-7849. Website https://grecowozniakpa.com/.",
+    "The site says free consultation, Hablamos español, and no fees unless you win. Practice areas named on the homepage: medical malpractice, diagnosis error, cancer misdiagnosis, surgical error, personal injury, car accidents, truck accidents, motorcycle accidents, and wrongful death.",
+    "Attorneys named on the homepage: Mac A. Greco, Jr., Mac A. Greco, III, Andrew J. Wozniak, and Isaac R. Ruiz-Carus. The page labels Mac A. Greco, Jr. and Isaac R. Ruiz-Carus as board certified.",
+    "Office hours: Monday - Friday 9:00am - 5:00pm, Saturday 9:00am - 12:00pm, Sunday CLOSED.",
+    "The homepage also prints experience and verdict figures that do not match each other, and it includes placeholder headlines. Those figures are not repeated here.",
+    "Nearby from our coordinates: Adrian R. Castro, P.A. 0.15 miles at 505 E Jackson St #210, slug adrian-r-castro-p-a. Moxies Cafe and Caterer 0.17 miles at 302 E Kennedy Blvd, slug moxies-cafe. Eddie And Sam's N.Y Pizza 0.22 miles at 203 E Twiggs St, slug eddie-and-sams. Neighborhood /neighborhoods/downtown-tampa."
+  ],
+  "faq": [
+    {"q": "What hours does the firm post?", "a": "Monday through Friday 9:00am to 5:00pm, Saturday 9:00am to 12:00pm, and Sunday closed. Call 813-223-7849."},
+    {"q": "Which matters does the homepage name?", "a": "Medical malpractice, personal injury, car, truck, and motorcycle accidents, and wrongful death, plus diagnosis, cancer, and surgical-error pages."},
+    {"q": "Does the site say the consultation is free?", "a": "Yes. The homepage says to request a free consultation and that the firm speaks Spanish."}
+  ]
+}

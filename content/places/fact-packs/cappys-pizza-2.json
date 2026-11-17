@@ -1,0 +1,62 @@
+{
+  "slug": "cappys-pizza-2",
+  "name": "Cappys Pizza Seminole Heights",
+  "category": "Pizza",
+  "directoryCategory": "food-drink",
+  "neighborhood": "Seminole Heights",
+  "neighborhoodSlug": "seminole-heights",
+  "city": "Tampa",
+  "metaTitle": "Cappys Pizza Seminole Heights: Pizza in Seminole Heights",
+  "metaDescription": "Cappys Pizza Seminole Heights at 4910 N Florida Ave serves Chicago deep dish and New York thin crust. The site lists dinner hours, takeout, and delivery.",
+  "publish": {
+    "schemaType": "Restaurant",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from cappyspizzash.com. Call (813) 238-1516 to confirm the night you want.",
+    "openingHours": {
+      "0": { "open": "16:00", "close": "21:00" },
+      "1": { "open": "17:00", "close": "21:00" },
+      "2": { "open": "17:00", "close": "21:00" },
+      "3": { "open": "17:00", "close": "21:00" },
+      "4": { "open": "17:00", "close": "21:00" },
+      "5": { "open": "17:00", "close": "22:00" },
+      "6": { "open": "16:00", "close": "21:00" }
+    }
+  },
+  "openingHoursVerified": true,
+  "openingHoursSource": "https://www.cappyspizzash.com/",
+  "openingHours": [
+    "Monday 17:00-21:00",
+    "Tuesday 17:00-21:00",
+    "Wednesday 17:00-21:00",
+    "Thursday 17:00-21:00",
+    "Friday 17:00-22:00",
+    "Saturday 16:00-21:00",
+    "Sunday 16:00-21:00"
+  ],
+  "sources": [
+    {"label": "Our database", "url": "places:cappys-pizza-2"},
+    {"label": "Cappy's Pizza Seminole Heights website", "url": "https://www.cappyspizzash.com/"},
+    {"label": "Menu button destination printed on that site", "url": "https://www.toasttab.com/cappys/v3/"},
+    {"label": "Distances from coordinates in our database", "url": "places:nearby:cappys-pizza-2"}
+  ],
+  "facts": [
+    "Database name: Cappys Pizza Seminole Heights. The website spells the name Cappy's Pizza. Category: pizza restaurant. Neighborhood: Seminole Heights. City: Tampa.",
+    "Address: 4910 N Florida Ave, Tampa, FL 33603.",
+    "Phone: (813) 238-1516. Email: Info@cappyspizzash.com.",
+    "Website: https://www.cappyspizzash.com/. The site says Now offering Delivery. It also labels Take Out and delivery, and Order Online.",
+    "The menu control on the site points to https://www.toasttab.com/cappys/v3/. Individual dishes on that Toast page were not copied into this fact pack. The restaurant site itself labels menu groups Pizza, Starters, and Salads.",
+    "The site says: Located in the heart of Seminole Heights. It prints the line Tampa's favorite pizza joint since 1995. It says Chicago Deep Dish, New York Thin Crust Pizza, Classic Sides, and Vegan options.",
+    "Website hours: Monday - Thursday 5:00pm - 9:00pm, Friday 5:00pm - 10:00pm, Saturday - Sunday 4:00pm - 9:00pm.",
+    "Stored database hours: no weekly periods are stored for this place.",
+    "Coordinates: 27.9912673, -82.4596872.",
+    "The site does not describe parking.",
+    "Nearby published places, miles calculated from our coordinates: Olsen's Air Cooled VW 0.02 miles at 4902 N Florida Ave, slug olsens-aircooled. Health Mutt 0.08 miles at 5023 N Florida Ave, slug health-mutt. Dollar Tree 0.08 miles at 5100 N Florida Ave, slug dollar-tree-4. Seriously Strong Training Tampa 0.13 miles at 5120 N Florida Ave B, slug seriously-strong-training-tampa.",
+    "The Study Salon is also published at 4705 N Florida Ave, Tampa, FL 33603, slug the-study.",
+    "Neighborhood page: /neighborhoods/seminole-heights."
+  ],
+  "faq": [
+    {"q": "What pizza styles does Cappy's list?", "a": "The website lists Chicago Deep Dish, New York Thin Crust, classic sides, and vegan options. It also labels menu groups as Pizza, Starters, and Salads."},
+    {"q": "Does Cappys Pizza Seminole Heights deliver?", "a": "The site says it is now offering delivery, and it also labels takeout and online ordering. Call (813) 238-1516 to confirm the delivery area."},
+    {"q": "What hours are printed on the restaurant website?", "a": "Monday through Thursday 5:00pm to 9:00pm, Friday 5:00pm to 10:00pm, and Saturday and Sunday 4:00pm to 9:00pm. Confirm on cappyspizzash.com before you go."}
+  ]
+}

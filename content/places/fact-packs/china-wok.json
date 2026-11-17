@@ -1,0 +1,40 @@
+{
+  "slug": "china-wok",
+  "name": "China Wok",
+  "category": "Chinese restaurant",
+  "neighborhood": "Bayshore / Ballast Point",
+  "neighborhoodSlug": "bayshore-ballast-point",
+  "city": "Tampa",
+  "metaTitle": "China Wok: Chinese restaurant in Bayshore",
+  "metaDescription": "China Wok is a Chinese restaurant at 4230 S MacDill Ave in Tampa. The site lists Tuesday as closed and a $4.99 delivery fee on orders of $20 or more.",
+  "publish": {
+    "schemaType": "Restaurant",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from chinawokchinesefood.com. Call (813) 835-9308 to confirm.",
+    "openingHours": {
+      "0": { "open": "11:00", "close": "21:00" },
+      "1": { "open": "11:00", "close": "21:30" },
+      "2": { "closed": true },
+      "3": { "open": "11:00", "close": "21:30" },
+      "4": { "open": "11:00", "close": "21:30" },
+      "5": { "open": "11:00", "close": "22:00" },
+      "6": { "open": "11:00", "close": "22:00" }
+    }
+  },
+  "sources": [
+    "https://www.chinawokchinesefood.com/",
+    "places:china-wok"
+  ],
+  "facts": [
+    "China Wok, Chinese restaurant, Bayshore / Ballast Point, Tampa. Address 4230 S MacDill Ave, Tampa, FL 33611. Phone (813) 835-9308. Website https://www.chinawokchinesefood.com/.",
+    "The site says the menu has classic and popular dishes, high quality fresh ingredients, and that they can cook no M.S.G. Pickup and delivery are offered online. Delivery limit $20. Delivery fee $4.99. The site says the store opens 6 days a week.",
+    "Website hours: Monday 11:00 AM - 09:30 PM, Tuesday Closed, Wednesday 11:00 AM - 09:30 PM, Thursday 11:00 AM - 09:30 PM, Friday 11:00 AM - 10:00 PM, Saturday 11:00 AM - 10:00 PM, Sunday 11:00 AM - 09:00 PM.",
+    "Stored database hours only include Wednesday 11:00 to 21:30.",
+    "Nearby from our coordinates: Himes Breakfast House 0.55 miles at 3826 S Himes Avenue, slug himes-breakfast-house. Publix Super Market at Britton Plaza 0.6 miles at 3838 Britton Plaza, slug publix. The Collonade Restaurant 0.62 miles, slug the-collonade-restaurant. Neighborhood page /neighborhoods/bayshore-ballast-point."
+  ],
+  "faq": [
+    {"q": "Is China Wok open on Tuesday?", "a": "The website lists Tuesday as closed. Monday, Wednesday, and Thursday are 11:00 AM to 9:30 PM. Call (813) 835-9308 to confirm."},
+    {"q": "Does China Wok deliver?", "a": "The site says pickup and delivery can be ordered online, with a delivery limit of $20 and a delivery fee of $4.99."},
+    {"q": "Can they leave out MSG?", "a": "The homepage says they can cook with no M.S.G. Ask when you order."}
+  ]
+}

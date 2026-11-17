@@ -1,0 +1,47 @@
+{
+  "slug": "the-study",
+  "name": "The Study Salon",
+  "category": "Hair salon",
+  "directoryCategory": "services",
+  "neighborhood": "Seminole Heights",
+  "neighborhoodSlug": "seminole-heights",
+  "city": "Tampa",
+  "metaTitle": "The Study Salon: Hair salon in Seminole Heights",
+  "metaDescription": "The Study Salon, a hair salon at 4705 N Florida Ave in Seminole Heights, lists custom color, extensions, precision cuts, and parking behind the building.",
+  "publish": {
+    "schemaType": "HairSalon",
+    "hoursMode": "call",
+    "hoursNote": "The salon website and our stored hours do not match. Text the salon or check thestudysalon.com before you go."
+  },
+  "openingHoursVerified": false,
+  "openingHoursNote": "Website list omits Thursday and marks Sunday and Monday as upon request. Stored database hours include Thursday and do not match. Omit openingHours.",
+  "sources": [
+    {"label": "Our database", "url": "places:the-study"},
+    {"label": "The Study Salon homepage", "url": "https://thestudysalon.com/"},
+    {"label": "The Study Salon services page", "url": "https://thestudysalon.com/services/"},
+    {"label": "Distances from coordinates in our database", "url": "places:nearby:the-study"}
+  ],
+  "facts": [
+    "Database name: The Study Salon. Category: hair salon. Neighborhood: Seminole Heights. City: Tampa.",
+    "Address: 4705 N Florida Ave, Tampa, FL 33603.",
+    "Phone: (813) 538-3648.",
+    "Website: https://thestudysalon.com/ and services page https://thestudysalon.com/services/.",
+    "Coordinates: 27.9883551, -82.4592033.",
+    "Homepage: laid-back, personality-filled group of stylists specializing in custom color, extensions and precision cutting.",
+    "Homepage goal statement: good hair, honest conversations, and an experience that feels comfortable from the minute you walk in.",
+    "Homepage: they proudly use Maria Nila products. The page mentions nourishing treatments and styling essentials. It describes Maria Nila with the salon's own words: premium quality, innovative formulas, and commitment to sustainability.",
+    "Homepage offers Make a Reservation and Text Us! (813) 538-3648.",
+    "Parking is behind the building. Entrance is just around the corner.",
+    "Website hours: Sunday Upon Request, Monday Upon Request, Tuesday 10 AM - 8 PM, Wednesday 10 AM - 8 PM, Friday 10 AM - 6 PM, Saturday 8 AM - 6 PM. Thursday is not in that list.",
+    "The services page repeats the phone, address, parking note, and the same hours. It does not list individual services or prices.",
+    "Stored database hours, which conflict with the website: Sunday 9:00 to 15:00, Monday closed, Tuesday 10:00 to 18:00, Wednesday 10:00 to 18:00, Thursday 10:00 to 18:00, Friday 10:00 to 18:00, Saturday 8:00 to 18:00.",
+    "Nearby published places, miles calculated from our coordinates: Gene Perez Body Repairs, Inc. 0.03 miles at 4710 N Florida Ave, slug gene-perez-body-repair. Cigar City Barbershop 0.06 miles at 4626 N Florida Ave, slug cigar-city-barbershop. Gita Food Store 0.06 miles at 4804 N Florida Ave, slug gita-food-store. La Central Tacos 0.18 miles at 4410 N Florida Ave, slug la-central.",
+    "Cappys Pizza Seminole Heights is also published, at 4910 N Florida Ave, Tampa, FL 33603, slug cappys-pizza-2.",
+    "Neighborhood page: /neighborhoods/seminole-heights."
+  ],
+  "faq": [
+    {"q": "Where does The Study Salon say to park?", "a": "The homepage says parking is behind the building and the entrance is just around the corner."},
+    {"q": "What does The Study Salon say it specializes in?", "a": "The homepage says custom color, extensions, and precision cutting, and says the salon uses Maria Nila products."},
+    {"q": "Is Thursday listed as open?", "a": "Thursday is not on the website hours list. Sunday and Monday are marked upon request. Text (813) 538-3648 or check thestudysalon.com, because our stored hours do not match the site."}
+  ]
+}

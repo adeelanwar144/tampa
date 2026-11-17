@@ -1,0 +1,48 @@
+{
+  "slug": "life-essentials-refillery",
+  "name": "Life Essentials Refillery",
+  "category": "Grocery",
+  "directoryCategory": "shopping",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Tampa",
+  "metaTitle": "Life Essentials Refillery: Grocery in Tampa | Visit In Tampa",
+  "metaDescription": "Life Essentials Refillery is a refill grocery at 4317 W El Prado Blvd in Tampa. The site says orders over $25 ship free and lists herbs, teas, and spices.",
+  "publish": {
+    "schemaType": "GroceryStore",
+    "hoursMode": "call",
+    "hoursNote": "The store's own pages do not print opening hours. Call (813) 642-6402. The about page says SMS is best."
+  },
+  "openingHoursVerified": false,
+  "openingHoursNote": "Neither the homepage nor the about page prints store hours. A hours block inside a reviews widget was ignored. Stored database hours only list Wednesday and are not used. Omit openingHours.",
+  "sources": [
+    {"label": "Our database", "url": "places:life-essentials-refillery"},
+    {"label": "Life Essentials Refillery homepage", "url": "https://www.lifeessentialsrefillery.com/"},
+    {"label": "About page", "url": "https://www.lifeessentialsrefillery.com/pages/about-us"},
+    {"label": "Distances from coordinates in our database", "url": "places:nearby:life-essentials-refillery"}
+  ],
+  "facts": [
+    "Database name: Life Essentials Refillery. Category: grocery store. No neighborhood slug. City: Tampa. The site calls the shop a South Tampa store.",
+    "Address: 4317 W El Prado Blvd, Tampa, FL 33629. The about page writes 4317 W El Prado BLVD, Tampa, FL 33629.",
+    "Phone: (813) 642-6402. The about page says 813-642-6402 and SMS is best. Email: Sheila@LifeEssentialsRefillery.com.",
+    "Website: http://www.lifeessentialsrefillery.com/ and about page https://www.lifeessentialsrefillery.com/pages/about-us.",
+    "Coordinates: 27.9117959, -82.5170828.",
+    "Homepage description: a bulk and refill store in South Tampa offering spices, teas, herbs, pantry staples, personal care and home-care products. Shop in store or online.",
+    "Homepage: Bring in a jar and refill your spices and teas. Plastic-free packaging. The page says personal and homecare products are made in the USA. It says meats and dairy are responsibly sourced in Tampa.",
+    "Free Shipping on Orders Over $25.",
+    "Homepage product examples with the prices printed there: Organic Stinging Nettle Leaf $5.00, Organic Lemon Balm $6.00, Mullein Leaf organic $10.25 and the page marked that item sold out, Organic Peppermint Leaf $4.50, Organic Marshmallow Root $8.00, Organic Elderberry Echinacea Wellness Tea $6.75.",
+    "Other products printed on the page: 100% Pure Copper Magnetic Bracelet $28.00, 100% Pure Copper Mug $32.00, 100% Pure Copper Water Bottle $40.00, 12 Cloth Napkins: Solids $20.00.",
+    "The site names Eco Warrior Bucks as a points program and does not print a points rate.",
+    "Menu categories printed on the site include tea (black, green, herbal, matcha, white), herbs and botanicals, essential oils, adaptogens, spices (whole, ground, salt, pepper, chile), grains and flour, nuts and seeds, beans and legumes, sea vegetables, gluten free baking, mushrooms, honey, protein, pasta, popcorn, coffee, personal care, home care, pets, classes, Vinted drop off, knife sharpening, and beef and dairy.",
+    "About page: founder Sheila Haque, mother of 3 girls, MBA in Business Management, more than three decades in business ownership. The page says the idea began while boating around Tampa Bay and while looking for products for a youngest daughter with severe eczema.",
+    "About page offer list: herbs and botanicals, teas, spices, personal care, home care, and bulk foods including grains, seeds, dried fruits, snacks, and baking staples.",
+    "The homepage and about page do not print store hours. Do not use hours that appeared only inside a reviews widget.",
+    "The pages we read do not describe parking.",
+    "Nearby published places, miles calculated from our coordinates: Westcoast Tire Connection 0.18 miles at 3639 S Manhattan Ave, slug westcoast-tire-connection. Spotless Car Wash South 0.19 miles at 4325 W Euclid Ave, slug spotless-car-wash. Ace Hardware 0.59 miles at 4215 W Bay to Bay Blvd, neighborhood beach-park-macdill, slug bay-to-bay-ace-hardware. South Tampa Bicycle Co 0.61 miles at 3431 S Westshore Blvd, slug south-tampa-bicycles."
+  ],
+  "faq": [
+    {"q": "Does Life Essentials Refillery ship?", "a": "The site says you can shop online and that orders over $25 ship free. Confirm the threshold on lifeessentialsrefillery.com."},
+    {"q": "What are the store hours?", "a": "The homepage and about page do not print store hours. Call (813) 642-6402. The about page says SMS is best."},
+    {"q": "Who does the shop name as founder?", "a": "The about page names Sheila Haque and gives the email Sheila@LifeEssentialsRefillery.com."}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "slug": "lafrance-family-law",
+  "name": "LaFrance Family Law",
+  "category": "Family law",
+  "neighborhood": "Hyde Park",
+  "neighborhoodSlug": "hyde-park",
+  "city": "Tampa",
+  "metaTitle": "LaFrance Family Law: Family law in Hyde Park",
+  "metaDescription": "LaFrance Family Law at 2503 W Swann Ave in Hyde Park lists divorce, custody, and support work. Posted hours are Monday through Friday, 9:00 AM to 5:00 PM.",
+  "publish": {
+    "schemaType": "Attorney",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from the firm site. Two phone numbers are printed. Call before a meeting.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "17:00" },
+      "2": { "open": "09:00", "close": "17:00" },
+      "3": { "open": "09:00", "close": "17:00" },
+      "4": { "open": "09:00", "close": "17:00" },
+      "5": { "open": "09:00", "close": "17:00" },
+      "6": { "closed": true }
+    }
+  },
+  "facts": [
+    "LaFrance Family Law, Hyde Park, Tampa. Address on the site: 2503 W Swann Ave Tampa, FL 33609. Phone on the address block (813) 331-1024. The same page also prints 813-930-5542. Website https://www.lafrancelaw.com/florida/locations/tampa/.",
+    "Attorneys named: Chris LaFrance and Shannon LaFrance.",
+    "Hours: Monday – Friday: 9:00 AM to 5:00 PM. Saturday & Sunday: Closed.",
+    "Services named: Divorce, Mediation, Collaborative Divorce, Uncontested Divorce, Contested Divorce, Annulment, Child Custody, Child Support, Alimony, Property Division, Paternity, Military Divorce, Parental Rights, Guardianship, Domestic Violence, Appeals. The site also links a Child Support Calculator.",
+    "Nearby from our coordinates: Koto Japanese Steak House 0.17 miles at 533 S Howard Ave #4, slug koto-japanese-steakhouse. The Optic Shop 0.18 miles at 533 S Howard Ave #6, slug the-optic-shop. HCA Florida South Tampa Hospital 0.25 miles at 2901 W Swann Ave, slug hca-florida-south-tampa-hospital. Neighborhood /neighborhoods/hyde-park."
+  ],
+  "faq": [
+    {"q": "Which phone numbers are on the LaFrance page?", "a": "The address block shows (813) 331-1024. Another line on the page shows 813-930-5542. Use the site to see which one answers."},
+    {"q": "What family-law work does the site list?", "a": "Divorce, mediation, collaborative divorce, custody, child support, alimony, property division, paternity, military divorce, guardianship, domestic violence, and appeals."},
+    {"q": "Is the office open Saturday?", "a": "The site says Saturday and Sunday are closed. Weekdays are 9:00 AM to 5:00 PM."}
+  ]
+}

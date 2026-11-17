@@ -1,0 +1,37 @@
+{
+  "slug": "hyde-park-veterinary-clinic",
+  "name": "Hyde Park Veterinary Clinic",
+  "category": "Veterinarian",
+  "neighborhood": "Hyde Park",
+  "neighborhoodSlug": "hyde-park",
+  "city": "Tampa",
+  "metaTitle": "Hyde Park Veterinary Clinic: Vet in Hyde Park",
+  "metaDescription": "Hyde Park Veterinary Clinic at 1111 W Swann Ave is open weekdays 7:30am to 6:00pm and Saturday until noon. After hours, the site points you to Blue Pearl.",
+  "publish": {
+    "schemaType": "VeterinaryCare",
+    "hoursMode": "verified",
+    "hoursNote": "Regular hours from hydeparkvet.com. The site also lists holiday closures and says to contact Blue Pearl after hours.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "07:30", "close": "18:00" },
+      "2": { "open": "07:30", "close": "18:00" },
+      "3": { "open": "07:30", "close": "18:00" },
+      "4": { "open": "07:30", "close": "18:00" },
+      "5": { "open": "07:30", "close": "18:00" },
+      "6": { "open": "08:30", "close": "12:00" }
+    }
+  },
+  "facts": [
+    "Hyde Park Veterinary Clinic, Hyde Park, Tampa. Address 1111 West Swann Ave, Tampa, FL, 33606. Phone and text (813) 259-9698. Fax (813) 448-1288. Website https://www.hydeparkvet.com/.",
+    "The site says it is a neighborhood veterinary clinic in Old Hyde Park, and that clients can book an appointment and order food and medicine. It names the PetOne Veterinary App.",
+    "Main hours: Mon 7:30am - 6:00pm, Tue 7:30am - 6:00pm, Wed 7:30am - 6:00pm, Thu 7:30am - 6:00pm, Fri 7:30am - 6:00pm, Sat 8:30am - 12:00pm, Sun Closed.",
+    "After hours, the site says to contact Blue Pearl at their nearest location. Holiday hours printed on the page: 11/26/26 Closed, 12/25/26 Closed, 01/01/27 Closed.",
+    "The homepage does not print a procedure price list.",
+    "Nearby from our coordinates: Capital One Café 0.25 miles at 700 S Village Cir Ste 150, slug capital-one-cafe. CMX CinéBistro at Hyde Park Village 0.3 miles at 1609 W Swann Ave, slug cmx-cinebistro-hyde-park. Forbici Modern Italian 0.33 miles at 1633 W Snow Ave, slug forbici. Neighborhood /neighborhoods/hyde-park."
+  ],
+  "faq": [
+    {"q": "What are the regular clinic hours?", "a": "Monday through Friday 7:30am to 6:00pm, Saturday 8:30am to 12:00pm, Sunday closed. Call or text (813) 259-9698."},
+    {"q": "Where does the clinic send after-hours emergencies?", "a": "The site says to contact Blue Pearl at the nearest location. It does not name a street address for that hospital."},
+    {"q": "Which holidays does the page mark closed?", "a": "11/26/26, 12/25/26, and 01/01/27. Confirm those dates on hydeparkvet.com before you go."}
+  ]
+}

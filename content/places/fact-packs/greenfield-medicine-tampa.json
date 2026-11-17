@@ -1,0 +1,28 @@
+{
+  "slug": "greenfield-medicine-tampa",
+  "name": "Greenfield Medicine Tampa",
+  "category": "Medical clinic",
+  "neighborhood": "Channel District",
+  "neighborhoodSlug": "channel-district",
+  "city": "Tampa",
+  "metaTitle": "Greenfield Medicine Tampa: Clinic in Channel District",
+  "metaDescription": "Greenfield Medicine Tampa at 301 Harbour Pl Dr lists a $210 new-patient visit and a $110 renewal for a Florida medical marijuana card visit.",
+  "publish": {
+    "schemaType": "MedicalClinic",
+    "hoursMode": "call",
+    "hoursNote": "The pages we read do not print clinic hours. Call (845) 721-9458 or email doctor@greenfieldmedicine.com."
+  },
+  "facts": [
+    "Greenfield Medicine Tampa, medical clinic, Channel District, Tampa. Address 301 Harbour Pl Dr, Tampa, FL 33602. The site writes 301 Harbour Place Drive Tampa, FL 33602. Phone (845) 721-9458. Email doctor@greenfieldmedicine.com. Website https://greenfieldmedicine.com/.",
+    "The site describes medical marijuana evaluations, card certification, new patients, re-certifications, patient transfers, and card status. It also offers concierge in-home visits.",
+    "Cost of services on the site: new patient appointment fee $210. Renewal fee $110. One sentence says renewal occurs every 7 months. A FAQ on the same site says a medical marijuana card must be renewed annually. Those two statements disagree.",
+    "The FAQ names example conditions: chronic pain, cancer, epilepsy, glaucoma, PTSD, and multiple sclerosis, and says doctors evaluate eligibility. The site says qualifying patients are enrolled with the Florida Office of Medical Marijuana Use Registry and that the card is mailed to the home address.",
+    "No clinic hours were printed on the homepage we read.",
+    "Nearby from our coordinates: Columbia Cafe at the Tampa Bay History Center 0.31 miles at 801 Water St #1905, slug columbia-cafe. 3 Corners Pizza 0.36 miles at 813 Water St, slug 3-corners. Market at EDITION 0.41 miles at 500 Channelside Dr, slug market-at-edition. Neighborhood /neighborhoods/channel-district."
+  ],
+  "faq": [
+    {"q": "What fees does Greenfield Medicine print?", "a": "The site lists a $210 new-patient appointment fee and a $110 renewal fee. Confirm both before you book."},
+    {"q": "How often does the site say a card is renewed?", "a": "One section says every 7 months. A FAQ says annually. Call (845) 721-9458 and ask which rule applies."},
+    {"q": "Where is the clinic?", "a": "301 Harbour Place Drive, Tampa, FL 33602, in the Channel District. Email doctor@greenfieldmedicine.com."}
+  ]
+}

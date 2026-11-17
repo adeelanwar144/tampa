@@ -11,7 +11,16 @@ export function markdownToHtml(markdown: string): string {
     transformTags: {
       h1: "p",
       h3: "p",
-      a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer", target: "_blank" }),
+      a: (tagName, attribs) => {
+        const href = attribs.href ?? "";
+        const external = /^https?:/i.test(href);
+        return {
+          tagName,
+          attribs: external
+            ? { href, rel: "noopener noreferrer", target: "_blank" }
+            : { href },
+        };
+      },
     },
   });
 }

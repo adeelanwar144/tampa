@@ -1,0 +1,27 @@
+{
+  "slug": "jazmin-thobe",
+  "name": "JazminThobe",
+  "category": "Clothing",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Temple Terrace",
+  "metaTitle": "JazminThobe: Clothing in Temple Terrace",
+  "metaDescription": "JazminThobe at 5311 E Fowler Ave in Temple Terrace sells thobes, abayas, and hijabs. Orders of $149 or more ship free, and the shop offers FaceTime.",
+  "publish": {
+    "schemaType": "ClothingStore",
+    "hoursMode": "call",
+    "hoursNote": "Store hours were not on the homepage we read. Call (813) 293-8065. The site also offers a FaceTime appointment."
+  },
+  "facts": [
+    "JazminThobe, women's clothing, Temple Terrace. Address 5311 E Fowler Ave, Temple Terrace, FL 33617. Phone (813) 293-8065 and (813)-293-8065. Website https://jazminthobe.com/.",
+    "The site says free shipping for orders $149+. It says if you cannot make it to the store, schedule a Facetime call at that phone number.",
+    "Collections named: embroidered thobe, Malaka thobe, Majdalawi thobe, one-piece abaya, two-piece abaya, kaftan, hijab, thobe belt, headwear and awka, prayer set, men's thobe, men's bisht, boys, girls, imitated gold brooch, pin, bracelet, necklace, bag, bag strap, keffiyeh, and henna essentials.",
+    "No weekly store hours were printed on the homepage text we read.",
+    "Nearby from our coordinates: Art Hair Design Tampa 0.01 miles at 5303 E Fowler Ave, slug art-hair-design. Elite Nails & Spa 0.01 miles at 5305 E Fowler Ave, slug elite-nails-and-spa. Cook Out 0.06 miles at 5501 E Fowler Ave, slug cook-out."
+  ],
+  "faq": [
+    {"q": "When does JazminThobe offer free shipping?", "a": "The site says free shipping for orders of $149 or more."},
+    {"q": "Can I shop without going to Fowler Avenue?", "a": "The site says to schedule a FaceTime call at (813) 293-8065."},
+    {"q": "What clothing categories are on the site?", "a": "Women's thobes and abayas, hijabs, men's thobes and bishts, kids' clothes, and accessories including keffiyeh and henna items."}
+  ]
+}

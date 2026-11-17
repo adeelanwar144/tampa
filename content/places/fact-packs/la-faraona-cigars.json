@@ -1,0 +1,27 @@
+{
+  "slug": "la-faraona-cigars",
+  "name": "La Faraona Cigar Factory",
+  "category": "Cigar shop",
+  "neighborhood": "Ybor City",
+  "neighborhoodSlug": "ybor-city",
+  "city": "Tampa",
+  "metaTitle": "La Faraona Cigar Factory: Cigars in Ybor City",
+  "metaDescription": "La Faraona’s Ybor listing is 1515 E 7th Ave. The site also lists 1315 E 7th Ave, a factory lounge, tap beer, and a roller you can book for an event.",
+  "publish": {
+    "schemaType": "Store",
+    "hoursMode": "call",
+    "hoursNote": "The homepage we read does not print shop hours. Call the number on our listing, (978) 648-1422, or check the La Faraona site."
+  },
+  "facts": [
+    "La Faraona Cigar Factory, Ybor City, Tampa. Database address 1515 E 7th Ave, Tampa, FL 33605. Database phone (978) 648-1422.",
+    "The website says two locations: 1315 E 7th Ave and 1515 E 7th Ave, Tampa, Fl 33605. It says come into the factory in Ybor City. It says they now offer tap beer and select wines.",
+    "The site says we are Cuban and our family has rolled cigars for many years, and that they now live in Tampa. Services named: have a roller at your event, and a cigar rolling experience. It also names the La Faraona Cigar Lounge and collections including Dalá Premium Blend.",
+    "No weekly hours were in the homepage text we read.",
+    "Nearby from our coordinates: KPOP FOOD 0.02 miles at 1531 E 7th Ave, slug kpop-food. Bradley's on 7th 0.03 miles at 1510 E 7th Ave, slug bradleys-on-7th. HotWax Glass 0.03 miles at 1524 E 7th Ave, slug hotwax-glass-ybor. The Copper Shaker Ybor 0.04 miles at 1502 E 7th Ave, slug copper-shaker. Neighborhood /neighborhoods/ybor-city."
+  ],
+  "faq": [
+    {"q": "Which La Faraona address is this listing?", "a": "Our database lists 1515 E 7th Ave. The site also lists 1315 E 7th Ave. Confirm which door you want."},
+    {"q": "Does the lounge serve drinks?", "a": "The site says they now offer tap beer and select wines."},
+    {"q": "Can a roller come to an event?", "a": "The site has a service labeled have a roller at your event, plus a cigar rolling experience. Hours were not on the homepage we read."}
+  ]
+}

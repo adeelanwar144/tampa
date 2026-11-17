@@ -1,0 +1,26 @@
+{
+  "slug": "holiday-inn-tampa-westshore-airport-area",
+  "name": "Holiday Inn Tampa Westshore - Airport Area by IHG",
+  "category": "Hotel",
+  "neighborhood": "Westshore",
+  "neighborhoodSlug": "westshore",
+  "city": "Tampa",
+  "metaTitle": "Holiday Inn Tampa Westshore: Hotel in Westshore",
+  "metaDescription": "Holiday Inn Tampa Westshore at 700 N Westshore Blvd lists a heated outdoor pool, a 24-hour fitness center, and more than 12,000 square feet of event space.",
+  "publish": {
+    "schemaType": "Hotel",
+    "hoursMode": "call",
+    "hoursNote": "The hotel page we read describes amenities and does not print a check-in clock. Call (813) 289-8200."
+  },
+  "facts": [
+    "Holiday Inn Tampa Westshore - Airport Area by IHG, Westshore, Tampa. Address 700 N Westshore Blvd, Tampa, FL 33609. Phone (813) 289-8200.",
+    "The hotel page says: 24-hour fitness center with free weights and cardio equipment, heated outdoor pool, whirlpool spa, park and fly packages with on-site parking, upgraded rooms with free Wi-Fi, two on-site restaurants including Bar700 lobby bar and grill, over 12,000 sq. ft. of event space, kids eat free, and daily housekeeping. It describes the hotel as near Tampa Airport, for group room blocks, small conferences, and wedding parties.",
+    "A check-in or check-out time was not in the text we captured.",
+    "Nearby from our coordinates: Carl's Van Rentals 0.11 miles at 1110 N Westshore Blvd, slug carls-van-rentals. Charley's Steak House 0.33 miles at 4444 W Cypress St, slug charleys-steak-house. Macy's 0.34 miles at 298 Westshore Plaza, slug macys. Neighborhood /neighborhoods/westshore."
+  ],
+  "faq": [
+    {"q": "Does this Holiday Inn have a pool and a gym?", "a": "The hotel page lists a heated outdoor pool, a whirlpool spa, and a 24-hour fitness center with free weights and cardio equipment."},
+    {"q": "Is there event space?", "a": "The page says over 12,000 square feet of event space, and mentions group blocks, small conferences, and wedding parties."},
+    {"q": "What is the front-desk phone?", "a": "Our listing phone is (813) 289-8200, at 700 N Westshore Blvd. Check-in times were not in the page text we saved."}
+  ]
+}

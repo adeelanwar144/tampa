@@ -1,0 +1,36 @@
+{
+  "slug": "koto-japanese-steakhouse",
+  "name": "Koto Japanese Steak House",
+  "category": "Japanese restaurant",
+  "neighborhood": "Hyde Park",
+  "neighborhoodSlug": "hyde-park",
+  "city": "Tampa",
+  "metaTitle": "Koto Japanese Steak House: Japanese in Hyde Park",
+  "metaDescription": "Koto Japanese Steak House at 533 S Howard Ave serves hibachi and sushi. Lunch is 11:30am to 3:00pm on weekdays, and delivery has a $30 minimum.",
+  "publish": {
+    "schemaType": "Restaurant",
+    "hoursMode": "verified",
+    "hoursNote": "Lunch and dinner are separate shifts on the Koto site. Weekday afternoons between those shifts are not listed as open.",
+    "openingHours": {
+      "0": { "label": "Dinner 3:00pm–10:30pm" },
+      "1": { "label": "Lunch 11:30am–3:00pm; dinner 5:00pm–10:00pm" },
+      "2": { "label": "Lunch 11:30am–3:00pm; dinner 5:00pm–10:00pm" },
+      "3": { "label": "Lunch 11:30am–3:00pm; dinner 5:00pm–10:00pm" },
+      "4": { "label": "Lunch 11:30am–3:00pm; dinner 5:00pm–10:00pm" },
+      "5": { "label": "Lunch 11:30am–3:00pm; dinner 5:00pm–11:30pm" },
+      "6": { "label": "Dinner 3:00pm–11:30pm" }
+    }
+  },
+  "facts": [
+    "Koto Japanese Steak House, Hyde Park, Tampa. Database address 533 S Howard Ave #4, Tampa, FL 33606. Website location line: 533 S Howard Ave. Tampa, FL 33606. Phone 813-964-6808 and (813) 964-6808.",
+    "The site says Japanese and Asian dishes, hibachi prepared at the table, and sushi. It says Koto has been established for over 10 years.",
+    "Lunch hours Monday - Friday 11:30am - 3:00pm. Dinner Monday - Thursday 5:00pm - 10:00pm, Friday 5:00pm - 11:30pm, Saturday 3:00pm - 11:30pm, Sunday 3:00pm - 10:30pm.",
+    "Delivery note: $30 minimum order for delivery within 4 miles. Promotions are only for dine in and cannot be combined. Free birthday meal up to $15 discount, must show ID.",
+    "Nearby from our coordinates: The Optic Shop 0.01 miles at 533 S Howard Ave #6, slug the-optic-shop. LaFrance Family Law 0.17 miles at 2503 W Swann Ave, slug lafrance-family-law. Sunset & Spice 0.27 miles at 204 S Howard Ave, slug sunset-and-spice. Neighborhood /neighborhoods/hyde-park."
+  ],
+  "faq": [
+    {"q": "Does Koto serve lunch and dinner without a break?", "a": "On weekdays the site lists lunch until 3:00pm and dinner from 5:00pm. It does not list the hours in between as open."},
+    {"q": "What is the delivery minimum?", "a": "The site says a $30 minimum for delivery within 4 miles."},
+    {"q": "How does the birthday offer work?", "a": "The site says a free birthday meal up to a $15 discount, dine-in only, with ID, and it cannot be combined with another special."}
+  ]
+}

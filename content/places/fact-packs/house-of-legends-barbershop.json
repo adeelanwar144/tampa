@@ -1,0 +1,27 @@
+{
+  "slug": "house-of-legends-barbershop",
+  "name": "House Of Legends Barbershop",
+  "category": "Barber",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Riverview",
+  "metaTitle": "House Of Legends Barbershop: Barber in Riverview",
+  "metaDescription": "House Of Legends Barbershop at 11503 Ivy Flower Loop in Riverview lists a $30 haircut and a $25 kids cut. The booking page says there are no walk-ins.",
+  "publish": {
+    "schemaType": "HairSalon",
+    "hoursMode": "call",
+    "hoursNote": "The booking page showed one day's hours, not a full week. Book ahead. The page says no walk-ins."
+  },
+  "facts": [
+    "House Of Legends Barbershop, Riverview. Address 11503 Ivy Flower Loop, Riverview, FL 33578. Phone (813) 784-5463. The listed website is a Booksy booking page: https://booksy.com/en-us/141892_pjbarber_barber-shop_15755_riverview.",
+    "Prices on that page: Reg Haircut $30.00 for 1h, eyebrow optional at no extra charge. MVP Haircut with eyebrows and beard or goatee $40.00 for 1h. Kids haircut under 10 years old $25.00 for 1h.",
+    "The page says no walk-ins, and asks guests to be at the barbershop 10 minutes before the appointment. Amenities listed: parking space, credit cards accepted, accessible for people with disabilities, Wi-Fi.",
+    "A single business-hours line showed 09:00 AM - 06:00 PM for the day the page was opened, including a Nov 25, 2026 line. That is not a published weekly schedule. Review scores on the page are not used.",
+    "Nearby from our coordinates: Circle K 0.75 miles at 11401 US-301, Riverview, slug circle-k-7. TGH Urgent Care powered by Fast Track (Riverview) 0.82 miles at 11406 US-301, slug fast-track-urgent-care-center."
+  ],
+  "faq": [
+    {"q": "How much is a haircut on the booking page?", "a": "A regular haircut is listed at $30.00 for 1 hour. The kids cut, under 10, is $25.00. The MVP cut with beard or goatee is $40.00."},
+    {"q": "Are walk-ins accepted?", "a": "The booking page says no walk-ins and asks you to arrive 10 minutes early."},
+    {"q": "What is the weekly schedule?", "a": "The page we read showed one day at 9:00 AM to 6:00 PM, not the whole week. Book on the site or call (813) 784-5463."}
+  ]
+}

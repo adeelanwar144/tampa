@@ -1,4 +1,5 @@
-import type { Place } from "@/types";
+import type { ListingSeoContent } from "@/lib/listing-content";
+import type { Hours, Place } from "@/types";
 
 const DAY_NAMES = [
   "Sunday",
@@ -20,8 +21,23 @@ function schemaType(place: Place): string {
   return "LocalBusiness";
 }
 
-function openingHours(place: Place) {
-  return Object.entries(place.hours)
+function hoursForSchema(place: Place, listing?: ListingSeoContent | null): Hours | null {
+  if (listing?.hoursMode === "call") return null;
+  if (listing?.hoursMode === "verified" && listing.openingHours) {
+    const hours: Hours = {};
+    for (const [day, value] of Object.entries(listing.openingHours)) {
+      const index = Number(day);
+      if (!Number.isInteger(index) || index < 0 || index > 6) continue;
+      if ("closed" in value || "label" in value) continue;
+      hours[index] = { open: value.open, close: value.close };
+    }
+    return hours;
+  }
+  return place.hours;
+}
+
+function openingHours(hours: Hours) {
+  return Object.entries(hours)
     .map(([day, hours]) => {
       if (!hours) return null;
       const index = Number(day);
@@ -35,11 +51,12 @@ function openingHours(place: Place) {
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 }
 
-export function placeJsonLd(place: Place) {
-  const hours = openingHours(place);
+export function placeJsonLd(place: Place, listing?: ListingSeoContent | null) {
+  const source = hoursForSchema(place, listing);
+  const hours = source ? openingHours(source) : [];
   return {
     "@context": "https://schema.org",
-    "@type": schemaType(place),
+    "@type": listing?.schemaType || schemaType(place),
     name: place.name,
     description: place.tagline || undefined,
     address: place.address

@@ -13,7 +13,7 @@ import {
 } from "@/lib/listings";
 import { placeMetaDescription, placeMetaTitle } from "@/lib/directory-seo";
 import { extractListingFact } from "@/lib/listing-fact";
-import { getListingContent } from "@/lib/listing-content";
+import { getListingContent, type ListingDayHours, type ListingSeoContent } from "@/lib/listing-content";
 import { faqJsonLd, placeJsonLd } from "@/lib/place-jsonld";
 import { PlaceCard } from "@/components/places/PlaceCard";
 import { ListingFaq, ListingSeoBody } from "@/components/places/ListingSeoContent";
@@ -22,6 +22,7 @@ import { PlaceMapSection } from "@/components/places/PlaceMapSection";
 import { coordsInPmtilesBbox } from "@/data/map-tiles";
 import { neighborhoodFromSlug } from "@/data/neighborhoods";
 import { SITE_URL } from "@/config/site";
+import type { Hours, Place } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -42,9 +43,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     getListingContent(slug),
   ]);
 
-  const title = placeMetaTitle(place, peers);
+  const storedTitle = listing?.metaTitle.trim() ?? "";
+  const storedDescription = listing?.metaDescription.trim() ?? "";
+  const title = storedTitle.length > 0 && storedTitle.length <= 60 ? storedTitle : placeMetaTitle(place, peers);
   const fact = listing ? extractListingFact(listing.contentHtml, place.name) : "";
-  const description = placeMetaDescription(place, peers, fact);
+  const description =
+    storedDescription.length >= 140 && storedDescription.length <= 155
+      ? storedDescription
+      : placeMetaDescription(place, peers, fact);
   const canonical = `${SITE_URL}/places/${place.slug}`;
 
   return {
@@ -60,6 +66,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: { card: "summary_large_image", title, description },
   };
+}
+
+function verifiedHours(listing: ListingSeoContent | null): Hours | null {
+  if (!listing || listing.hoursMode !== "verified" || !listing.openingHours) return null;
+  const hours: Hours = {};
+  for (const [day, value] of Object.entries(listing.openingHours)) {
+    const index = Number(day);
+    if (!Number.isInteger(index) || index < 0 || index > 6) continue;
+    if ("closed" in value) hours[index] = null;
+    else if ("open" in value) hours[index] = { open: value.open, close: value.close };
+  }
+  return hours;
+}
+
+function hoursCell(dayHours: ListingDayHours | { open: string; close: string } | null | undefined): string {
+  if (dayHours == null) return dayHours === null ? "Closed" : "Call ahead";
+  if ("closed" in dayHours) return "Closed";
+  if ("label" in dayHours) return dayHours.label;
+  return `${formatTime(dayHours.open)} – ${formatTime(dayHours.close)}`;
+}
+
+function schedulePlace(place: Place, listing: ListingSeoContent | null): Place {
+  if (listing?.hoursMode === "call") return { ...place, hours: {} };
+  const hours = verifiedHours(listing);
+  if (!hours) return place;
+  return { ...place, hours };
 }
 
 const DAY_NAMES = [
@@ -101,7 +133,8 @@ export default async function PlaceDetailPage({ params }: Props) {
     place.dineIn ? "Dine-in" : null,
   ].filter((label): label is string => Boolean(label));
 
-  const jsonLd = placeJsonLd(place);
+  const jsonLd = placeJsonLd(place, listingContent);
+  const schedule = schedulePlace(place, listingContent);
   const faqLd = listingContent ? faqJsonLd(listingContent.faq) : null;
 
   const breadcrumbItems = [
@@ -255,7 +288,7 @@ export default async function PlaceDetailPage({ params }: Props) {
                 ) : null}
               </div>
 
-              <StatusBadge place={place} />
+              <StatusBadge place={schedule} />
 
               {(serviceBadges.length > 0 || place.wheelchairAccessible) && (
                 <div className="flex flex-wrap gap-2 mt-3">
@@ -346,13 +379,14 @@ export default async function PlaceDetailPage({ params }: Props) {
           <div className="space-y-6">
             <div className="sticky top-24 rounded-[var(--radius-card)] border border-line bg-white p-5">
               <h2 className="font-display font-700 text-base text-gulf-900 mb-4">Hours</h2>
-              {Object.keys(place.hours).length === 0 ? (
+              {listingContent?.hoursMode === "call" || Object.keys(schedule.hours).length === 0 ? (
                 <p className="text-sm text-ink-600 mb-5">Call ahead to confirm hours.</p>
               ) : (
               <table className="w-full text-sm mb-5" aria-label="Weekly hours">
                 <tbody>
                   {DAY_NAMES.map((day, i) => {
-                    const dayHours = place.hours[i];
+                    const verified = listingContent?.hoursMode === "verified" ? listingContent.openingHours?.[String(i)] : undefined;
+                    const dayHours = verified ?? schedule.hours[i];
                     const isToday = i === todayIdx;
                     return (
                       <tr
@@ -362,19 +396,16 @@ export default async function PlaceDetailPage({ params }: Props) {
                         <td className="py-1 pr-4 w-28">
                           {isToday ? <span className="text-gulf-700">{day}</span> : day}
                         </td>
-                        <td className="py-1">
-                          {dayHours
-                            ? `${formatTime(dayHours.open)} – ${formatTime(dayHours.close)}`
-                            : dayHours === null
-                              ? "Closed"
-                              : "—"}
-                        </td>
+                        <td className="py-1">{hoursCell(dayHours)}</td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
               )}
+              {listingContent?.hoursNote ? (
+                <p className="text-sm text-ink-600 mb-5">{listingContent.hoursNote}</p>
+              ) : null}
 
               <div className="border-t border-line pt-4 space-y-3">
                 <div>

@@ -1,0 +1,66 @@
+{
+  "slug": "hancock-whitney",
+  "name": "Hancock Whitney Bank",
+  "category": "Bank",
+  "directoryCategory": "services",
+  "neighborhood": "Westshore",
+  "neighborhoodSlug": "westshore",
+  "city": "Tampa",
+  "metaTitle": "Hancock Whitney Bank: Bank in Westshore | Visit In Tampa",
+  "metaDescription": "Hancock Whitney Bank in Westshore is in Corporate Center One at 2202 N Westshore Blvd. Lobby hours on the location page are 9:00am to 4:00pm.",
+  "publish": {
+    "schemaType": "BankOrCreditUnion",
+    "hoursMode": "verified",
+    "hoursNote": "Lobby hours from the Westshore location page. That page says the ATM is open 24 hours.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "16:00" },
+      "2": { "open": "09:00", "close": "16:00" },
+      "3": { "open": "09:00", "close": "16:00" },
+      "4": { "open": "09:00", "close": "16:00" },
+      "5": { "open": "09:00", "close": "16:00" },
+      "6": { "closed": true }
+    }
+  },
+  "openingHoursVerified": true,
+  "openingHoursSource": "https://locations.hancockwhitney.com/fl/tampa/financial-center-westshore.html",
+  "openingHours": [
+    "Monday 09:00-16:00",
+    "Tuesday 09:00-16:00",
+    "Wednesday 09:00-16:00",
+    "Thursday 09:00-16:00",
+    "Friday 09:00-16:00"
+  ],
+  "openingHoursNote": "Lobby hours only. Saturday and Sunday closed. ATM is listed separately as open 24 hours and should not be encoded as the lobby schedule. A promotional bonus on the page was omitted because the terms were not captured.",
+  "sources": [
+    {"label": "Our database", "url": "places:hancock-whitney"},
+    {"label": "Hancock Whitney Westshore financial center page", "url": "https://locations.hancockwhitney.com/fl/tampa/financial-center-westshore.html"},
+    {"label": "Our listing for the South Tampa center named on that page", "url": "places:hancock-whitney-2"},
+    {"label": "Distances from coordinates in our database", "url": "places:nearby:hancock-whitney"}
+  ],
+  "facts": [
+    "Database name: Hancock Whitney Bank. Category: bank. Neighborhood: Westshore. City: Tampa.",
+    "Database address: Corporate Center One, 2202 N Westshore Blvd Ste 110 & 150, Tampa, FL 33607.",
+    "Location page address: 2202 North Westshore Blvd. Corporate Center One - Suite 110 & 150, Tampa, FL 33607.",
+    "Phone: (813) 998-2888.",
+    "Website: https://locations.hancockwhitney.com/fl/tampa/financial-center-westshore.html.",
+    "Coordinates: 27.9606581, -82.5247934.",
+    "Lobby hours on the location page: Monday-Friday 9:00am - 4:00pm. Saturday-Sunday Closed.",
+    "ATM: Open 24 Hours.",
+    "The location page says the Westshore Financial Center offers personal, small business, or commercial banking, including checking and savings accounts, ATMs, mobile and online banking, credit cards, loans and mortgages, and wealth management and private banking.",
+    "The page says Hancock Whitney Bank, Member FDIC and Equal Housing Lender. All loans and accounts subject to credit approval.",
+    "Same-building walk-up listed on the page: ATM and walk-up, Suite 150, 2202 Westshore Blvd Ste 150, Tampa, FL 33607. Services named there: Cash or Check Deposits. Phone (800) 448-8812.",
+    "The page lists a wealth management office 0.6 mi away at 4211 West Boy Scout Blvd Suite 190, Tampa, FL 33607, phone (813) 229-2180.",
+    "The page lists a South Tampa financial center 2.6 mi away at 2101 South Dale Mabry Highway, Tampa, FL 33629, ATM open 24 hours, phone (813) 868-7830. Our database lists that address as Hancock Whitney Bank, slug hancock-whitney-2.",
+    "The location page does not describe parking.",
+    "Stored database hours for this Westshore listing only include Wednesday 9:00 to 16:00. That stored record is incomplete next to the website week.",
+    "Nearby published places, miles calculated from our coordinates: Ruth's Chris Steak House 0.23 miles at 1700 N Westshore Blvd, slug ruths-chris-steak-house. Chick-fil-A 0.36 miles at 2223 N Westshore Blvd Ste FC202, slug chick-fil-a-6. Apple International Plaza 0.40 miles at 2223 N West Shore Boulevard, slug apple-store. Blind Tiger Coffee Roasters 0.42 miles at 2223 N Westshore Blvd, slug blind-tiger-6.",
+    "Neighborhood page: /neighborhoods/westshore.",
+    "A $600 bonus promotion was visible on the page and is intentionally not used, because the terms were not saved."
+  ],
+  "faq": [
+    {"q": "What are the Westshore lobby hours?", "a": "The location page lists Monday through Friday 9:00am to 4:00pm, with Saturday and Sunday closed. Call (813) 998-2888 to confirm."},
+    {"q": "Is the ATM open when the lobby is closed?", "a": "The location page says the ATM is open 24 hours. That is separate from the lobby schedule."},
+    {"q": "Where are cash or check deposits listed?", "a": "The page lists an ATM and walk-up at Suite 150, 2202 Westshore Blvd Ste 150, Tampa, FL 33607, phone (800) 448-8812."}
+  ]
+}

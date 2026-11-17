@@ -1,0 +1,28 @@
+{
+  "slug": "kampsen-hearing",
+  "name": "Kampsen Hearing",
+  "category": "Audiologist",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Kampsen Hearing: Audiologist in Beach Park",
+  "metaDescription": "Kampsen Hearing's site lists 10310 S MacDill Ave, Suite 101, while our listing shows 310 S MacDill Ave. Weekday hours on the site run 8:00am to 5:00pm.",
+  "publish": {
+    "schemaType": "MedicalClinic",
+    "hoursMode": "call",
+    "hoursNote": "The website address and our stored address do not match. Call (813) 876-8374 before you go."
+  },
+  "facts": [
+    "Kampsen Hearing. Database address 310 S MacDill Ave #101, Tampa, FL 33609, Beach Park / MacDill. Database phone (813) 876-8374. A second database listing, slug kampsen-hearing-2, uses that same 310 address.",
+    "The website https://kampsenhearing.com/ prints a different street: 10310 S MacDill Ave., Suite 101, Tampa, FL 33621, with the same phone (813) 876-8374.",
+    "Hours on the site: Mon 8:00am - 5:00pm, Tue 8:00am - 5:00pm, Wed 8:00am - 5:00pm, Thur 8:00am - 5:00pm, Friday Closed. Saturday and Sunday are not in that block.",
+    "The site says Dr. Scott Sims has certification in tinnitus management from the American Board of Audiology. It says Dr. Amanda King is clinically certified in Audiology by the American Speech-Language Hearing Association and has been trained to diagnose and treat hearing loss, tinnitus, and peripheral vestibular impairments.",
+    "Services named: hearing loss testing, earwax removal, tinnitus management, custom hearing protection, custom earmolds, musician's monitors, hearing aid fitting, custom treatment plan, hearing aid financing, accessories, batteries, repair and service. Manufacturers named: Lyric, Oticon, Phonak, ReSound, Signia, Starkey. The page says call or send a text. The contact form says if you are experiencing a medical emergency, call 911.",
+    "Nearby from our coordinates, measured from the stored 310 address: Farrior Facial Plastic Surgery 0.14 miles at 2908 W Azeele St, slug farrior-facial-plastic-surgery. Aesthetic Supremacy 0.22 miles at 3020 W Kennedy Blvd, slug aesthetic-supremacy. Neighborhood /neighborhoods/beach-park-macdill."
+  ],
+  "faq": [
+    {"q": "Which MacDill address should I use?", "a": "Our listing says 310 S MacDill Ave #101. The website says 10310 S MacDill Ave, Suite 101. Call (813) 876-8374."},
+    {"q": "What hours are printed?", "a": "Monday through Thursday 8:00am to 5:00pm, Friday closed. The weekend is not in that list."},
+    {"q": "Which hearing-aid brands does the site name?", "a": "Lyric, Oticon, Phonak, ReSound, Signia, and Starkey."}
+  ]
+}

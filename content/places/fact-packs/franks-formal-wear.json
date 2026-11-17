@@ -1,0 +1,35 @@
+{
+  "slug": "franks-formal-wear",
+  "name": "Frank's Clothier",
+  "category": "Formal wear",
+  "neighborhood": "Beach Park / MacDill",
+  "neighborhoodSlug": "beach-park-macdill",
+  "city": "Tampa",
+  "metaTitle": "Frank's Clothier: Formal wear in Beach Park",
+  "metaDescription": "Frank's Clothier at 4343 W Kennedy Blvd in Tampa offers custom suits, tuxedos, alterations, and rentals by appointment. Saturday hours end at 3:00 PM.",
+  "publish": {
+    "schemaType": "ClothingStore",
+    "hoursMode": "verified",
+    "hoursNote": "Hours from franksclothier.com. Book an appointment before you go.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "10:00", "close": "18:00" },
+      "2": { "open": "10:00", "close": "18:00" },
+      "3": { "open": "10:00", "close": "18:00" },
+      "4": { "open": "10:00", "close": "18:00" },
+      "5": { "open": "10:00", "close": "18:00" },
+      "6": { "open": "10:00", "close": "15:00" }
+    }
+  },
+  "facts": [
+    "Frank's Clothier, formal wear, Beach Park / MacDill, Tampa. Address on the site: 4343 West Kennedy Blvd. Tampa FL 33609. Database address 4343 W Kennedy Blvd, Tampa, FL 33609. Phone (813) 286-7670. Email Valentin@franksclothier.com. Website https://www.franksclothier.com/.",
+    "The site says custom-made suits to your measurements, off-the-rack suits and tuxedos, alterations, refined casual wear, and rentals. It says to schedule a one-on-one appointment.",
+    "Hours of operation: Mon 10:00 AM – 6:00 PM, Tues 10:00 AM – 6:00 PM, Wed 10:00 AM – 6:00 PM, Thu 10:00 AM – 6:00 PM, Fri 10:00 AM – 6:00 PM, Sat 10:00 AM – 3:00 PM, Sun Closed.",
+    "Nearby from our coordinates: Tampa's Nails 0.03 miles at 4325 W Kennedy Blvd, slug tampas-nails. Mona's Floral Creations 0.07 miles at 4311 W Kennedy Blvd, slug monas-floral-creations. Sharp Expressions 0.07 miles at 4307 West Kennedy Boulevard, slug sharp-expressions. Neighborhood /neighborhoods/beach-park-macdill."
+  ],
+  "faq": [
+    {"q": "Do I need an appointment at Frank's Clothier?", "a": "The site says to schedule a one-on-one appointment for custom suits, tuxedos, alterations, casual wear, and rentals."},
+    {"q": "What are the Saturday hours?", "a": "The site lists Saturday 10:00 AM to 3:00 PM. Sunday is closed. Weekdays are 10:00 AM to 6:00 PM."},
+    {"q": "How do I reach the shop?", "a": "Phone (813) 286-7670 and email Valentin@franksclothier.com, at 4343 West Kennedy Blvd."}
+  ]
+}

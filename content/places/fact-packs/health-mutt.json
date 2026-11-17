@@ -1,0 +1,27 @@
+{
+  "slug": "health-mutt",
+  "name": "Health Mutt",
+  "category": "Pet supply",
+  "neighborhood": "Seminole Heights",
+  "neighborhoodSlug": "seminole-heights",
+  "city": "Tampa",
+  "metaTitle": "Health Mutt: Pet supply in Seminole Heights",
+  "metaDescription": "Health Mutt is a pet market at 5023 N Florida Ave in Seminole Heights. The site lists grooming, a self-service dog wash, and daily walk-in nail trims.",
+  "publish": {
+    "schemaType": "PetStore",
+    "hoursMode": "call",
+    "hoursNote": "The homepage we read does not print a weekly clock. Call (813) 231-3137 or check tampahealthmutt.com."
+  },
+  "facts": [
+    "Health Mutt, pet supply, Seminole Heights, Tampa. Address 5023 N Florida Ave, Tampa, FL 33603. Phone (813) 231-3137. Website http://www.tampahealthmutt.com/ and https://tampahealthmutt.com/.",
+    "The homepage calls it a neighborhood independent pet market and says the staff is trained in natural pet nutrition and preventative pet care, for cats and dogs.",
+    "Services labeled on the site: pet grooming, self-service dog wash, and walk-in nail trims daily. Departments: dog food and supplies, cat food and supplies. The dog-wash line says you make the mess, we clean it up.",
+    "No weekly hours were printed in the homepage text we read.",
+    "Nearby from our coordinates: Dollar Tree 0.04 miles at 5100 N Florida Ave, slug dollar-tree-4. Seriously Strong Training Tampa 0.07 miles at 5120 N Florida Ave B, slug seriously-strong-training-tampa. Cappys Pizza Seminole Heights 0.08 miles at 4910 N Florida Ave, slug cappys-pizza-2. Ichiban Sushi & Ramen 0.09 miles at 5127 N Florida Ave, slug ichiban-sushi-and-ramen. Neighborhood /neighborhoods/seminole-heights."
+  ],
+  "faq": [
+    {"q": "What services does Health Mutt list?", "a": "Pet grooming, a self-service dog wash, and walk-in nail trims. The site also sells dog and cat food and supplies."},
+    {"q": "What are the store hours?", "a": "They were not in the homepage text we read. Call (813) 231-3137 or reopen tampahealthmutt.com."},
+    {"q": "Where is the shop?", "a": "5023 N Florida Ave, Tampa, FL 33603, in Seminole Heights."}
+  ]
+}

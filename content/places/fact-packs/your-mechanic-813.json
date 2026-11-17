@@ -1,0 +1,60 @@
+{
+  "slug": "your-mechanic-813",
+  "name": "YOUR MECHANIC 813",
+  "category": "Auto repair",
+  "directoryCategory": "services",
+  "neighborhood": "",
+  "neighborhoodSlug": "",
+  "city": "Brandon",
+  "metaTitle": "YOUR MECHANIC 813: Auto repair in Brandon | Visit In Tampa",
+  "metaDescription": "YOUR MECHANIC 813 is an auto repair shop at 206 E Robertson St in Brandon. The site lists weekday hours of 9:00 AM to 5:30 PM and Saturday by appointment.",
+  "publish": {
+    "schemaType": "AutoRepair",
+    "hoursMode": "verified",
+    "hoursNote": "Weekday hours are from the shop website. Saturday is by appointment only, and Sunday is closed. Call 813-685-1353 to confirm.",
+    "openingHours": {
+      "0": { "closed": true },
+      "1": { "open": "09:00", "close": "17:30" },
+      "2": { "open": "09:00", "close": "17:30" },
+      "3": { "open": "09:00", "close": "17:30" },
+      "4": { "open": "09:00", "close": "17:30" },
+      "5": { "open": "09:00", "close": "17:30" },
+      "6": { "label": "By appointment" }
+    }
+  },
+  "openingHoursVerified": true,
+  "openingHoursSource": "https://www.yourmechanic813ofbrandon.com/",
+  "openingHours": [
+    "Monday 09:00-17:30",
+    "Tuesday 09:00-17:30",
+    "Wednesday 09:00-17:30",
+    "Thursday 09:00-17:30",
+    "Friday 09:00-17:30"
+  ],
+  "openingHoursNote": "Saturday by appointment only. Sunday closed. Stored database hours only list Monday 9:00 to 17:30 and mark the other days closed, so the website week is the verified schedule.",
+  "sources": [
+    {"label": "Our database", "url": "places:your-mechanic-813"},
+    {"label": "Your Mechanic 813 Of Brandon homepage", "url": "https://www.yourmechanic813ofbrandon.com/"},
+    {"label": "About page", "url": "https://www.yourmechanic813ofbrandon.com/about"},
+    {"label": "Distances from coordinates in our database", "url": "places:nearby:your-mechanic-813"}
+  ],
+  "facts": [
+    "Database name: YOUR MECHANIC 813. The website name is Your Mechanic 813 Of Brandon. Category: auto repair shop. No neighborhood slug. City: Brandon.",
+    "Database address: 206 E Robertson St, Brandon, FL 33511. Website address: 206 E Robertson Street, Brandon, FL 33511.",
+    "Phone: (813) 685-1353 and 813-685-1353.",
+    "Website: https://www.yourmechanic813ofbrandon.com/ and about page https://www.yourmechanic813ofbrandon.com/about.",
+    "Coordinates: 27.9359717, -82.2838914.",
+    "Homepage services: Maintenance: oil changes, fluid checks, tune-ups, and scheduled service. A/C Services: A/C inspections, refrigerant recharge, leak detection, and full system repair. Repair: diagnostics, brake service, engine and drivetrain repair. Transmission Repair: transmission diagnostics, fluid service, rebuilds, and replacements. Diagnostic Services: computer diagnostics. Body Work: dent repair, paint touch-ups, and collision restoration. Fleet Services: maintenance and repair programs for commercial fleets.",
+    "Homepage hours: Monday 9:00 AM – 5:30 PM, Tuesday 9:00 AM – 5:30 PM, Wednesday 9:00 AM – 5:30 PM, Thursday 9:00 AM – 5:30 PM, Friday 9:00 AM – 5:30 PM, Saturday By Appointment Only, Sunday Closed. The page says to call 813-685-1353 for service outside these hours.",
+    "Financing named on the homepage: Affirm, American First Finance, Synchrony Car Care, and Snap Finance. The page says no hidden fees and available on qualifying repair services.",
+    "About page: locally owned and operated auto repair shop in Brandon, FL. It says straightforward answers, fair pricing, and that you will know what you are paying before they start. It says experienced technicians across all makes and models. It does not state a founding year or a price.",
+    "The pages we read do not describe parking.",
+    "Stored database hours only list Monday 9:00 to 17:30 and mark Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday closed. That stored week conflicts with the website.",
+    "Nearby published places, miles calculated from our coordinates: Bank of America (with Drive-thru ATM) 0.18 miles at 300 S Parsons Ave, Brandon, FL 33511, slug bank-of-america. Burger King 0.24 miles at 114 W Brandon Blvd, Brandon, FL 33511, slug burger-king-22. Brandon Regional Library 0.47 miles at 619 Vonderburg Dr, Brandon, FL 33511, slug brandon-regional-library. Bear Auto & Tire 0.54 miles at 528 W Brandon Blvd, Brandon, FL 33511, slug bear-auto-and-tire-store."
+  ],
+  "faq": [
+    {"q": "What hours does YOUR MECHANIC 813 publish?", "a": "The website lists Monday through Friday 9:00 AM to 5:30 PM, Saturday by appointment only, and Sunday closed. Call 813-685-1353 to confirm. Our stored hours only list Monday and do not match."},
+    {"q": "Which financing companies does the shop name?", "a": "The homepage names Affirm, American First Finance, Synchrony Car Care, and Snap Finance, and says financing is for qualifying repair services."},
+    {"q": "What work does the shop list?", "a": "Maintenance, A/C service, repair including brakes and engine and drivetrain, transmission service, computer diagnostics, body work, and fleet service."}
+  ]
+}
