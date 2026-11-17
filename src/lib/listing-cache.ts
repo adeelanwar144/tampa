@@ -16,15 +16,16 @@ function cacheRequest(key: string) {
 /**
  * Short-lived listing data cache: isolate memory + Cloudflare Cache API.
  * Avoids next/unstable_cache, which can break D1 access on OpenNext Workers.
+ * `hit` is true when isolate memory or the Cache API served the value.
  */
-export async function cachedListingData<T>(
+export async function cachedListingResult<T>(
   key: string,
   ttlSeconds: number,
   load: () => Promise<T>,
-): Promise<T> {
+): Promise<{ value: T; hit: boolean }> {
   const now = Date.now();
   const mem = memory.get(key) as Entry<T> | undefined;
-  if (mem && now - mem.at < ttlSeconds * 1000) return mem.value;
+  if (mem && now - mem.at < ttlSeconds * 1000) return { value: mem.value, hit: true };
 
   try {
     const cache = workerCache();
@@ -33,7 +34,7 @@ export async function cachedListingData<T>(
       if (hit) {
         const value = (await hit.json()) as T;
         memory.set(key, { at: now, value });
-        return value;
+        return { value, hit: true };
       }
     }
   } catch {
@@ -63,5 +64,14 @@ export async function cachedListingData<T>(
     /* ignore cache write failures */
   }
 
-  return value;
+  return { value, hit: false };
+}
+
+export async function cachedListingData<T>(
+  key: string,
+  ttlSeconds: number,
+  load: () => Promise<T>,
+): Promise<T> {
+  const result = await cachedListingResult(key, ttlSeconds, load);
+  return result.value;
 }

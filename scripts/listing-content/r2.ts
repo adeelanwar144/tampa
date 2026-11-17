@@ -198,9 +198,53 @@ export async function getRecord(slug: string): Promise<ListingContentRecord | nu
   return getJson<ListingContentRecord>(objectKey(slug));
 }
 
+function listingCopyChanged(previous: ListingContentRecord | null, next: ListingContentRecord): boolean {
+  if (!previous) return true;
+  return (
+    previous.contentMarkdown !== next.contentMarkdown ||
+    previous.contentHtml !== next.contentHtml ||
+    previous.metaTitle !== next.metaTitle ||
+    previous.metaDescription !== next.metaDescription
+  );
+}
+
+function contentStamp(previous: ListingContentRecord | null, next: ListingContentRecord): string {
+  const generated = Date.parse(next.generatedAt);
+  const previousGenerated = previous ? Date.parse(previous.generatedAt) : Number.NaN;
+  if (!Number.isNaN(generated) && generated !== previousGenerated) return new Date(generated).toISOString();
+  return new Date().toISOString();
+}
+
+async function setPlaceUpdatedAt(slug: string, updatedAt: string): Promise<void> {
+  if (!/^[a-z0-9-]+$/.test(slug) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(updatedAt)) {
+    console.warn(`skip places.updated_at for ${slug}`);
+    return;
+  }
+  try {
+    await runWrangler([
+      "d1",
+      "execute",
+      "tampa-bay-guide",
+      "--remote",
+      "--command",
+      `UPDATE places SET updated_at = '${updatedAt}' WHERE slug = '${slug}'`,
+    ]);
+  } catch (error) {
+    console.warn(`D1 updated_at ${slug}: ${error instanceof Error ? error.message : error}`);
+  }
+}
+
 export async function putRecord(record: ListingContentRecord): Promise<void> {
+  let previous: ListingContentRecord | null = null;
+  try {
+    previous = await getRecord(record.slug);
+  } catch {
+    previous = null;
+  }
+  const changed = listingCopyChanged(previous, record);
   writeLocal(record.slug, record);
   await putJson(objectKey(record.slug), record);
+  if (changed) await setPlaceUpdatedAt(record.slug, contentStamp(previous, record));
 }
 
 async function setListingQuarantined(slug: string, value: 0 | 1): Promise<void> {

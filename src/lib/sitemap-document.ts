@@ -1,5 +1,4 @@
-import type { MetadataRoute } from "next";
-import { NEIGHBORHOODS, CATEGORY_LABELS, getSitemapPlaces } from "@/lib/listings";
+import { CATEGORY_LABELS, getSitemapPlaces, NEIGHBORHOODS } from "@/lib/listings";
 import type { PlaceSitemapEntry } from "@/lib/listings";
 import { neighborhoodSlug } from "@/data/neighborhoods";
 import { sectionIsListed } from "@/lib/menu";
@@ -11,10 +10,8 @@ import {
   getPublishedArticles,
   PILLAR_SLUGS,
 } from "@/lib/pillars";
-import type { PillarSlug } from "@/types";
 import { SITE_URL } from "@/config/site";
-
-export const dynamic = "force-dynamic";
+import type { PillarSlug } from "@/types";
 
 /**
  * Last time this route's own copy changed.
@@ -43,7 +40,9 @@ const COPY_REVISED_AT: Record<string, string> = {
 
 const PILLAR_PATHS = new Set<string>(PILLAR_SLUGS.map((pillar) => `/${pillar}`));
 
-function latestModified(values: Array<string | undefined>): Date | undefined {
+type SitemapUrl = { loc: string; lastmod?: string };
+
+function latestModified(values: Array<string | undefined>): string | undefined {
   let best = Number.NaN;
   for (const value of values) {
     if (!value) continue;
@@ -51,11 +50,7 @@ function latestModified(values: Array<string | undefined>): Date | undefined {
     if (Number.isNaN(time)) continue;
     if (Number.isNaN(best) || time > best) best = time;
   }
-  return Number.isNaN(best) ? undefined : new Date(best);
-}
-
-function entry(url: string, lastModified: Date | undefined): MetadataRoute.Sitemap[number] {
-  return lastModified ? { url, lastModified } : { url };
+  return Number.isNaN(best) ? undefined : new Date(best).toISOString();
 }
 
 function placeTimes(places: PlaceSitemapEntry[], category?: string, neighborhood?: string) {
@@ -65,7 +60,26 @@ function placeTimes(places: PlaceSitemapEntry[], category?: string, neighborhood
     .map((place) => place.updatedAt);
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+function xmlEscape(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function renderSitemap(urls: SitemapUrl[]) {
+  const body = urls
+    .map((url) => {
+      const lastmod = url.lastmod ? `<lastmod>${xmlEscape(url.lastmod)}</lastmod>` : "";
+      return `<url><loc>${xmlEscape(url.loc)}</loc>${lastmod}</url>`;
+    })
+    .join("");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}</urlset>\n`;
+}
+
+async function sitemapUrls(): Promise<SitemapUrl[]> {
   const base = SITE_URL;
   const publishedArticles = getPublishedArticles();
   const articleTimes = publishedArticles.map(articleDateModified);
@@ -73,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const places = await getSitemapPlaces();
   const allPlaceTimes = placeTimes(places);
 
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const staticRoutes = [
     "",
     "/things-to-do",
     "/food-and-drink",
@@ -97,43 +111,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .map((path) => {
       const route = path || "/";
-      const dataTimes = path === ""
-        ? articleTimes
-        : path === "/places" || path === "/directory"
-          ? allPlaceTimes
-          : path === "/neighborhoods"
-            ? [
-                ...allPlaceTimes,
-                ...getArticlesByCategory("Neighborhoods & Areas").map(articleDateModified),
-              ]
-            : PILLAR_PATHS.has(path)
-              ? getArticlesByPillar(path.slice(1) as PillarSlug).map(articleDateModified)
-              : [];
-      return entry(`${base}${path}`, latestModified([COPY_REVISED_AT[route], ...dataTimes]));
+      const dataTimes =
+        path === ""
+          ? articleTimes
+          : path === "/places" || path === "/directory"
+            ? allPlaceTimes
+            : path === "/neighborhoods"
+              ? [...allPlaceTimes, ...getArticlesByCategory("Neighborhoods & Areas").map(articleDateModified)]
+              : PILLAR_PATHS.has(path)
+                ? getArticlesByPillar(path.slice(1) as PillarSlug).map(articleDateModified)
+                : [];
+      return { loc: `${base}${path}`, lastmod: latestModified([COPY_REVISED_AT[route], ...dataTimes]) };
     });
 
-  const directoryCategories = Object.keys(CATEGORY_LABELS).map((category) =>
-    entry(
-      `${base}/directory/${category}`,
-      latestModified([COPY_REVISED_AT["/directory"], ...placeTimes(places, category)]),
-    ),
-  );
+  const directoryCategories = Object.keys(CATEGORY_LABELS).map((category) => ({
+    loc: `${base}/directory/${category}`,
+    lastmod: latestModified([COPY_REVISED_AT["/directory"], ...placeTimes(places, category)]),
+  }));
 
-  const placeRoutes = places.map((place) =>
-    entry(`${base}/places/${place.slug}`, latestModified([place.updatedAt])),
-  );
+  const placeRoutes = places.map((place) => ({
+    loc: `${base}/places/${place.slug}`,
+    lastmod: latestModified([place.updatedAt]),
+  }));
 
-  const articles = publishedArticles.map((article) =>
-    entry(`${base}${articleHref(article)}`, latestModified([articleDateModified(article)])),
-  );
+  const articles = publishedArticles.map((article) => ({
+    loc: `${base}${articleHref(article)}`,
+    lastmod: latestModified([articleDateModified(article)]),
+  }));
 
   const neighborhoods = NEIGHBORHOODS.map((name) => {
     const slug = neighborhoodSlug(name);
-    return entry(
-      `${base}/neighborhoods/${slug}`,
-      latestModified([COPY_REVISED_AT["/directory"], ...placeTimes(places, undefined, slug)]),
-    );
+    return {
+      loc: `${base}/neighborhoods/${slug}`,
+      lastmod: latestModified([COPY_REVISED_AT["/directory"], ...placeTimes(places, undefined, slug)]),
+    };
   });
 
   return [...staticRoutes, ...directoryCategories, ...placeRoutes, ...articles, ...neighborhoods];
+}
+
+export async function buildSitemapXml(): Promise<string> {
+  const urls = await sitemapUrls();
+  if (process.env.NODE_ENV === "production" && urls.length < 400) {
+    throw new Error(`sitemap returned ${urls.length} urls`);
+  }
+  return renderSitemap(urls);
 }

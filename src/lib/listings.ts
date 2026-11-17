@@ -890,7 +890,7 @@ export async function getTopNeighborhoods(count = 6): Promise<string[]> {
 
 export type PlaceSitemapEntry = {
   slug: string;
-  /** `places.imported_at`. Empty when the row has no stored time. */
+  /** `places.updated_at`, or `imported_at` when the content timestamp was never set. */
   updatedAt: string;
   category: CategorySlug;
   neighborhoodSlug: string | null;
@@ -913,7 +913,11 @@ async function loadSitemapPlaces(): Promise<PlaceSitemapEntry[]> {
   // Slug plus the stored timestamp only. The full place record is what timed the sitemap out.
   const result = await db
     .prepare(
-      `SELECT slug, IFNULL(imported_at, '') AS imported_at,
+      `SELECT slug,
+              CASE
+                WHEN updated_at IS NOT NULL AND TRIM(updated_at) != '' THEN updated_at
+                ELSE IFNULL(imported_at, '')
+              END AS updated_at,
               IFNULL(neighborhood_slug, '') AS neighborhood_slug, primary_type
        FROM places
        WHERE ${PUBLISHED_SQL}
@@ -921,19 +925,19 @@ async function loadSitemapPlaces(): Promise<PlaceSitemapEntry[]> {
     )
     .all<{
       slug: string;
-      imported_at: string;
+      updated_at: string;
       neighborhood_slug: string;
       primary_type: string | null;
     }>();
   const rows = (result.results ?? []) as Array<{
     slug: string;
-    imported_at: string;
+    updated_at: string;
     neighborhood_slug: string;
     primary_type: string | null;
   }>;
   return rows.map((row) => ({
     slug: row.slug,
-    updatedAt: row.imported_at,
+    updatedAt: row.updated_at,
     category: categoryFromType(row.primary_type),
     neighborhoodSlug: row.neighborhood_slug || null,
   }));

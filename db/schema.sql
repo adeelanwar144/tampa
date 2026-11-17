@@ -58,7 +58,9 @@ CREATE TABLE IF NOT EXISTS places (
   description TEXT,
   status TEXT DEFAULT 'draft',
   listing_quarantined INTEGER NOT NULL DEFAULT 0,
-  imported_at TEXT
+  imported_at TEXT,
+  -- Last change to the listing essay, title, or meta description. Sitemap lastmod.
+  updated_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS place_images (
