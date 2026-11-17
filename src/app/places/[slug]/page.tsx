@@ -379,7 +379,8 @@ export default async function PlaceDetailPage({ params }: Props) {
           <div className="space-y-6">
             <div className="sticky top-24 rounded-[var(--radius-card)] border border-line bg-white p-5">
               <h2 className="font-display font-700 text-base text-gulf-900 mb-4">Hours</h2>
-              {listingContent?.hoursMode === "call" || Object.keys(schedule.hours).length === 0 ? (
+              {listingContent?.hoursMode === "call" ||
+              (listingContent?.hoursMode !== "verified" && Object.keys(schedule.hours).length === 0) ? (
                 <p className="text-sm text-ink-600 mb-5">Call ahead to confirm hours.</p>
               ) : (
               <table className="w-full text-sm mb-5" aria-label="Weekly hours">
