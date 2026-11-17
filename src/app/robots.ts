@@ -8,7 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: [
         "/",
         "/favicon.ico",
-        "/icon.svg",
         "/icon-48.png",
         "/icon-96.png",
         "/icon-192.png",
